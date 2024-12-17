@@ -30,6 +30,7 @@ model Enigma {
   user        User     @relation("UserEnigmas", fields: [userId], references: [id])
   title       String
   description String
+  image       String?
   difficulty  Int
   numberOfParticipants Int @default(2)
   numberOfHours Int @default(1)
