@@ -21,7 +21,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   enigmas   Enigma[] @relation("UserEnigmas")
-  role      Role
+  role      Role     @default(USER)
 }
 
 model Enigma {
