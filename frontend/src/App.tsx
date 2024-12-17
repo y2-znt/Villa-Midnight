@@ -1,7 +1,12 @@
+import { ThemeProvider } from "./components/providers/themeprovider";
+import Header from "./section/Header";
+
 export default function App() {
   return (
-    <div className="">
-      <h1 className="text-3xl font-bold">Hello world!</h1>
-    </div>
+    <ThemeProvider defaultTheme="dark" storageKey="theme">
+      <div className="mx-auto max-w-7xl">
+        <Header />
+      </div>
+    </ThemeProvider>
   );
 }
