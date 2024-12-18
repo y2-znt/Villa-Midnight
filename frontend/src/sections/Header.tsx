@@ -11,21 +11,21 @@ export default function Navbar() {
   };
 
   const links = [
-    { name: "ACCUEIL", href: "#home" },
-    { name: "A PROPOS", href: "#about" },
-    { name: "SERVICES", href: "#services" },
-    { name: "FAQ", href: "#faq" },
+    { name: "ACCUEIL", href: "/" },
+    { name: "ÉNIGMES", href: "/all-enigmas" },
+    { name: "CONTACT", href: "/contact" },
+    { name: "FAQ", href: "/faq" },
   ];
 
   return (
-    <nav className="relative flex items-center justify-between p-4 shadow-md">
+    <nav className="relative flex items-center justify-between p-4">
       <a href="/" className="flex items-center gap-2">
         <Logo />
         <div className="text-2xl font-semibold text-foreground leading-tight">
           VILLA <span className="text-primary">MIDNIGHT</span>
         </div>
       </a>
-      <div className="hidden lg:flex space-x-4">
+      <div className="hidden lg:flex space-x-10">
         {links.map((link) => (
           <a
             key={link.name}
@@ -60,7 +60,7 @@ export default function Navbar() {
         </button>
       </div>
       <div
-        className={`fixed top-32 right-0 z-50 w-full bg-background text-xl text-foreground transition-transform duration-500 ease-in-out lg:hidden ${
+        className={`fixed top-24 right-0 z-50 size-full bg-background text-xl text-foreground transition-transform duration-500 ease-in-out lg:hidden ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -81,13 +81,13 @@ export default function Navbar() {
           ))}
           <li>
             <Button variant="default" size="lg">
-              Jouer dès maintenant
+              RELEVEZ LE DÉFI
             </Button>
           </li>
         </ul>
       </div>
       <Button variant="default" size="lg" className="hidden lg:block">
-        Jouer dès maintenant
+        RELEVEZ LE DÉFI
       </Button>
     </nav>
   );
