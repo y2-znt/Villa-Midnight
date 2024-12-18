@@ -1,66 +1,75 @@
-import { Request, Response } from 'express';
-import prisma from "../src/prisma/prismaClient";
+import { Request, Response } from "express";
+import {
+  addUser,
+  fetchAllUsers,
+  fetchUserById,
+  modifyUser,
+  removeUser,
+} from "../services/userService";
 
-export const getAllUsers = async (req: Request, res: Response) => {
-    try {
-      const users = await prisma.user.findMany();
-      res.status(200).json(users);
-    } catch (error) {
-      res.status(500).json({ message: (error as Error).message });
-    }
-  };
-  
-  export const getUserById = async (req: Request, res: Response) => {
-    try {
-      const user = await prisma.user.findUnique({
-        where: { id: req.params.id },
-      });
-      res.status(200).json(user);
-    } catch (error) {
-      res.status(500).json({ message: (error as Error).message });
-    }
-  };
-  
-  export const createUser = async (req: Request, res: Response) => {
-    const { username, email, password } = req.body;
-  
-    try {
-      const user = await prisma.user.create({
-        data: {
-          username,
-          email,
-          password,
-        },
-      });
-      res.status(201).json(user);
-    } catch (error) {
-      res.status(500).json({ message: (error as Error).message });
-    }
-  };
-  
-  export const updateUser = async (req: Request, res: Response) => {
-    const { username, email } = req.body;
-  
-    try {
-      const user = await prisma.user.update({
-        where: { id: req.params.id },
-        data: {
-          username,
-          email,
-          updatedAt: new Date(),
-        },
-      });
-      res.status(200).json(user);
-    } catch (error) {
-      res.status(500).json({ message: (error as Error).message });
-    }
-  };
-  
-  export const deleteUser = async (req: Request, res: Response) => {
-    try {
-      await prisma.user.delete({ where: { id: req.params.id } });
-      res.status(200).json({ message: "User deleted" });
-    } catch (error) {
-      res.status(500).json({ message: (error as Error).message });
-    }
-  };
+export const getAllUsers = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const users = await fetchAllUsers();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
+};
+
+export const getUserById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const user = await fetchUserById(req.params.id);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
+};
+
+export const createUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { username, email, password } = req.body;
+
+  try {
+    const user = await addUser({ username, email, password });
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
+};
+
+export const updateUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { username, email } = req.body;
+
+  try {
+    const user = await modifyUser(req.params.id, {
+      username,
+      email,
+    });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
+};
+
+export const deleteUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    await removeUser(req.params.id);
+    res.status(200).json({ message: "User deleted" });
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
+};
