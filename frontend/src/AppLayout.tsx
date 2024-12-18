@@ -8,7 +8,7 @@ type AppLayoutProps = {
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="theme">
-      <div className="relative h-screen bg-cover bg-center">
+      <div className="mx-auto max-w-7xl">
         <Header />
         {children}
       </div>
