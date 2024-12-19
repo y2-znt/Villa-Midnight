@@ -3,9 +3,7 @@ import prisma from "../src/prisma/prismaClient";
 export const fetchAllUsers = async () => {
   try {
     const users = await prisma.user.findMany();
-    return users.map(
-      ({ password, ...userWithoutPassword }) => userWithoutPassword
-    );
+    return users.map(({ password, ...userWithoutPassword }) => userWithoutPassword);
   } catch (error) {
     throw new Error(`Failed to fetch users: ${(error as Error).message}`);
   }

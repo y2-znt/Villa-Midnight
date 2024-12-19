@@ -17,6 +17,7 @@ app.use(corsMiddleware);
 app.use(cookieParser());
 app.use(errorHandler);
 
+// Routes
 app.use("/api/users", userRoutes);
 app.use("/api/enigmas", enigmaRoutes);
 app.use("/api/auth", authRoutes);
