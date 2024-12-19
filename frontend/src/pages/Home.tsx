@@ -11,7 +11,7 @@ export default function Home() {
           opacity: 0.15,
         }}
       />
-      <div className="mx-auto max-w-7xl z-50">
+      <div>
         <Hero />
         <Particles
           className="absolute inset-0 hidden xl:flex -z-10"
