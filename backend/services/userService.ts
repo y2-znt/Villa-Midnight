@@ -3,7 +3,9 @@ import prisma from "../src/prisma/prismaClient";
 export const fetchAllUsers = async () => {
   try {
     const users = await prisma.user.findMany();
-    return users;
+    return users.map(
+      ({ password, ...userWithoutPassword }) => userWithoutPassword
+    );
   } catch (error) {
     throw new Error(`Failed to fetch users: ${(error as Error).message}`);
   }
@@ -15,7 +17,8 @@ export const fetchUserById = async (id: string) => {
     if (!user) {
       throw new Error("User not found");
     }
-    return user;
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   } catch (error) {
     throw new Error(`Failed to fetch user: ${(error as Error).message}`);
   }
@@ -38,7 +41,8 @@ export const addUser = async ({
         password,
       },
     });
-    return user;
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   } catch (error) {
     throw new Error(`Failed to create user: ${(error as Error).message}`);
   }
@@ -56,7 +60,8 @@ export const modifyUser = async (
         email,
       },
     });
-    return user;
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   } catch (error) {
     throw new Error(`Failed to update user: ${(error as Error).message}`);
   }
