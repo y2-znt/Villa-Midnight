@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Logo from "../components/Logo";
 import { Button } from "../components/ui/button";
+import LogoWithName from "../components/LogoWithName";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,12 +19,7 @@ export default function Navbar() {
 
   return (
     <nav className="relative flex items-center justify-between p-4">
-      <a href="/" className="flex items-center gap-2">
-        <Logo />
-        <div className="text-2xl font-semibold text-foreground leading-tight">
-          VILLA <span className="text-primary">MIDNIGHT</span>
-        </div>
-      </a>
+      <LogoWithName />
       <div className="hidden lg:flex space-x-10">
         {links.map((link) => (
           <a
