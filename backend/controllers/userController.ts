@@ -3,6 +3,7 @@ import {
   addUser,
   fetchAllUsers,
   fetchUserById,
+  fetchUserEnigmasById,
   modifyUser,
   removeUser,
 } from "../services/userService";
@@ -26,6 +27,18 @@ export const getUserById = async (
   try {
     const user = await fetchUserById(req.params.id);
     res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
+};
+
+export const getEnigmaByUserId = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const enigmas = await fetchUserEnigmasById(req.params.id);
+    res.status(200).json(enigmas);
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });
   }
