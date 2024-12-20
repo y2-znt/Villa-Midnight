@@ -30,5 +30,3 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
-
-export const routes = express.Router();
