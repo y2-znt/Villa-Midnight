@@ -56,7 +56,10 @@ export const getCurrentUser = async (
   }
 };
 
-export const logout = async (req: Request, res: Response): Promise<void> => {
+export const logout = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> => {
   try {
     res.clearCookie("authToken");
     console.log("token", req.cookies.authToken);
