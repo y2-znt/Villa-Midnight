@@ -17,7 +17,8 @@ export const registerUser = async (
   if (response.ok) {
     console.log("Inscription réussie");
   } else {
-    console.error("Erreur lors de l'inscription");
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Erreur lors de l'inscription");
   }
 };
 
@@ -33,6 +34,7 @@ export const loginUser = async (email: string, password: string) => {
   if (response.ok) {
     console.log("Connexion réussie");
   } else {
-    console.error("Erreur lors de la connexion");
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Erreur lors de la connexion");
   }
 };
