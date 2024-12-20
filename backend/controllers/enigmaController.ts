@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import {
-  fetchAllEnigmas,
-  fetchEnigmaById,
-  fetchEnigmaByDifficulty,
   addEnigma,
+  fetchAllEnigmas,
+  fetchEnigmaByDifficulty,
+  fetchEnigmaById,
   modifyEnigma,
   removeEnigma,
 } from "../services/enigmaService";
@@ -49,13 +49,22 @@ export const createEnigma = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { title, description, difficulty, userId, numberOfParticipants, numberOfHours } = req.body;
+  const {
+    title,
+    description,
+    difficulty,
+    image,
+    userId,
+    numberOfParticipants,
+    numberOfHours,
+  } = req.body;
 
   try {
     const enigma = await addEnigma({
       title,
       description,
       difficulty,
+      image,
       userId,
       numberOfParticipants,
       numberOfHours,
@@ -70,13 +79,21 @@ export const updateEnigma = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { title, description, difficulty, numberOfParticipants, numberOfHours } = req.body;
+  const {
+    title,
+    description,
+    difficulty,
+    image,
+    numberOfParticipants,
+    numberOfHours,
+  } = req.body;
 
   try {
     const enigma = await modifyEnigma(req.params.id, {
       title,
       description,
       difficulty,
+      image,
       numberOfParticipants,
       numberOfHours,
     });

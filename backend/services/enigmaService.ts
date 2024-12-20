@@ -43,6 +43,7 @@ export const addEnigma = async ({
   title,
   description,
   difficulty,
+  image,
   userId,
   numberOfParticipants,
   numberOfHours,
@@ -50,6 +51,7 @@ export const addEnigma = async ({
   title: string;
   description: string;
   difficulty: number;
+  image: string;
   userId: string;
   numberOfParticipants?: number;
   numberOfHours?: number;
@@ -69,6 +71,7 @@ export const addEnigma = async ({
         title,
         description,
         difficulty,
+        image,
         user: {
           connect: { id: userId },
         },
@@ -88,14 +91,16 @@ export const modifyEnigma = async (
     title,
     description,
     difficulty,
+    image,
     numberOfParticipants,
     numberOfHours,
   }: {
     title?: string;
     description?: string;
     difficulty?: number;
-    numberOfParticipants?: number,
-    numberOfHours?: number,
+    image?: string;
+    numberOfParticipants?: number;
+    numberOfHours?: number;
   }
 ) => {
   try {
@@ -105,6 +110,7 @@ export const modifyEnigma = async (
         title,
         description,
         difficulty,
+        image,
         numberOfParticipants,
         numberOfHours,
       },
