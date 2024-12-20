@@ -1,3 +1,5 @@
+import { z } from "zod";
+import { enigmaSchema } from "../schemas/enigmaSchema";
 import prisma from "../src/prisma/prismaClient";
 
 // Fetch all enigmas
@@ -39,26 +41,18 @@ export const fetchEnigmaByDifficulty = async (difficulty: number) => {
   }
 };
 
-export const addEnigma = async ({
-  title,
-  description,
-  difficulty,
-  userId,
-  numberOfParticipants,
-  numberOfHours,
-}: {
-  title: string;
-  description: string;
-  difficulty: number;
-  userId: string;
-  numberOfParticipants?: number;
-  numberOfHours?: number;
-}) => {
-  try {
-    if (!userId) {
-      throw new Error("User ID is required");
-    }
+export const addEnigma = async (data: z.infer<typeof enigmaSchema>) => {
+  const {
+    userId,
+    title,
+    description,
+    image,
+    difficulty,
+    numberOfParticipants,
+    numberOfHours,
+  } = enigmaSchema.parse(data);
 
+  try {
     const userExists = await prisma.user.findUnique({ where: { id: userId } });
     if (!userExists) {
       throw new Error("User not found");
@@ -69,6 +63,7 @@ export const addEnigma = async ({
         title,
         description,
         difficulty,
+        image,
         user: {
           connect: { id: userId },
         },
@@ -84,27 +79,27 @@ export const addEnigma = async ({
 
 export const modifyEnigma = async (
   id: string,
-  {
+  data: z.infer<typeof enigmaSchema>
+) => {
+  const {
+    userId,
     title,
     description,
+    image,
     difficulty,
     numberOfParticipants,
     numberOfHours,
-  }: {
-    title?: string;
-    description?: string;
-    difficulty?: number;
-    numberOfParticipants?: number,
-    numberOfHours?: number,
-  }
-) => {
+  } = enigmaSchema.parse(data);
+
   try {
     const enigma = await prisma.enigma.update({
       where: { id },
       data: {
+        userId,
         title,
         description,
         difficulty,
+        image,
         numberOfParticipants,
         numberOfHours,
       },

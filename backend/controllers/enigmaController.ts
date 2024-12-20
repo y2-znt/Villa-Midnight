@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import {
-  fetchAllEnigmas,
-  fetchEnigmaById,
-  fetchEnigmaByDifficulty,
   addEnigma,
+  fetchAllEnigmas,
+  fetchEnigmaByDifficulty,
+  fetchEnigmaById,
   modifyEnigma,
   removeEnigma,
 } from "../services/enigmaService";
+import { AuthenticatedRequest } from "../utils/express";
 
 export const getAllEnigmas = async (
   req: Request,
@@ -46,17 +47,26 @@ export const getEnigmasByDifficulty = async (
 };
 
 export const createEnigma = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
-  const { title, description, difficulty, userId, numberOfParticipants, numberOfHours } = req.body;
+  const {
+    userId,
+    title,
+    description,
+    image,
+    difficulty,
+    numberOfParticipants,
+    numberOfHours,
+  } = req.body;
 
   try {
     const enigma = await addEnigma({
+      userId,
       title,
       description,
+      image,
       difficulty,
-      userId,
       numberOfParticipants,
       numberOfHours,
     });
@@ -67,15 +77,25 @@ export const createEnigma = async (
 };
 
 export const updateEnigma = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
-  const { title, description, difficulty, numberOfParticipants, numberOfHours } = req.body;
+  const {
+    userId,
+    title,
+    description,
+    image,
+    difficulty,
+    numberOfParticipants,
+    numberOfHours,
+  } = req.body;
 
   try {
     const enigma = await modifyEnigma(req.params.id, {
+      userId,
       title,
       description,
+      image,
       difficulty,
       numberOfParticipants,
       numberOfHours,
@@ -87,7 +107,7 @@ export const updateEnigma = async (
 };
 
 export const deleteEnigma = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
   try {
