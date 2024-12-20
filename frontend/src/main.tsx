@@ -8,6 +8,7 @@ import AllEnigmas from "./pages/AllEnigmas.tsx";
 import Contact from "./pages/Contact.tsx";
 import FAQ from "./pages/FAQ.tsx";
 import Home from "./pages/Home.tsx";
+import Login from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
 
 createRoot(document.getElementById("root")!).render(
@@ -25,6 +26,7 @@ createRoot(document.getElementById("root")!).render(
           path="/register"
           element={<AuthLayout children={<Register />} />}
         />
+        <Route path="/login" element={<AuthLayout children={<Login />} />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>
