@@ -6,16 +6,20 @@ import { registerUser } from "../api/authApi";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import Title from "../components/ui/title";
+
 import { useAuthContext } from "../contexts/AuthContext";
 import { SignupSchema } from "../schemas/authSchema";
+import { useEffect } from "react";
 
 export default function Register() {
   const { authUser, setAuthUser } = useAuthContext();
   const navigate = useNavigate();
 
-  if (authUser) {
-    navigate("/");
-  }
+  useEffect(() => {
+    if (authUser) {
+      navigate("/");
+    }
+  }, [authUser, navigate]);
 
   const {
     register,

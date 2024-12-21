@@ -21,9 +21,11 @@ const Hero = () => {
         énigmes ?
       </p>
       {authUser ? (
-        <Button variant="default" size="lg" className="mt-4">
-          CRÉER MON ÉNIGME
-        </Button>
+        <Link to="/create-enigma">
+          <Button variant="default" size="lg" className="mt-4">
+            CRÉER UNE ÉNIGME
+          </Button>
+        </Link>
       ) : (
         <Link to="/login">
           <Button variant="default" size="lg" className="mt-4">

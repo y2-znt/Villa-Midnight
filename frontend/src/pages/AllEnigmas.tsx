@@ -30,7 +30,9 @@ export default function AllEnigmas() {
               Aucune énigme disponible.
             </div>
           ) : (
-            enigmas.map((enigma: EnigmaType) => <EnigmaCard enigma={enigma} />)
+            enigmas.map((enigma: EnigmaType) => (
+              <EnigmaCard key={enigma.id} enigma={enigma} />
+            ))
           )}
         </div>
       </section>

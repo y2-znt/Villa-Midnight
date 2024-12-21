@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { loginUser } from "../api/authApi";
@@ -13,9 +14,11 @@ export default function Login() {
   const { authUser, setAuthUser } = useAuthContext();
   const navigate = useNavigate();
 
-  if (authUser) {
-    navigate("/");
-  }
+  useEffect(() => {
+    if (authUser) {
+      navigate("/");
+    }
+  }, [authUser, navigate]);
 
   const {
     register,
