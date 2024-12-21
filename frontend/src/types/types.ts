@@ -1,4 +1,4 @@
-export type Enigma = {
+export type EnigmaType = {
   id: number;
   title: string;
   description: string;
@@ -8,4 +8,10 @@ export type Enigma = {
   numberOfHours: number;
   createdAt: string;
   updatedAt: string;
+};
+
+export type AuthUserType = {
+  id: number;
+  username: string;
+  email: string;
 };

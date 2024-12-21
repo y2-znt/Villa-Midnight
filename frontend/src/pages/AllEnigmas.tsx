@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { fetchAllEnigmas } from "../api/enigmaApi";
 import EnigmaCard from "../components/EnigmaCard";
 import Title from "../components/ui/title";
-import { Enigma } from "../types/types";
+import { EnigmaType } from "../types/types";
 
 export default function AllEnigmas() {
-  const [enigmas, setEnigmas] = useState<Enigma[]>([]);
+  const [enigmas, setEnigmas] = useState<EnigmaType[]>([]);
 
   useEffect(() => {
     const getEnigmas = async () => {
@@ -30,7 +30,7 @@ export default function AllEnigmas() {
               Aucune énigme disponible.
             </div>
           ) : (
-            enigmas.map((enigma: Enigma) => <EnigmaCard enigma={enigma} />)
+            enigmas.map((enigma: EnigmaType) => <EnigmaCard enigma={enigma} />)
           )}
         </div>
       </section>

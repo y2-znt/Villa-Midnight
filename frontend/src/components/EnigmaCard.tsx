@@ -1,4 +1,5 @@
 import { Hourglass, UsersIcon } from "lucide-react";
+import { EnigmaType } from "../types/types";
 import Logo from "./Logo";
 import {
   Card,
@@ -8,9 +9,8 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Enigma } from "../types/types";
 
-export default function EnigmaCard({ enigma }: { enigma: Enigma }) {
+export default function EnigmaCard({ enigma }: { enigma: EnigmaType }) {
   return (
     <Card key={enigma.id}>
       <img
