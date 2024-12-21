@@ -1,13 +1,22 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router";
 import { loginUser } from "../api/authApi";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import Title from "../components/ui/title";
+import { useAuthContext } from "../contexts/AuthContext";
 import { SigninSchema } from "../schemas/authSchema";
 
 export default function Login() {
+  const { authUser, setAuthUser } = useAuthContext();
+  const navigate = useNavigate();
+
+  if (authUser) {
+    navigate("/");
+  }
+
   const {
     register,
     handleSubmit,
@@ -18,7 +27,9 @@ export default function Login() {
 
   const onSubmit = async (data: SigninSchema) => {
     try {
-      await loginUser(data.email, data.password);
+      const { user, token } = await loginUser(data.email, data.password);
+      setAuthUser({ ...user, token });
+      navigate("/");
     } catch (error) {
       console.error(error);
       alert("Email ou mot de passe incorrect");
@@ -49,6 +60,12 @@ export default function Login() {
         <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting ? "Chargement..." : "Se connecter"}
         </Button>
+        <p className="text-center">
+          Vous n'avez pas de compte ?{" "}
+          <Link to="/register" className="text-primary">
+            Créez un compte
+          </Link>
+        </p>
       </form>
     </div>
   );
