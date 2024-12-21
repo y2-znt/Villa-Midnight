@@ -35,8 +35,11 @@ export default function Contact() {
     <div className="mt-10 md:mt-28 flex flex-col items-center">
       <Title text="REJOIGNEZ" highlight="NOUS" />
       <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-4">
-        {contactList.map((contact) => (
-          <div className="flex items-center gap-4 transition-transform transform hover:scale-105">
+        {contactList.map((contact, index) => (
+          <div
+            key={index}
+            className="flex items-center gap-4 transition-transform transform hover:scale-105"
+          >
             <contact.icon className="text-primary size-10" />
 
             <div className="flex flex-col gap-x-4 text-xl">
