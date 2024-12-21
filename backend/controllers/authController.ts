@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { z } from "zod";
 import { loggedInUser, loginUser, registerUser } from "../services/authService";
+import { clearAuthCookie, setAuthCookie } from "../utils/authUtils";
 import { AuthenticatedRequest } from "../utils/express";
 
 const handleErrorResponse = (res: Response, error: unknown) => {
@@ -13,8 +14,12 @@ const handleErrorResponse = (res: Response, error: unknown) => {
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    const user = await registerUser(req.body);
-    res.status(201).json({ message: "User created successfully", user });
+    const { user, token } = await registerUser(req.body);
+
+    setAuthCookie(res, token);
+    console.log("register token", token);
+
+    res.status(201).json({ message: "User created successfully", user, token });
   } catch (error) {
     handleErrorResponse(res, error);
   }
@@ -24,14 +29,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { user, token } = await loginUser(req.body);
 
-    console.log("token", token);
-
-    res.cookie("authToken", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict", // Helps prevent CSRF attacks
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
+    setAuthCookie(res, token);
+    console.log("login token", token);
 
     res.status(200).json({ message: "Login successful", user, token });
   } catch (error) {
@@ -62,8 +61,8 @@ export const logout = async (
   res: Response
 ): Promise<void> => {
   try {
-    res.clearCookie("authToken");
-    console.log("token", req.cookies.authToken);
+    clearAuthCookie(res);
+    console.log("logout token cleared", req.cookies.authToken);
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
     res.status(500).json({ message: "An error occurred during logout" });
