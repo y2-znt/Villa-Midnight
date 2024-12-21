@@ -1,15 +1,15 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { z } from "zod";
 import { createEnigma } from "../api/enigmaApi";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import Title from "../components/ui/title";
 import { useAuthContext } from "../contexts/AuthContext";
-import { EnigmaSchema } from "../schemas/enigmaSchema";
-
-// TODO: add zodresolver to the form, (bug with the id of the enigma)
+import { EnigmaSchema, enigmaSchema } from "../schemas/enigmaSchema";
 
 export default function CreateEnigma() {
   const { authUser } = useAuthContext();
@@ -18,20 +18,24 @@ export default function CreateEnigma() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<EnigmaSchema>();
+  } = useForm<z.infer<typeof enigmaSchema>>({
+    resolver: zodResolver(enigmaSchema),
+  });
 
   const onSubmit = async (data: EnigmaSchema) => {
+    if (!authUser || !authUser.user || !authUser.user.id) {
+      console.error("User not authenticated or invalid userId");
+      return;
+    }
+
+    const enigmaData = {
+      ...data,
+      userId: authUser.user.id,
+    };
+
+    console.log("Enigma Data:", enigmaData);
+
     try {
-      if (!authUser || !authUser.user?.id) {
-        console.error("User not authenticated");
-        throw new Error("User not authenticated");
-      }
-
-      const enigmaData: EnigmaSchema = {
-        ...data,
-        userId: authUser.user.id,
-      };
-
       await createEnigma(enigmaData);
       navigate("/all-enigmas");
     } catch (error) {
@@ -48,23 +52,14 @@ export default function CreateEnigma() {
       >
         <div>
           <Label htmlFor="title">Titre</Label>
-          <Input
-            type="text"
-            placeholder="Titre"
-            {...register("title", { required: "Le titre est requis" })}
-          />
+          <Input type="text" {...register("title")} placeholder="Titre" />
           {errors.title && (
             <p className="text-red-500">{errors.title.message}</p>
           )}
         </div>
         <div>
           <Label htmlFor="description">Description</Label>
-          <Textarea
-            placeholder="Description"
-            {...register("description", {
-              required: "La description est requise",
-            })}
-          />
+          <Textarea {...register("description")} placeholder="Description" />
           {errors.description && (
             <p className="text-red-500">{errors.description.message}</p>
           )}
@@ -73,19 +68,8 @@ export default function CreateEnigma() {
           <Label htmlFor="difficulty">Difficulté</Label>
           <Input
             type="number"
+            {...register("difficulty", { valueAsNumber: true })}
             placeholder="Difficulté"
-            {...register("difficulty", {
-              valueAsNumber: true,
-              required: "La difficulté est requise",
-              min: {
-                value: 1,
-                message: "La difficulté doit être d'au moins 1",
-              },
-              max: {
-                value: 3,
-                message: "La difficulté ne peut pas dépasser 3",
-              },
-            })}
           />
           {errors.difficulty && (
             <p className="text-red-500">{errors.difficulty.message}</p>
@@ -95,14 +79,8 @@ export default function CreateEnigma() {
           <Label htmlFor="image">Image</Label>
           <Input
             type="text"
+            {...register("image")}
             placeholder="URL de l'image"
-            {...register("image", {
-              required: "L'image est requise",
-              pattern: {
-                value: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/,
-                message: "L'image doit être une URL valide",
-              },
-            })}
           />
           {errors.image && (
             <p className="text-red-500">{errors.image.message}</p>
@@ -112,15 +90,8 @@ export default function CreateEnigma() {
           <Label htmlFor="numberOfParticipants">Nombre de participants</Label>
           <Input
             type="number"
+            {...register("numberOfParticipants", { valueAsNumber: true })}
             placeholder="Nombre de participants"
-            {...register("numberOfParticipants", {
-              valueAsNumber: true,
-              required: "Le nombre de participants est requis",
-              min: {
-                value: 2,
-                message: "Le nombre de participants doit être d'au moins 2",
-              },
-            })}
           />
           {errors.numberOfParticipants && (
             <p className="text-red-500">
@@ -132,22 +103,15 @@ export default function CreateEnigma() {
           <Label htmlFor="numberOfHours">Nombre d'heures</Label>
           <Input
             type="number"
+            {...register("numberOfHours", { valueAsNumber: true })}
             placeholder="Nombre d'heures"
-            {...register("numberOfHours", {
-              valueAsNumber: true,
-              required: "Le nombre d'heures est requis",
-              min: {
-                value: 1,
-                message: "Le nombre d'heures doit être d'au moins 1",
-              },
-            })}
           />
           {errors.numberOfHours && (
             <p className="text-red-500">{errors.numberOfHours.message}</p>
           )}
         </div>
         <Button type="submit" className="w-full" disabled={isSubmitting}>
-          Créer
+          {isSubmitting ? "Création..." : "Créer"}
         </Button>
       </form>
     </div>

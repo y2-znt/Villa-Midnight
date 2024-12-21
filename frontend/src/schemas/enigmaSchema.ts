@@ -1,8 +1,6 @@
 import { z } from "zod";
 
 export const enigmaSchema = z.object({
-  id: z.string(),
-  userId: z.string(),
   title: z.string().min(1, "Le titre est requis"),
   description: z.string().min(1, "La description est requise"),
   difficulty: z.number().min(1, "La difficulté doit être au moins 1"),
