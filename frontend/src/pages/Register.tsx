@@ -1,13 +1,22 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router";
 import { registerUser } from "../api/authApi";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import Title from "../components/ui/title";
+import { useAuthContext } from "../contexts/AuthContext";
 import { SignupSchema } from "../schemas/authSchema";
 
 export default function Register() {
+  const { authUser, setAuthUser } = useAuthContext();
+  const navigate = useNavigate();
+
+  if (authUser) {
+    navigate("/");
+  }
+
   const {
     register,
     handleSubmit,
@@ -19,12 +28,14 @@ export default function Register() {
 
   const onSubmit = async (data: SignupSchema) => {
     try {
-      await registerUser(
+      const { user, token } = await registerUser(
         data.username,
         data.email,
         data.password,
         data.confirmPassword
       );
+      setAuthUser({ ...user, token });
+      navigate("/");
       reset();
     } catch (error) {
       console.error(error);
@@ -72,6 +83,12 @@ export default function Register() {
         <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting ? "Chargement..." : "S'inscrire"}
         </Button>
+        <p className="text-center">
+          Vous avez déjà un compte ?{" "}
+          <Link to="/login" className="text-primary">
+            Connectez-vous
+          </Link>
+        </p>
       </form>
     </div>
   );
