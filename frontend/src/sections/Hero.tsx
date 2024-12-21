@@ -1,7 +1,11 @@
+import { Link } from "react-router";
 import { Button } from "../components/ui/button";
 import Title from "../components/ui/title";
+import { useAuthContext } from "../contexts/AuthContext";
 
 const Hero = () => {
+  const { authUser } = useAuthContext();
+
   return (
     <section className="mt-28 md:mt-48 relative flex h-full flex-col items-center justify-center text-center">
       <Title
@@ -16,9 +20,17 @@ const Hero = () => {
         Une villa pleine de mystères vous attend. Serez-vous prêts à relever ses
         énigmes ?
       </p>
-      <Button variant="default" size="lg" className="mt-4">
-        RELEVEZ LE DÉFI
-      </Button>
+      {authUser ? (
+        <Button variant="default" size="lg" className="mt-4">
+          CRÉER MON ÉNIGME
+        </Button>
+      ) : (
+        <Link to="/login">
+          <Button variant="default" size="lg" className="mt-4">
+            RELEVER LE DÉFI
+          </Button>
+        </Link>
+      )}
     </section>
   );
 };
