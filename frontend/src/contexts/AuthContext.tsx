@@ -55,7 +55,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
         const data: AuthUserType = await response.json();
         setAuthUser(data);
-        console.log("Current user:", data); // Log current user
+        console.log("Current user:", data);
       } catch (error) {
         console.error("Error fetching authenticated user:", error);
         setAuthUser(null);

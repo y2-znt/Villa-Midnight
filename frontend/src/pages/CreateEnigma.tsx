@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { createEnigma } from "../api/enigmaApi";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
 import Title from "../components/ui/title";
 import { useAuthContext } from "../contexts/AuthContext";
 import { EnigmaSchema } from "../schemas/enigmaSchema";
@@ -39,7 +40,7 @@ export default function CreateEnigma() {
   };
 
   return (
-    <div>
+    <div className="mt-10 md:mt-28">
       <Title text="Créez votre" highlight="énigme" />
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -58,8 +59,7 @@ export default function CreateEnigma() {
         </div>
         <div>
           <Label htmlFor="description">Description</Label>
-          <Input
-            type="text"
+          <Textarea
             placeholder="Description"
             {...register("description", {
               required: "La description est requise",
@@ -81,6 +81,10 @@ export default function CreateEnigma() {
                 value: 1,
                 message: "La difficulté doit être d'au moins 1",
               },
+              max: {
+                value: 3,
+                message: "La difficulté ne peut pas dépasser 3",
+              },
             })}
           />
           {errors.difficulty && (
@@ -91,7 +95,7 @@ export default function CreateEnigma() {
           <Label htmlFor="image">Image</Label>
           <Input
             type="text"
-            placeholder="Image"
+            placeholder="URL de l'image"
             {...register("image", {
               required: "L'image est requise",
               pattern: {
