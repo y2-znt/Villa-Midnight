@@ -1,4 +1,4 @@
-import { EnigmaType } from "../types/types";
+import { EnigmaSchema } from "../schemas/enigmaSchema";
 
 const API_URL = "http://localhost:4000/api/enigmas";
 
@@ -20,7 +20,7 @@ export const fetchAllEnigmas = async () => {
   }
 };
 
-export const createEnigma = async (enigma: EnigmaType) => {
+export const createEnigma = async (enigma: EnigmaSchema) => {
   try {
     const response = await fetch(API_URL, {
       method: "POST",
