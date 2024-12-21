@@ -1,17 +1,20 @@
 export type EnigmaType = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   image: string;
   difficulty: number;
+  userId: string;
   numberOfParticipants: number;
   numberOfHours: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type AuthUserType = {
-  id: number;
-  username: string;
-  email: string;
+  user: {
+    id: string;
+    username: string;
+    email: string;
+  };
 };
