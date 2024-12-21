@@ -1,0 +1,75 @@
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { AuthUserType } from "../types/types";
+
+type AuthContextType = {
+  authUser: AuthUserType | null;
+  setAuthUser: Dispatch<SetStateAction<AuthUserType | null>>;
+  isLoading: boolean;
+  error: string | null;
+};
+
+const AuthContext = createContext<AuthContextType>({
+  authUser: null,
+  setAuthUser: () => {
+    throw new Error("setAuthUser not implemented");
+  },
+  isLoading: false,
+  error: null,
+});
+
+export const useAuthContext = () => useContext(AuthContext);
+
+export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
+  const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAuthUser = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const response = await fetch(
+          "http://localhost:4000/api/auth/current-user",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("User not authenticated or network error");
+        }
+
+        const data: AuthUserType = await response.json();
+        setAuthUser(data);
+      } catch (error) {
+        console.error("Error fetching authenticated user:", error);
+        setAuthUser(null);
+        setError((error as Error).message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAuthUser();
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ authUser, setAuthUser, isLoading, error }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

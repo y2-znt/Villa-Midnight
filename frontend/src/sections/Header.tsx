@@ -1,13 +1,27 @@
 import { useState } from "react";
-import { Button } from "../components/ui/button";
+import { Link, useNavigate } from "react-router";
+import { logoutUser } from "../api/authApi";
 import LogoWithName from "../components/LogoWithName";
+import { Button } from "../components/ui/button";
+import { useAuthContext } from "../contexts/AuthContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isBurgerActive, setIsBurgerActive] = useState(false);
-
+  const { authUser, setAuthUser } = useAuthContext();
+  const navigate = useNavigate();
   const toggleBurger = () => {
     setIsBurgerActive(!isBurgerActive);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      setAuthUser(null);
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   const links = [
@@ -22,13 +36,13 @@ export default function Navbar() {
       <LogoWithName />
       <div className="hidden lg:flex space-x-10">
         {links.map((link) => (
-          <a
+          <Link
             key={link.name}
-            href={link.href}
+            to={link.href}
             className="hover:text-primary text-base font-semibold"
           >
             {link.name}
-          </a>
+          </Link>
         ))}
       </div>
       <div className="flex items-center lg:hidden">
@@ -62,8 +76,8 @@ export default function Navbar() {
         <ul className="p-4 space-y-8 flex flex-col items-center">
           {links.map((link) => (
             <li key={link.name}>
-              <a
-                href={link.href}
+              <Link
+                to={link.href}
                 onClick={() => {
                   setIsMenuOpen(!isMenuOpen);
                   toggleBurger();
@@ -71,19 +85,40 @@ export default function Navbar() {
                 className="block hover:text-primary font-medium"
               >
                 {link.name}
-              </a>
+              </Link>
             </li>
           ))}
           <li>
-            <Button variant="default" size="lg">
-              RELEVEZ LE DÉFI
-            </Button>
+            {authUser ? (
+              <Button variant="outline" size="lg" onClick={handleLogout}>
+                DÉCONNEXION
+              </Button>
+            ) : (
+              <Link to="/login">
+                <Button variant="default" size="lg">
+                  RELEVER LE DÉFI
+                </Button>
+              </Link>
+            )}
           </li>
         </ul>
       </div>
-      <Button variant="default" size="lg" className="hidden lg:block">
-        RELEVEZ LE DÉFI
-      </Button>
+      {authUser ? (
+        <Button
+          variant="outline"
+          size="lg"
+          className="hidden lg:block"
+          onClick={handleLogout}
+        >
+          DÉCONNEXION
+        </Button>
+      ) : (
+        <Link to="/login">
+          <Button variant="default" size="lg">
+            RELEVER LE DÉFI
+          </Button>
+        </Link>
+      )}
     </nav>
   );
 }

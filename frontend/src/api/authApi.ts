@@ -17,6 +17,7 @@ export const registerUser = async (
 
   if (response.ok) {
     console.log("Inscription réussie");
+    return response.json();
   } else {
     const errorData = await response.json();
     throw new Error(errorData.message || "Erreur lors de l'inscription");
@@ -35,8 +36,26 @@ export const loginUser = async (email: string, password: string) => {
 
   if (response.ok) {
     console.log("Connexion réussie");
+    return response.json();
   } else {
     const errorData = await response.json();
     throw new Error(errorData.message || "Erreur lors de la connexion");
+  }
+};
+
+export const logoutUser = async () => {
+  const response = await fetch(`${API_URL}/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  if (response.ok) {
+    console.log("Déconnexion réussie");
+  } else {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Erreur lors de la déconnexion");
   }
 };
