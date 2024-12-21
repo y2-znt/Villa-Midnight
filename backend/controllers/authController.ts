@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { z } from "zod";
-import { loginUser, registerUser } from "../services/authService";
+import { loggedInUser, loginUser, registerUser } from "../services/authService";
 import { AuthenticatedRequest } from "../utils/express";
 
 const handleErrorResponse = (res: Response, error: unknown) => {
@@ -46,9 +46,10 @@ export const getCurrentUser = async (
   try {
     if (!req.user) {
       res.status(401).json({ message: "Unauthorized: No user found" });
+      return;
     }
 
-    const user = req.user;
+    const user = await loggedInUser(req.user.userId);
     res.status(200).json({ message: "User retrieved successfully", user });
   } catch (error) {
     console.error("Error retrieving current user:", error);

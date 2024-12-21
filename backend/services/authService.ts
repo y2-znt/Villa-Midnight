@@ -42,3 +42,21 @@ export const loginUser = async (data: z.infer<typeof loginSchema>) => {
   const { password: _, ...userWithoutPassword } = user;
   return { user: userWithoutPassword, token };
 };
+
+export const loggedInUser = async (userId: string) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, username: true, email: true },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return user;
+  } catch (error) {
+    console.error("Error fetching logged-in user:", error);
+    throw new Error("An error occurred while retrieving user information");
+  }
+};
