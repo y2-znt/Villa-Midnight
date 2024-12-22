@@ -31,7 +31,7 @@ export default function App() {
             path="/create-enigma"
             element={
               <ProtectedRoute>
-                <AppLayout children={<CreateEnigma />} />
+                <AuthLayout children={<CreateEnigma />} />
               </ProtectedRoute>
             }
           />

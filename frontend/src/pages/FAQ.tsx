@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
 } from "../components/ui/accordion";
 import Title from "../components/ui/title";
-import { FAQData } from "../data.json";
+import { FAQData } from "../data/data";
 
 export default function FAQ() {
   return (

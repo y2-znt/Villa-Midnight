@@ -42,7 +42,7 @@ export default function EnigmaDetails() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background -z-10" />
       </div>
 
-      <div className="mx-7 mt-10 md:mt-28 flex flex-col items-start">
+      <div className="mx-7 mt-10 mb-36 md:mt-28 flex flex-col items-start">
         <Title
           text={enigma.title.split(" ").slice(0, -1).join(" ")}
           highlight={enigma.title.split(" ").pop() || ""}

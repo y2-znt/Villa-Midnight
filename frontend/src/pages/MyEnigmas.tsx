@@ -29,11 +29,11 @@ export default function MyEnigmas() {
   }, [authUser]);
 
   return (
-    <section className="mt-10 md:mt-28">
+    <section className="mt-10 mb-28 md:mt-28">
       <Title text="MES" highlight="ÉNIGMES" />
       {enigmas.length === 0 ? (
         <div className="mt-10 flex flex-col items-center justify-center space-y-4">
-          <p className="text-xl text-center font-bold">
+          <p className="mx-7 md:text-xl text-center font-bold">
             Vous n'avez pas encore créé d'énigmes. <br /> Commencez à en créer
             dès maintenant !
           </p>

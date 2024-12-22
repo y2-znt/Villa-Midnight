@@ -1,4 +1,5 @@
 import { ThemeProvider } from "./components/providers/themeprovider";
+import Footer from "./sections/Footer";
 import Header from "./sections/Header";
 
 type AppLayoutProps = {
@@ -11,6 +12,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <div className="mx-auto max-w-7xl">
         <Header />
         {children}
+        <Footer />
       </div>
     </ThemeProvider>
   );

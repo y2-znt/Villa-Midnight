@@ -22,7 +22,7 @@ export default function AllEnigmas() {
 
   return (
     <div>
-      <section className="mt-10 md:mt-28">
+      <section className="mt-10 my-28 md:mt-28">
         <Title text="DÉFIS DE LA" highlight="VILLA" />
         <div className="mx-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-2 mt-16">
           {enigmas.length === 0 ? (
