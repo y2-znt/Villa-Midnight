@@ -1,10 +1,9 @@
+import { API_BASE_URL } from "../config/apiClient";
 import { EnigmaSchema } from "../schemas/enigmaSchema";
-
-const API_URL = "http://localhost:4000/api/enigmas";
 
 export const fetchAllEnigmas = async () => {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(`${API_BASE_URL}/enigmas`);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(
@@ -20,9 +19,26 @@ export const fetchAllEnigmas = async () => {
   }
 };
 
+export const fetchEnigmaById = async (id: string) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/enigmas/${id}`);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.message || "Erreur lors de la récupération de l'énigme"
+      );
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération de l'énigme:", error);
+    throw error;
+  }
+};
+
 export const createEnigma = async (enigma: EnigmaSchema) => {
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch(`${API_BASE_URL}/enigmas`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

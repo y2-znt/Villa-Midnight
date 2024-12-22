@@ -1,27 +1,16 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
-import { logoutUser } from "../api/authApi";
+import { Link } from "react-router";
 import LogoWithName from "../components/LogoWithName";
 import { Button } from "../components/ui/button";
-import { useAuthContext } from "../contexts/AuthContext";
+import UserMenu from "../components/UserMenu";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isBurgerActive, setIsBurgerActive] = useState(false);
-  const { authUser, setAuthUser } = useAuthContext();
-  const navigate = useNavigate();
+  const { authUser } = useAuthContext();
   const toggleBurger = () => {
     setIsBurgerActive(!isBurgerActive);
-  };
-
-  const handleLogout = async () => {
-    try {
-      await logoutUser();
-      setAuthUser(null);
-      navigate("/");
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
   };
 
   const links = [
@@ -90,9 +79,7 @@ export default function Navbar() {
           ))}
           <li>
             {authUser ? (
-              <Button variant="outline" size="lg" onClick={handleLogout}>
-                DÉCONNEXION
-              </Button>
+              <UserMenu />
             ) : (
               <Link to="/login">
                 <Button variant="default" size="lg">
@@ -104,16 +91,9 @@ export default function Navbar() {
         </ul>
       </div>
       {authUser ? (
-        <Button
-          variant="outline"
-          size="lg"
-          className="hidden lg:block"
-          onClick={handleLogout}
-        >
-          DÉCONNEXION
-        </Button>
+        <UserMenu />
       ) : (
-        <Link to="/login">
+        <Link to="/login" className="hidden lg:block">
           <Button variant="default" size="lg">
             RELEVER LE DÉFI
           </Button>

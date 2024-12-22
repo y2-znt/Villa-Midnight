@@ -7,7 +7,7 @@ import { loginUser } from "../api/authApi";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import Title from "../components/ui/title";
-import { useAuthContext } from "../contexts/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import { SigninSchema } from "../schemas/authSchema";
 
 export default function Login() {
@@ -30,8 +30,8 @@ export default function Login() {
 
   const onSubmit = async (data: SigninSchema) => {
     try {
-      const { user, token } = await loginUser(data.email, data.password);
-      setAuthUser({ ...user, token });
+      const { user } = await loginUser(data.email, data.password);
+      setAuthUser({ ...user });
       navigate("/");
     } catch (error) {
       console.error(error);

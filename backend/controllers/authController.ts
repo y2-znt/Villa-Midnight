@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { z } from "zod";
 import { loggedInUser, loginUser, registerUser } from "../services/authService";
-import { clearAuthCookie, setAuthCookie } from "../utils/authUtils";
+import { clearAuthCookie, setAuthCookie } from "../utils/authCookie";
 import { AuthenticatedRequest } from "../utils/express";
 
 const handleErrorResponse = (res: Response, error: unknown) => {

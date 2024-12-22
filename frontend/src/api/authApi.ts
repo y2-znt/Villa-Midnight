@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:4000/api/auth";
+import { API_BASE_URL } from "../config/apiClient";
 
 export const registerUser = async (
   username: string,
@@ -6,7 +6,7 @@ export const registerUser = async (
   password: string,
   confirmPassword: string
 ) => {
-  const response = await fetch(`${API_URL}/register`, {
+  const response = await fetch(`${API_BASE_URL}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,7 +25,7 @@ export const registerUser = async (
 };
 
 export const loginUser = async (email: string, password: string) => {
-  const response = await fetch(`${API_URL}/login`, {
+  const response = await fetch(`${API_BASE_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export const loginUser = async (email: string, password: string) => {
 };
 
 export const logoutUser = async () => {
-  const response = await fetch(`${API_URL}/logout`, {
+  const response = await fetch(`${API_BASE_URL}/auth/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
