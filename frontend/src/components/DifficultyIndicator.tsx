@@ -2,18 +2,12 @@ import Logo from "./Logo";
 
 type DifficultyIndicatorProps = {
   difficulty: number;
-  className?: string;
 };
 
-const DifficultyIndicator = ({
-  difficulty,
-  className,
-}: DifficultyIndicatorProps) => {
+const DifficultyIndicator = ({ difficulty }: DifficultyIndicatorProps) => {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span
-        className={`font-bold text-primary italic text-xl md:text-3xl ${className}`}
-      >
+      <span className="font-bold text-primary italic text-xl md:text-3xl">
         DIFFICULTÉ
       </span>{" "}
       {[...Array(difficulty)].map((_, index) => (
