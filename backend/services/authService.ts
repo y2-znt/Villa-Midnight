@@ -3,7 +3,7 @@ import { z } from "zod";
 import { SALT_ROUNDS } from "../config/config";
 import { loginSchema, registerSchema } from "../schemas/authSchema";
 import prisma from "../src/prisma/prismaClient";
-import { generateToken } from "../utils/tokenUtils";
+import { generateToken } from "../utils/generateToken";
 
 export const registerUser = async (data: z.infer<typeof registerSchema>) => {
   const { username, email, password, confirmPassword } =
