@@ -44,7 +44,7 @@ export default function CreateEnigma() {
   };
 
   return (
-    <div className="mt-10 md:mt-28">
+    <div>
       <Title text="Créez votre" highlight="énigme" />
       <form
         onSubmit={handleSubmit(onSubmit)}

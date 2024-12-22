@@ -61,3 +61,24 @@ export const createEnigma = async (enigma: EnigmaSchema) => {
     throw error;
   }
 };
+
+export const fetchEnigmasByUserId = async (userId: string) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/users/${userId}/enigmas`);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.message ||
+          "Erreur lors de la récupération des énigmes de l'utilisateur"
+      );
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des énigmes de l'utilisateur:",
+      error
+    );
+    throw error;
+  }
+};

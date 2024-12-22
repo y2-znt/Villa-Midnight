@@ -16,8 +16,8 @@ export default function Navbar() {
   const links = [
     { name: "ACCUEIL", href: "/" },
     { name: "ÉNIGMES", href: "/all-enigmas" },
-    { name: "CONTACT", href: "/contact" },
     { name: "FAQ", href: "/faq" },
+    { name: "CONTACT", href: "/contact" },
   ];
 
   return (

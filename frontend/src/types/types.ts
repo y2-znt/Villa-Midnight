@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 export type EnigmaType = {
   id: string;
   title: string;
@@ -17,4 +19,10 @@ export type AuthUserType = {
     username: string;
     email: string;
   };
+};
+
+export type ContactTypes = {
+  icon: LucideIcon;
+  title: string;
+  description: string;
 };
