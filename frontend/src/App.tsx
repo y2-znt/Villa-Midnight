@@ -10,6 +10,7 @@ import EnigmaDetails from "./pages/EnigmaDetails";
 import FAQ from "./pages/FAQ";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import MyEnigmas from "./pages/MyEnigmas";
 import Register from "./pages/Register";
 
 export default function App() {
@@ -31,6 +32,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <AppLayout children={<CreateEnigma />} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-enigmas"
+            element={
+              <ProtectedRoute>
+                <AppLayout children={<MyEnigmas />} />
               </ProtectedRoute>
             }
           />
