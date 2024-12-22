@@ -7,9 +7,9 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import Title from "../components/ui/title";
 
+import { useEffect } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
 import { SignupSchema } from "../schemas/authSchema";
-import { useEffect } from "react";
 
 export default function Register() {
   const { authUser, setAuthUser } = useAuthContext();
@@ -32,13 +32,13 @@ export default function Register() {
 
   const onSubmit = async (data: SignupSchema) => {
     try {
-      const { user, token } = await registerUser(
+      const { user } = await registerUser(
         data.username,
         data.email,
         data.password,
         data.confirmPassword
       );
-      setAuthUser({ ...user, token });
+      setAuthUser({ ...user });
       navigate("/");
       reset();
     } catch (error) {

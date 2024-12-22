@@ -26,18 +26,15 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const useAuthContext = () => useContext(AuthContext);
-
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   useEffect(() => {
     const fetchAuthUser = async () => {
       try {
         setIsLoading(true);
         setError(null);
-
         const response = await fetch(
           "http://localhost:4000/api/auth/current-user",
           {
@@ -55,11 +52,10 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
         const data: AuthUserType = await response.json();
         setAuthUser(data);
-        console.log("Current user:", data);
       } catch (error) {
         console.error("Error fetching authenticated user:", error);
         setAuthUser(null);
-        setError((error as Error).message);
+        setError("Erreur lors de la récupération de l'utilisateur");
       } finally {
         setIsLoading(false);
       }
