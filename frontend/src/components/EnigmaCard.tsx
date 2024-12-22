@@ -1,4 +1,3 @@
-import { Hourglass, UsersIcon } from "lucide-react";
 import { Link } from "react-router";
 import { EnigmaType } from "../types/types";
 import DifficultyIndicator from "./DifficultyIndicator";
@@ -10,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import ParticipantsAndTime from "./ParticipantsAndTime";
 
 export default function EnigmaCard({ enigma }: { enigma: EnigmaType }) {
   return (
@@ -32,22 +32,11 @@ export default function EnigmaCard({ enigma }: { enigma: EnigmaType }) {
           </CardContent>
         </CardHeader>
         <CardFooter>
-          <div className="flex flex-row justify-between gap-4">
-            <p className="flex items-center gap-2">
-              <span className="font-medium">
-                <UsersIcon />
-              </span>{" "}
-              {enigma.numberOfParticipants} personnes
-            </p>
-            <p className="flex items-center gap-2">
-              <span className="font-medium">
-                <Hourglass />
-              </span>{" "}
-              {enigma.numberOfHours === 1
-                ? `${enigma.numberOfHours} heure`
-                : `${enigma.numberOfHours} heures`}
-            </p>
-          </div>
+          <ParticipantsAndTime
+            numberOfParticipants={enigma.numberOfParticipants}
+            numberOfHours={enigma.numberOfHours}
+            className="justify-between"
+          />
         </CardFooter>
       </Link>
     </Card>

@@ -1,15 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import AppLayout from "./AppLayout";
 import AuthLayout from "./AuthLayout";
-import { AuthContextProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthContextProvider } from "./context/AuthContext";
 import AllEnigmas from "./pages/AllEnigmas";
 import Contact from "./pages/Contact";
 import CreateEnigma from "./pages/CreateEnigma";
+import EnigmaDetails from "./pages/EnigmaDetails";
 import FAQ from "./pages/FAQ";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
   return (
@@ -20,6 +21,10 @@ export default function App() {
           <Route
             path="/all-enigmas"
             element={<AppLayout children={<AllEnigmas />} />}
+          />
+          <Route
+            path="/enigma/:id"
+            element={<AppLayout children={<EnigmaDetails />} />}
           />
           <Route
             path="/create-enigma"
