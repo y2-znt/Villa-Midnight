@@ -8,7 +8,7 @@ import { Input } from "../components/ui/input";
 import Title from "../components/ui/title";
 
 import { useEffect } from "react";
-import { useAuthContext } from "../contexts/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import { SignupSchema } from "../schemas/authSchema";
 
 export default function Register() {

@@ -8,7 +8,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import Title from "../components/ui/title";
-import { useAuthContext } from "../contexts/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import { EnigmaSchema, enigmaSchema } from "../schemas/enigmaSchema";
 
 export default function CreateEnigma() {

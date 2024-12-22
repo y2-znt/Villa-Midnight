@@ -1,6 +1,6 @@
 import { Navigate } from "react-router";
 import AuthLayout from "../AuthLayout";
-import { useAuthContext } from "../contexts/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import Title from "./ui/title";
 
 export default function ProtectedRoute({

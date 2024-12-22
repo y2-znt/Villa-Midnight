@@ -1,4 +1,5 @@
 import {
+  BookOpenIcon,
   ChevronDownIcon,
   LogOutIcon,
   PuzzleIcon,
@@ -8,7 +9,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { logoutUser } from "../api/authApi";
-import { useAuthContext } from "../contexts/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import { Button } from "./ui/button";
 
 export default function UserMenu() {
@@ -32,6 +33,11 @@ export default function UserMenu() {
       to: "/profile",
       label: "Profil",
       icon: <UserCheckIcon />,
+    },
+    {
+      to: "/create-enigma",
+      label: "Créer une énigme",
+      icon: <BookOpenIcon />,
     },
     {
       to: "/my-enigmas",

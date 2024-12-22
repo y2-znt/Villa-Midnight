@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import LogoWithName from "../components/LogoWithName";
 import { Button } from "../components/ui/button";
 import UserMenu from "../components/UserMenu";
-import { useAuthContext } from "../contexts/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

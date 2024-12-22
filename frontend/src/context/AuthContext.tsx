@@ -7,6 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { API_BASE_URL } from "../config/apiClient";
 import { AuthUserType } from "../types/types";
 
 type AuthContextType = {
@@ -26,25 +27,24 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const useAuthContext = () => useContext(AuthContext);
+
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchAuthUser = async () => {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await fetch(
-          "http://localhost:4000/api/auth/current-user",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
+        const response = await fetch(`${API_BASE_URL}/auth/current-user`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
 
         if (!response.ok) {
           throw new Error("User not authenticated or network error");

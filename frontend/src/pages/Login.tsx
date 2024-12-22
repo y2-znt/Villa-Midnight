@@ -7,7 +7,7 @@ import { loginUser } from "../api/authApi";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import Title from "../components/ui/title";
-import { useAuthContext } from "../contexts/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import { SigninSchema } from "../schemas/authSchema";
 
 export default function Login() {

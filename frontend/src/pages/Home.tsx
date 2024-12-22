@@ -9,7 +9,7 @@ export default function Home() {
           className="absolute inset-0 bg-cover bg-center -z-10"
           style={{
             backgroundImage: `url('/assets/hero_img.jpg')`,
-            opacity: 0.35,
+            opacity: 0.3,
           }}
         />
         <Particles
