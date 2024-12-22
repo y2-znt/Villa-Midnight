@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import AppLayout from "./AppLayout";
 import AuthLayout from "./AuthLayout";
+import { AuthContextProvider } from "./contexts/AuthContext";
 import AllEnigmas from "./pages/AllEnigmas";
 import Contact from "./pages/Contact";
 import CreateEnigma from "./pages/CreateEnigma";
@@ -8,7 +9,7 @@ import FAQ from "./pages/FAQ";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import { AuthContextProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
   return (
@@ -22,7 +23,11 @@ export default function App() {
           />
           <Route
             path="/create-enigma"
-            element={<AppLayout children={<CreateEnigma />} />}
+            element={
+              <ProtectedRoute>
+                <AppLayout children={<CreateEnigma />} />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/contact"
