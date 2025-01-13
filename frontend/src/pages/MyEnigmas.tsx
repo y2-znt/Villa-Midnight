@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { fetchEnigmasByUserId } from "../api/enigmaApi";
+import { deleteEnigma, fetchEnigmasByUserId } from "../api/enigmaApi";
 import EnigmaCard from "../components/EnigmaCard";
 import { Button } from "../components/ui/button";
 import Title from "../components/ui/title";
@@ -10,6 +10,13 @@ import { EnigmaType } from "../types/types";
 export default function MyEnigmas() {
   const { authUser } = useAuthContext();
   const [enigmas, setEnigmas] = useState<EnigmaType[]>([]);
+
+  const handleDelete = async (id: string) => {
+    await deleteEnigma(id);
+    setEnigmas((prevEnigmas) =>
+      prevEnigmas.filter((enigma) => enigma.id !== id)
+    );
+  };
 
   useEffect(() => {
     const getEnigmasByUserId = async () => {
@@ -43,7 +50,11 @@ export default function MyEnigmas() {
       ) : (
         <div className="mx-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-2 mt-16">
           {enigmas.map((enigma: EnigmaType) => (
-            <EnigmaCard key={enigma.id} enigma={enigma} />
+            <EnigmaCard
+              key={enigma.id}
+              enigma={enigma}
+              onDelete={() => handleDelete(enigma.id)}
+            />
           ))}
         </div>
       )}
