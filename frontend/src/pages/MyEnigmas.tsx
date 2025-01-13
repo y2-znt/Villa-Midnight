@@ -29,18 +29,17 @@ export default function MyEnigmas() {
   }, [authUser]);
 
   return (
-    <section className="mt-10 mb-28 md:mt-28">
-      <Title text="MES" highlight="ÉNIGMES" />
+    <div>
+      <Title
+        text={enigmas.length === 0 ? "AUCUNE" : "MES"}
+        highlight="ÉNIGMES"
+      />
       {enigmas.length === 0 ? (
-        <div className="mt-10 flex flex-col items-center justify-center space-y-4">
-          <p className="mx-7 md:text-xl text-center font-bold">
-            Vous n'avez pas encore créé d'énigmes. <br /> Commencez à en créer
-            dès maintenant !
-          </p>
-          <Link to="/create-enigma">
-            <Button>Créer une énigme</Button>
-          </Link>
-        </div>
+        <Link to="/create-enigma">
+          <Button size="lg" className="my-24 mx-auto flex justify-center">
+            Créer une énigme
+          </Button>
+        </Link>
       ) : (
         <div className="mx-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-2 mt-16">
           {enigmas.map((enigma: EnigmaType) => (
@@ -48,6 +47,6 @@ export default function MyEnigmas() {
           ))}
         </div>
       )}
-    </section>
+    </div>
   );
 }
