@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchAllEnigmas } from "../api/enigmaApi";
+import { deleteEnigma, fetchAllEnigmas } from "../api/enigmaApi";
 import EnigmaCard from "../components/EnigmaCard";
 import Title from "../components/ui/title";
 import { EnigmaType } from "../types/types";
@@ -30,7 +30,11 @@ export default function AllEnigmas() {
           </div>
         ) : (
           enigmas.map((enigma: EnigmaType) => (
-            <EnigmaCard key={enigma.id} enigma={enigma} />
+            <EnigmaCard
+              key={enigma.id}
+              enigma={enigma}
+              onDelete={deleteEnigma}
+            />
           ))
         )}
       </div>
