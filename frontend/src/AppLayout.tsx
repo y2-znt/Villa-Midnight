@@ -11,7 +11,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
     <ThemeProvider defaultTheme="dark" storageKey="theme">
       <div className="mx-auto max-w-7xl">
         <Header />
-        {children}
+        <div className="mt-10 my-28 md:mt-28">{children}</div>
         <Footer />
       </div>
     </ThemeProvider>

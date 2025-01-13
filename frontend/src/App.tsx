@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import MyEnigmas from "./pages/MyEnigmas";
 import Register from "./pages/Register";
+import Profile from "./pages/Profile";
 
 export default function App() {
   return (
@@ -40,6 +41,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <AppLayout children={<MyEnigmas />} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <AppLayout children={<Profile />} />
               </ProtectedRoute>
             }
           />

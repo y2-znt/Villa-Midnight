@@ -9,7 +9,7 @@ import { FAQData } from "../data/data";
 
 export default function FAQ() {
   return (
-    <div className="mt-10 md:mt-28">
+    <div className="flex flex-col items-center">
       <Title text="FOIRE AUX" highlight="QUESTIONS" />
       <div className="flex justify-center mx-auto flex-col w-2/3 my-28 max-md:w-full">
         <Accordion type="single" collapsible className="w-full">

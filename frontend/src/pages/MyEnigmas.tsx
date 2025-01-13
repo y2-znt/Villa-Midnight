@@ -29,7 +29,7 @@ export default function MyEnigmas() {
   }, [authUser]);
 
   return (
-    <section className="mt-10 mb-28 md:mt-28">
+    <div>
       <Title
         text={enigmas.length === 0 ? "AUCUNE" : "MES"}
         highlight="ÉNIGMES"
@@ -47,6 +47,6 @@ export default function MyEnigmas() {
           ))}
         </div>
       )}
-    </section>
+    </div>
   );
 }
