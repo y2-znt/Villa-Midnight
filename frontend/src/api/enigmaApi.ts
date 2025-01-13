@@ -62,6 +62,14 @@ export const createEnigma = async (enigma: EnigmaSchema) => {
   }
 };
 
+export const deleteEnigma = async (id: string) => {
+  const response = await fetch(`${API_BASE_URL}/enigmas/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  return response.json();
+};
+
 export const fetchEnigmasByUserId = async (userId: string) => {
   try {
     const response = await fetch(`${API_BASE_URL}/users/${userId}/enigmas`);
