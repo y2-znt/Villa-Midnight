@@ -11,6 +11,36 @@
     }
   ],
   "paths": {
+    "/api/public": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/private": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/private-scoped": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/users/": {
       "get": {
         "description": "",
@@ -188,16 +218,19 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "userId": {
+                    "example": "any"
+                  },
                   "title": {
                     "example": "any"
                   },
                   "description": {
                     "example": "any"
                   },
-                  "difficulty": {
+                  "image": {
                     "example": "any"
                   },
-                  "userId": {
+                  "difficulty": {
                     "example": "any"
                   },
                   "numberOfParticipants": {
@@ -261,10 +294,16 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "userId": {
+                    "example": "any"
+                  },
                   "title": {
                     "example": "any"
                   },
                   "description": {
+                    "example": "any"
+                  },
+                  "image": {
                     "example": "any"
                   },
                   "difficulty": {
@@ -294,19 +333,6 @@
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/enigmas/difficulty": {
-      "get": {
-        "description": "",
         "responses": {
           "200": {
             "description": "OK"

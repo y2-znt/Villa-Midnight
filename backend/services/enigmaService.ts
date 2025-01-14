@@ -28,19 +28,6 @@ export const fetchEnigmaById = async (id: string) => {
   }
 };
 
-export const fetchEnigmaByDifficulty = async (difficulty: number) => {
-  try {
-    if (isNaN(difficulty)) {
-      throw new Error("Invalid difficulty parameter");
-    }
-
-    const enigmas = await prisma.enigma.findMany({ where: { difficulty } });
-    return enigmas;
-  } catch (error) {
-    throw new Error(`Failed to fetch enigmas: ${(error as Error).message}`);
-  }
-};
-
 export const addEnigma = async (data: z.infer<typeof enigmaSchema>) => {
   const {
     userId,

@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import {
   addEnigma,
   fetchAllEnigmas,
-  fetchEnigmaByDifficulty,
   fetchEnigmaById,
   modifyEnigma,
   removeEnigma,
@@ -28,19 +27,6 @@ export const getEnigmaById = async (
   try {
     const enigma = await fetchEnigmaById(req.params.id);
     res.status(200).json(enigma);
-  } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
-  }
-};
-
-export const getEnigmasByDifficulty = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const difficulty = parseInt(req.params.difficulty, 10);
-    const enigmas = await fetchEnigmaByDifficulty(difficulty);
-    res.status(200).json(enigmas);
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });
   }
