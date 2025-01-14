@@ -68,20 +68,12 @@ export default function Profile() {
   return (
     <div className="p-4">
       <Title text="MON" highlight="PROFIL" />
-      <div className="mt-4">
+      <div className="mt-16 md:mt-4">
         {isEditing ? (
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Input
-              type="text"
-              {...register("username")}
-              className="text-lg font-medium"
-            />
-            <Input
-              type="email"
-              {...register("email")}
-              className="text-lg font-medium"
-            />
-            <Button type="submit" variant="outline">
+          <form onSubmit={handleSubmit(onSubmit)} className="max-w-md">
+            <Input type="text" {...register("username")} />
+            <Input type="email" {...register("email")} />
+            <Button type="submit" variant="outline" className="mt-2">
               <CheckIcon className="h-5 w-5" />
             </Button>
           </form>
@@ -89,7 +81,11 @@ export default function Profile() {
           <>
             <p className="text-lg font-medium">
               Nom d'utilisateur: {authUser?.user.username}
-              <Button onClick={() => setIsEditing(true)} variant="outline">
+              <Button
+                onClick={() => setIsEditing(true)}
+                variant="outline"
+                className="ml-2"
+              >
                 <PencilIcon className="h-5 w-5" />
               </Button>
             </p>
@@ -97,11 +93,9 @@ export default function Profile() {
           </>
         )}
       </div>
-      <div className="mt-4">
-        <Button onClick={handleDeleteUser} variant="destructive">
-          Supprimer mon compte
-        </Button>
-      </div>
+      <Button onClick={handleDeleteUser} variant="destructive" className="mt-8">
+        Supprimer mon compte
+      </Button>
     </div>
   );
 }
