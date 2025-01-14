@@ -1,5 +1,6 @@
 import { CheckIcon, PencilIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { deleteUser, updateUser } from "../api/userApi";
 import { Button } from "../components/ui/button";
@@ -10,34 +11,31 @@ import { UserUpdateType } from "../types/types";
 
 export default function Profile() {
   const { authUser, setAuthUser } = useAuthContext();
-  const [user, setUser] = useState<UserUpdateType | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
+  const { register, handleSubmit, setValue } = useForm<UserUpdateType>();
 
   useEffect(() => {
     if (authUser) {
-      setUser(authUser.user);
+      setValue("username", authUser.user.username);
+      setValue("email", authUser.user.email);
     }
-  }, [authUser]);
+  }, [authUser, setValue]);
 
-  const handleUpdateUser = async () => {
+  const onSubmit = async (data: UserUpdateType) => {
     if (!authUser?.user?.id) {
       console.error("User is not authenticated.");
       return;
     }
-    if (!user) {
-      console.error("User data is not available.");
-      return;
-    }
     try {
-      console.log("Saving user data:", user);
-      await updateUser(authUser?.user?.id, user);
+      console.log("Saving user data:", data);
+      await updateUser(authUser.user.id, data);
       setAuthUser((prev) => ({
         ...prev,
         user: {
           id: authUser.user.id,
-          username: user.username || "",
-          email: user.email || "",
+          username: data.username || "",
+          email: data.email || "",
         },
       }));
       setIsEditing(false);
@@ -72,39 +70,21 @@ export default function Profile() {
       <Title text="MON" highlight="PROFIL" />
       <div className="mt-4">
         {isEditing ? (
-          <>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Input
               type="text"
-              value={user?.username || ""}
-              onChange={(e) => {
-                if (user) {
-                  console.log("Username input value:", e.target.value);
-                  setUser((prevUser) => ({
-                    ...prevUser,
-                    username: e.target.value,
-                  }));
-                }
-              }}
+              {...register("username")}
               className="text-lg font-medium"
             />
             <Input
               type="email"
-              value={user?.email || ""}
-              onChange={(e) => {
-                if (user) {
-                  console.log("Email input value:", e.target.value);
-                  setUser((prevUser) => ({
-                    ...prevUser,
-                    email: e.target.value,
-                  }));
-                }
-              }}
+              {...register("email")}
               className="text-lg font-medium"
             />
-            <Button onClick={handleUpdateUser} variant="outline">
+            <Button type="submit" variant="outline">
               <CheckIcon className="h-5 w-5" />
             </Button>
-          </>
+          </form>
         ) : (
           <>
             <p className="text-lg font-medium">
