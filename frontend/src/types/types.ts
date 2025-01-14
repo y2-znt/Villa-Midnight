@@ -26,3 +26,8 @@ export type ContactTypes = {
   title: string;
   description: string;
 };
+
+export type UserUpdateType = {
+  username?: string;
+  email?: string;
+};
