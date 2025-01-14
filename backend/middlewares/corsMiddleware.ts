@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 const corsMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const allowedOrigins = "http://localhost:5173";
+  const allowedOrigins = ["http://localhost:5173", process.env.API_BASE_URL!];
   const origin = req.headers.origin;
 
   if (origin && allowedOrigins.includes(origin)) {
