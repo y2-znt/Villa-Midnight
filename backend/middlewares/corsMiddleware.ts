@@ -1,7 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 
 const corsMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const allowedOrigins = ["http://localhost:5173", process.env.API_BASE_URL!];
+  const allowedOrigins = [
+    "http://localhost:5173",
+    "https://villa-midnight.vercel.app",
+  ];
   const origin = req.headers.origin;
 
   if (origin && allowedOrigins.includes(origin)) {
