@@ -5,16 +5,7 @@ const corsMiddleware = (
   res: Response,
   next: NextFunction
 ): void => {
-  const allowedOrigins = [
-    "http://localhost:5173",
-    "https://villa-midnight.vercel.app",
-  ];
-  const origin = req.headers.origin;
-
-  if (origin && allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.setHeader("Access-Control-Allow-Credentials", "true");
