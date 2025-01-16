@@ -76,4 +76,5 @@ app.use("/api/auth", authRoutes_1.default);
 app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_output_json_1.default));
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
+    console.log(`Domain: ${allowedOrigins[0]}`);
 });
