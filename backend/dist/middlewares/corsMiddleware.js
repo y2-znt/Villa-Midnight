@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const corsMiddleware = (req, res, next) => {
     const allowedOrigins = [
-        "https://villa-midnight.vercel.app",
+        "https://villa-midnight.vercel.app/api",
         "http://localhost:5173",
         "*",
     ];

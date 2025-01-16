@@ -42,7 +42,6 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
-const corsMiddleware_1 = __importDefault(require("./middlewares/corsMiddleware"));
 const errorHandler_1 = require("./middlewares/errorHandler");
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const enigmaRoutes_1 = __importDefault(require("./routes/enigmaRoutes"));
@@ -54,7 +53,6 @@ const port = process.env.PORT;
 const allowedOrigins = [
     "https://villa-midnight.vercel.app",
     "http://localhost:5173",
-    "*",
 ];
 app.use((0, cors_1.default)({
     origin: function (origin, callback) {
@@ -66,9 +64,7 @@ app.use((0, cors_1.default)({
         }
     },
     credentials: true,
-    optionsSuccessStatus: 200,
 }));
-app.use(corsMiddleware_1.default);
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 app.use(errorHandler_1.errorHandler);
