@@ -1,5 +1,6 @@
 import * as bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
@@ -14,13 +15,16 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
-
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(corsMiddleware);
 app.use(express.json());
 app.use(cookieParser());
 app.use(errorHandler);
 app.use(bodyParser.json());
-
 
 // Routes
 app.use("/api/users", userRoutes);
