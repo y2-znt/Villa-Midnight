@@ -17,7 +17,7 @@ const app = express();
 const port = process.env.PORT;
 
 const allowedOrigins = [
-  "https://villa-midnight.vercel.app",
+  "https://villa-midnight.vercel.app/api",
   "http://localhost:5173",
   "*",
 ];
