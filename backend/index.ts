@@ -16,7 +16,11 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT;
 
-const allowedOrigins = ["https://villa-midnight.vercel.app"];
+const allowedOrigins = [
+  "https://villa-midnight.vercel.app",
+  "http://localhost:5173",
+  "*",
+];
 
 app.use(
   cors({

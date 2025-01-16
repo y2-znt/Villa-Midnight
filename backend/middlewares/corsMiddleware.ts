@@ -8,6 +8,7 @@ const corsMiddleware = (
   const allowedOrigins = [
     "https://villa-midnight.vercel.app",
     "http://localhost:5173",
+    "*",
   ];
 
   const origin = req.headers.origin;
