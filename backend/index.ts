@@ -15,12 +15,20 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
+
+const allowedOrigins = ["https://villa-midnight.vercel.app"];
+
 app.use(
   cors({
-    origin: "*",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 200,
   })
 );
 app.use(corsMiddleware);
@@ -37,4 +45,5 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
+  console.log(`Domain: ${allowedOrigins[0]}`);
 });
