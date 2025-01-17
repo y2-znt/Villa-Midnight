@@ -11,8 +11,9 @@ import FAQ from "./pages/FAQ";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import MyEnigmas from "./pages/MyEnigmas";
-import Register from "./pages/Register";
 import Profile from "./pages/Profile";
+import Register from "./pages/Register";
+import EditEnigma from "./pages/EditEnigma";
 
 export default function App() {
   return (
@@ -35,6 +36,10 @@ export default function App() {
                 <AuthLayout children={<CreateEnigma />} />
               </ProtectedRoute>
             }
+          />
+          <Route
+            path="/edit-enigma/:id"
+            element={<AppLayout children={<EditEnigma />} />}
           />
           <Route
             path="/my-enigmas"

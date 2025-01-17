@@ -1,4 +1,4 @@
-import { TrashIcon } from "lucide-react";
+import { PencilIcon, TrashIcon } from "lucide-react";
 import { Link } from "react-router";
 import { useAuthContext } from "../context/AuthContext";
 import { EnigmaType } from "../types/types";
@@ -24,7 +24,7 @@ export default function EnigmaCard({
 
   const handleDeleteClick = () => {
     const isConfirmed = window.confirm(
-      "Êtes-vous sûr de vouloir supprimer cette énigme ? Cette action est irréversible."
+      "Êtes-vous sûr de vouloir supprimer cette énigme ? Cette action est irréversible"
     );
     if (isConfirmed) {
       onDelete(enigma.id);
@@ -59,12 +59,16 @@ export default function EnigmaCard({
         </CardFooter>
       </Link>
       {authUser?.user.id === enigma.userId && (
-        <button
-          onClick={handleDeleteClick}
-          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-        >
-          <TrashIcon className="size-7 text-primary" />
-        </button>
+        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <Link to={`/edit-enigma/${enigma.id}`}>
+            <button className="mr-2">
+              <PencilIcon className="size-7 text-white" />
+            </button>
+          </Link>
+          <button onClick={handleDeleteClick}>
+            <TrashIcon className="size-7 text-primary" />
+          </button>
+        </div>
       )}
     </Card>
   );
