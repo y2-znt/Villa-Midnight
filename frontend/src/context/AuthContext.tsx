@@ -7,7 +7,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useLocation } from "react-router";
 import { API_BASE_URL } from "../config/apiClient";
 import { AuthUserType } from "../types/types";
 
@@ -33,7 +32,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const location = useLocation();
 
   useEffect(() => {
     const fetchAuthUser = async () => {
@@ -53,11 +51,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         }
 
         const data: AuthUserType = await response.json();
-        if (data && data.user.id) {
-          setAuthUser(data);
-        } else {
-          throw new Error("Invalid user data");
-        }
+        setAuthUser(data);
       } catch (error) {
         console.error("Error fetching authenticated user:", error);
         setAuthUser(null);
@@ -68,7 +62,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     };
 
     fetchAuthUser();
-  }, [location]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ authUser, setAuthUser, isLoading, error }}>
