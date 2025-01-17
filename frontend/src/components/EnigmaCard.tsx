@@ -24,7 +24,7 @@ export default function EnigmaCard({
 
   const handleDeleteClick = () => {
     const isConfirmed = window.confirm(
-      "Êtes-vous sûr de vouloir supprimer cette énigme ? Cette action est irréversible"
+      "Êtes-vous sûr de vouloir supprimer cette énigme ? Cette action est irréversible."
     );
     if (isConfirmed) {
       onDelete(enigma.id);
