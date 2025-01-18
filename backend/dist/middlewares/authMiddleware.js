@@ -7,11 +7,13 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../config/config");
 const prismaClient_1 = __importDefault(require("../src/prisma/prismaClient"));
 const authMiddleware = async (req, res, next) => {
-    const token = req.cookies.authToken;
-    if (!token) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
         res.status(401).json({ message: "Unauthorized: No token provided" });
         return;
     }
+    const token = authHeader.split(" ")[1];
+    console.log("Token received:", token);
     try {
         const decoded = jsonwebtoken_1.default.verify(token, config_1.JWT_SECRET);
         const user = await prismaClient_1.default.user.findUnique({
