@@ -54,6 +54,12 @@ export const logoutUser = async () => {
 
   if (response.ok) {
     console.log("Déconnexion réussie");
+    // Clear cookies
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, `=;expires=${new Date(0).toUTCString()};path=/`);
+    });
   } else {
     const errorData = await response.json();
     throw new Error(errorData.message || "Erreur lors de la déconnexion");
