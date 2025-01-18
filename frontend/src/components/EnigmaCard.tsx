@@ -59,7 +59,7 @@ export default function EnigmaCard({
         </CardFooter>
       </Link>
       {authUser?.user.id === enigma.userId && (
-        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute top-2 right-2 opacity-100 transition-opacity md:opacity-0 group-hover:opacity-100">
           <Link to={`/edit-enigma/${enigma.id}`}>
             <button className="mr-2">
               <PencilIcon className="size-7 text-white" />
