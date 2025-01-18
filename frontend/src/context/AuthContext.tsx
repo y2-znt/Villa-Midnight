@@ -16,6 +16,7 @@ type AuthContextType = {
   setAuthUser: Dispatch<SetStateAction<AuthUserType | null>>;
   isLoading: boolean;
   error: string | null;
+  token: string | null;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -25,6 +26,7 @@ const AuthContext = createContext<AuthContextType>({
   },
   isLoading: false,
   error: null,
+  token: null,
 });
 
 export const useAuthContext = () => useContext(AuthContext);
@@ -33,18 +35,20 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const { pathname } = useLocation();
   useEffect(() => {
     const fetchAuthUser = async () => {
       try {
         setIsLoading(true);
         setError(null);
-        const token = localStorage.getItem("token");
+        const storedToken = localStorage.getItem("token");
+        setToken(storedToken);
         const response = await fetch(`${API_BASE_URL}/auth/current-user`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${storedToken}`,
           },
         });
 
@@ -67,7 +71,9 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   }, [pathname]);
 
   return (
-    <AuthContext.Provider value={{ authUser, setAuthUser, isLoading, error }}>
+    <AuthContext.Provider
+      value={{ authUser, setAuthUser, isLoading, error, token }}
+    >
       {children}
     </AuthContext.Provider>
   );
