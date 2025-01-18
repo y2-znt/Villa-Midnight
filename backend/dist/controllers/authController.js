@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.logout = exports.getCurrentUser = exports.login = exports.register = void 0;
 const zod_1 = require("zod");
 const authService_1 = require("../services/authService");
-const authCookie_1 = require("../utils/authCookie");
 const handleErrorResponse = (res, error) => {
     if (error instanceof zod_1.z.ZodError) {
         res.status(400).json({ message: "Validation error", errors: error.errors });
@@ -15,7 +14,6 @@ const handleErrorResponse = (res, error) => {
 const register = async (req, res) => {
     try {
         const { user, token } = await (0, authService_1.registerUser)(req.body);
-        (0, authCookie_1.setAuthCookie)(res, token);
         console.log("register token", token);
         res.status(201).json({ message: "User created successfully", user, token });
     }
@@ -27,7 +25,6 @@ exports.register = register;
 const login = async (req, res) => {
     try {
         const { user, token } = await (0, authService_1.loginUser)(req.body);
-        (0, authCookie_1.setAuthCookie)(res, token);
         console.log("login token", token);
         res.status(200).json({ message: "Login successful", user, token });
     }
@@ -53,8 +50,6 @@ const getCurrentUser = async (req, res) => {
 exports.getCurrentUser = getCurrentUser;
 const logout = async (req, res) => {
     try {
-        (0, authCookie_1.clearAuthCookie)(res);
-        console.log("logout token cleared", req.cookies.authToken);
         res.status(200).json({ message: "Logout successful" });
     }
     catch (error) {
