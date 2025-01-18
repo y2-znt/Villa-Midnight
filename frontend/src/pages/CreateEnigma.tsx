@@ -37,7 +37,7 @@ export default function CreateEnigma() {
 
     try {
       await createEnigma(enigmaData);
-      navigate("/all-enigmas");
+      navigate("/my-enigmas");
     } catch (error) {
       console.error("Erreur lors de la création de l'énigme:", error);
     }

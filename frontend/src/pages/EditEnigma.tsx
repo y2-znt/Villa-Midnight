@@ -30,7 +30,6 @@ export default function EditEnigma() {
       if (id) {
         try {
           const data = await fetchEnigmaById(id);
-          // Populate the form with existing data
           reset(data);
         } catch (error) {
           console.error("Erreur lors de la récupération de l'énigme:", error);
@@ -61,7 +60,7 @@ export default function EditEnigma() {
 
     try {
       await updateEnigma(id, enigmaData);
-      navigate("/all-enigmas");
+      navigate("/my-enigmas");
     } catch (error) {
       console.error("Erreur lors de la mise à jour de l'énigme:", error);
     }
@@ -69,7 +68,7 @@ export default function EditEnigma() {
 
   return (
     <div>
-      <Title text="Modifiez votre" highlight="énigme" /> {/* Updated title */}
+      <Title text="Modifiez votre" highlight="énigme" />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mx-auto space-y-4 w-11/12 md:w-1/3 mt-10"

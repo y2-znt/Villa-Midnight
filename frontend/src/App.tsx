@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import AppLayout from "./AppLayout";
 import AuthLayout from "./AuthLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ScrollToTop from "./components/ScrollToTop";
 import { AuthContextProvider } from "./context/AuthContext";
 import AllEnigmas from "./pages/AllEnigmas";
 import Contact from "./pages/Contact";
@@ -14,7 +15,6 @@ import Login from "./pages/Login";
 import MyEnigmas from "./pages/MyEnigmas";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
-import ScrollToTop from "./components/ScrollToTop";
 
 export default function App() {
   return (
@@ -24,7 +24,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<AppLayout children={<Home />} />} />
           <Route
-            path="/all-enigmas"
+            path="/enigmas"
             element={<AppLayout children={<AllEnigmas />} />}
           />
           <Route

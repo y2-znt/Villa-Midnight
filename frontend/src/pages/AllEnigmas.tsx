@@ -11,7 +11,7 @@ export default function AllEnigmas() {
     const getEnigmas = async () => {
       try {
         const data = await fetchAllEnigmas();
-        setEnigmas(data);
+        setEnigmas(data.slice(0, 3));
       } catch (error) {
         console.error("Erreur lors de la récupération des énigmes:", error);
       }
