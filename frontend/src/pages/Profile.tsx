@@ -14,6 +14,7 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
   const { register, handleSubmit, setValue } = useForm<UserUpdateType>();
+  const { token } = useAuthContext();
 
   useEffect(() => {
     if (authUser) {
@@ -27,9 +28,15 @@ export default function Profile() {
       console.error("User is not authenticated.");
       return;
     }
+
+    if (!token) {
+      console.error("Token is not available");
+      return;
+    }
+
     try {
       console.log("Saving user data:", data);
-      await updateUser(authUser.user.id, data);
+      await updateUser(authUser.user.id, data, token);
       setAuthUser((prev) => ({
         ...prev,
         user: {
@@ -54,9 +61,15 @@ export default function Profile() {
     const confirmDelete = window.confirm(
       "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
     );
+
+    if (!token) {
+      console.error("Token is not available");
+      return;
+    }
+
     if (confirmDelete) {
       try {
-        await deleteUser(userId);
+        await deleteUser(userId, token);
         setAuthUser(null);
         navigate("/");
       } catch (error) {

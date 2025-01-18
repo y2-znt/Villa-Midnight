@@ -1,9 +1,13 @@
 import { API_BASE_URL } from "../config/apiClient";
 import { UserUpdateType } from "../types/types";
 
-export const fetchUserById = async (id: string) => {
+export const fetchUserById = async (id: string, token: string) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/users/${id}`);
+    const response = await fetch(`${API_BASE_URL}/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Error response text:", errorText);
@@ -17,14 +21,18 @@ export const fetchUserById = async (id: string) => {
   }
 };
 
-export const updateUser = async (id: string, user: UserUpdateType) => {
+export const updateUser = async (
+  id: string,
+  user: UserUpdateType,
+  token: string
+) => {
   try {
     const response = await fetch(`${API_BASE_URL}/users/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      credentials: "include",
       body: JSON.stringify(user),
     });
     if (!response.ok) {
@@ -37,9 +45,12 @@ export const updateUser = async (id: string, user: UserUpdateType) => {
   }
 };
 
-export const deleteUser = async (id: string) => {
+export const deleteUser = async (id: string, token: string) => {
   const response = await fetch(`${API_BASE_URL}/users/${id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
   if (!response.ok) {
     throw new Error("Erreur lors de la suppression de l'utilisateur");
