@@ -62,7 +62,7 @@ export default function Navbar() {
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <ul className="p-4 space-y-8 flex flex-col items-center">
+        <ul className="space-y-8 mt-16 flex flex-col items-center">
           {links.map((link) => (
             <li key={link.name}>
               <Link
@@ -78,9 +78,7 @@ export default function Navbar() {
             </li>
           ))}
           <li>
-            {authUser ? (
-              <UserMenu />
-            ) : (
+            {!authUser && (
               <Link to="/login">
                 <Button variant="default" size="lg">
                   RELEVER LE DÉFI
