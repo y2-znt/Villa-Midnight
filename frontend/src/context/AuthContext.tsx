@@ -42,7 +42,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Cache-Control": "no-store",
           },
           credentials: "include",
         });
