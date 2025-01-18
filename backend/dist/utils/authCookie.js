@@ -11,6 +11,11 @@ const setAuthCookie = (res, token) => {
 };
 exports.setAuthCookie = setAuthCookie;
 const clearAuthCookie = (res) => {
-    res.clearCookie("authToken");
+    res.clearCookie("authToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+        maxAge: 0,
+    });
 };
 exports.clearAuthCookie = clearAuthCookie;

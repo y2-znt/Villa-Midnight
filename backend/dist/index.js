@@ -50,19 +50,8 @@ const swagger_output_json_1 = __importDefault(require("./swagger_output.json"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
-const allowedOrigins = [
-    "https://villa-midnight.vercel.app",
-    "http://localhost:5173",
-];
 app.use((0, cors_1.default)({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        }
-        else {
-            callback(new Error("Not allowed by CORS"));
-        }
-    },
+    origin: process.env.CLIENT_URL,
     credentials: true,
 }));
 app.use(express_1.default.json());
@@ -75,6 +64,5 @@ app.use("/api/enigmas", enigmaRoutes_1.default);
 app.use("/api/auth", authRoutes_1.default);
 app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_output_json_1.default));
 app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
-    console.log(`Domain: ${allowedOrigins[0]}`);
+    console.log(`Server is running on port ${port}`);
 });
