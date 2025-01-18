@@ -36,14 +36,14 @@ export const fetchEnigmaById = async (id: string) => {
   }
 };
 
-export const createEnigma = async (enigma: EnigmaSchema) => {
+export const createEnigma = async (enigma: EnigmaSchema, token: string) => {
   try {
     const response = await fetch(`${API_BASE_URL}/enigmas`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      credentials: "include",
       body: JSON.stringify(enigma),
     });
 
@@ -62,24 +62,43 @@ export const createEnigma = async (enigma: EnigmaSchema) => {
   }
 };
 
-export const updateEnigma = async (id: string, enigma: EnigmaSchema) => {
+export const updateEnigma = async (
+  id: string,
+  enigma: EnigmaSchema,
+  token: string
+) => {
   const response = await fetch(`${API_BASE_URL}/enigmas/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(enigma),
-    credentials: "include",
   });
   return response.json();
 };
 
-export const deleteEnigma = async (id: string) => {
-  const response = await fetch(`${API_BASE_URL}/enigmas/${id}`, {
-    method: "DELETE",
-    credentials: "include",
-  });
-  return response.json();
+export const deleteEnigma = async (id: string, token: string) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/enigmas/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.message || "Erreur lors de la suppression de l'énigme"
+      );
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Erreur lors de la suppression de l'énigme:", error);
+    throw error;
+  }
 };
 
 export const fetchEnigmasByUserId = async (userId: string) => {

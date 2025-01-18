@@ -18,16 +18,21 @@ export default function EnigmaCard({
   onDelete,
 }: {
   enigma: EnigmaType;
-  onDelete: (id: string) => void;
+  onDelete: (id: string, token: string) => void;
 }) {
-  const { authUser } = useAuthContext();
+  const { authUser, token } = useAuthContext();
 
   const handleDeleteClick = () => {
+    if (!token) {
+      console.error("No token available for deletion");
+      return;
+    }
+
     const isConfirmed = window.confirm(
       "Êtes-vous sûr de vouloir supprimer cette énigme ? Cette action est irréversible"
     );
     if (isConfirmed) {
-      onDelete(enigma.id);
+      onDelete(enigma.id, token);
     }
   };
 

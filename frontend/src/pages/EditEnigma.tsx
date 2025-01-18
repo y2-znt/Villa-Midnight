@@ -14,7 +14,7 @@ import { EnigmaSchema, enigmaSchema } from "../schemas/enigmaSchema";
 
 export default function EditEnigma() {
   const { id } = useParams();
-  const { authUser } = useAuthContext();
+  const { authUser, token } = useAuthContext();
   const navigate = useNavigate();
   const {
     register,
@@ -41,8 +41,8 @@ export default function EditEnigma() {
   }, [id, reset]);
 
   const onSubmit = async (data: EnigmaSchema) => {
-    if (!authUser || !authUser.user || !authUser.user.id) {
-      console.error("User not authenticated or invalid userId");
+    if (!authUser || !authUser.user || !authUser.user.id || !token) {
+      console.error("User not authenticated or invalid userId/token");
       return;
     }
 
@@ -59,7 +59,7 @@ export default function EditEnigma() {
     console.log("Enigma Data:", enigmaData);
 
     try {
-      await updateEnigma(id, enigmaData);
+      await updateEnigma(id, enigmaData, token);
       navigate("/my-enigmas");
     } catch (error) {
       console.error("Erreur lors de la mise à jour de l'énigme:", error);

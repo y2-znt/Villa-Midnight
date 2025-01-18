@@ -8,14 +8,23 @@ import { useAuthContext } from "../context/AuthContext";
 import { EnigmaType } from "../types/types";
 
 export default function MyEnigmas() {
-  const { authUser } = useAuthContext();
+  const { authUser, token } = useAuthContext();
   const [enigmas, setEnigmas] = useState<EnigmaType[]>([]);
 
   const handleDelete = async (id: string) => {
-    await deleteEnigma(id);
-    setEnigmas((prevEnigmas) =>
-      prevEnigmas.filter((enigma) => enigma.id !== id)
-    );
+    if (!token) {
+      console.error("No token available for deletion");
+      return;
+    }
+
+    try {
+      await deleteEnigma(id, token);
+      setEnigmas((prevEnigmas) =>
+        prevEnigmas.filter((enigma) => enigma.id !== id)
+      );
+    } catch (error) {
+      console.error("Erreur lors de la suppression de l'énigme:", error);
+    }
   };
 
   useEffect(() => {

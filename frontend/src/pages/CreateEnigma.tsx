@@ -12,7 +12,7 @@ import { useAuthContext } from "../context/AuthContext";
 import { EnigmaSchema, enigmaSchema } from "../schemas/enigmaSchema";
 
 export default function CreateEnigma() {
-  const { authUser } = useAuthContext();
+  const { authUser, token } = useAuthContext();
   const navigate = useNavigate();
   const {
     register,
@@ -23,8 +23,8 @@ export default function CreateEnigma() {
   });
 
   const onSubmit = async (data: EnigmaSchema) => {
-    if (!authUser || !authUser.user || !authUser.user.id) {
-      console.error("User not authenticated or invalid userId");
+    if (!authUser || !authUser.user || !authUser.user.id || !token) {
+      console.error("User not authenticated or invalid userId/token");
       return;
     }
 
@@ -36,7 +36,7 @@ export default function CreateEnigma() {
     console.log("Enigma Data:", enigmaData);
 
     try {
-      await createEnigma(enigmaData);
+      await createEnigma(enigmaData, token);
       navigate("/my-enigmas");
     } catch (error) {
       console.error("Erreur lors de la création de l'énigme:", error);
