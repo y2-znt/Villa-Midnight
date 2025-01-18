@@ -11,13 +11,14 @@ export const registerUser = async (
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "include",
     body: JSON.stringify({ username, email, password, confirmPassword }),
   });
 
   if (response.ok) {
     console.log("Inscription réussie");
-    return response.json();
+    const data = await response.json();
+    localStorage.setItem("token", data.token);
+    return data;
   } else {
     const errorData = await response.json();
     throw new Error(errorData.message || "Erreur lors de l'inscription");
@@ -30,13 +31,14 @@ export const loginUser = async (email: string, password: string) => {
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "include",
     body: JSON.stringify({ email, password }),
   });
 
   if (response.ok) {
     console.log("Connexion réussie");
-    return response.json();
+    const data = await response.json();
+    localStorage.setItem("token", data.token);
+    return data;
   } else {
     const errorData = await response.json();
     throw new Error(errorData.message || "Erreur lors de la connexion");
@@ -47,19 +49,13 @@ export const logoutUser = async () => {
   const response = await fetch(`${API_BASE_URL}/auth/logout`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-    credentials: "include",
   });
 
   if (response.ok) {
     console.log("Déconnexion réussie");
-    // Clear cookies
-    document.cookie.split(";").forEach((c) => {
-      document.cookie = c
-        .replace(/^ +/, "")
-        .replace(/=.*/, `=;expires=${new Date(0).toUTCString()};path=/`);
-    });
+    localStorage.removeItem("token");
   } else {
     const errorData = await response.json();
     throw new Error(errorData.message || "Erreur lors de la déconnexion");
