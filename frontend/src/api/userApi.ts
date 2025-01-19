@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "../config/apiClient";
 import { UserUpdateType } from "../types/types";
 
-export const fetchUserById = async (id: string, token: string) => {
+export const fetchUserById = async (id: string, token?: string) => {
   try {
     const response = await fetch(`${API_BASE_URL}/users/${id}`, {
       headers: {

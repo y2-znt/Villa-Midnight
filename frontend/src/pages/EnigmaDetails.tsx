@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { fetchEnigmaById } from "../api/enigmaApi";
+import { fetchUserById } from "../api/userApi";
 import DifficultyIndicator from "../components/DifficultyIndicator";
 import ParticipantsAndTime from "../components/ParticipantsAndTime";
 import Title from "../components/ui/title";
@@ -9,6 +10,7 @@ import { EnigmaType } from "../types/types";
 export default function EnigmaDetails() {
   const { id } = useParams();
   const [enigma, setEnigma] = useState<EnigmaType | null>(null);
+  const [user, setUser] = useState<{ username: string } | null>(null);
 
   useEffect(() => {
     const getEnigma = async () => {
@@ -20,6 +22,9 @@ export default function EnigmaDetails() {
       try {
         const data = await fetchEnigmaById(id);
         setEnigma(data);
+
+        const userData = await fetchUserById(data.userId);
+        setUser(userData);
       } catch (error) {
         console.error("Erreur lors de la récupération de l'énigme:", error);
       }
@@ -60,7 +65,7 @@ export default function EnigmaDetails() {
               {enigma.updatedAt
                 ? new Date(enigma.updatedAt).toLocaleDateString()
                 : "Date inconnue"}{" "}
-              par {enigma.userId ? enigma.userId : "Personne mystèrieuse"}
+              par {user ? user.username : "Personne mystèrieuse"}
             </p>
           </div>
         </div>
