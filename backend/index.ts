@@ -39,7 +39,7 @@ const sendPing = async () => {
   }
 };
 
-cron.schedule("*/10 * * * * *", async () => {
+cron.schedule("*/5 * * * *", async () => {
   try {
     console.log("Sending ping...");
     await sendPing();
