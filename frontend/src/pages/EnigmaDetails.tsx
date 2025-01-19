@@ -12,17 +12,23 @@ export default function EnigmaDetails() {
   const [enigma, setEnigma] = useState<EnigmaType | null>(null);
   const [user, setUser] = useState<{ username: string } | null>(null);
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     const getEnigma = async () => {
       if (!id) {
         console.error("Enigma ID is undefined");
         return;
       }
+      if (!token) {
+        console.error("Token is undefined");
+        return;
+      }
       try {
         const data = await fetchEnigmaById(id);
         setEnigma(data);
 
-        const userData = await fetchUserById(data.userId);
+        const userData = await fetchUserById(data.userId, token);
         setUser(userData);
       } catch (error) {
         console.error("Erreur lors de la récupération de l'énigme:", error);
@@ -30,7 +36,7 @@ export default function EnigmaDetails() {
     };
 
     getEnigma();
-  }, [id]);
+  }, [id, token]);
 
   if (!enigma) return <div>Loading...</div>;
   return (
