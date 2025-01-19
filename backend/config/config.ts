@@ -5,3 +5,6 @@ dotenv.config();
 export const JWT_SECRET = process.env.JWT_SECRET!;
 export const SALT_ROUNDS = 10;
 export const TOKEN_EXPIRY = "1h";
+
+export const CLIENT_URL = process.env.CLIENT_URL!;
+export const SERVER_URL = process.env.SERVER_URL!;

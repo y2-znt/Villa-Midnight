@@ -40,7 +40,9 @@ const bodyParser = __importStar(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
+const node_cron_1 = __importDefault(require("node-cron"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const config_1 = require("./config/config");
 const errorMiddleware_1 = require("./middlewares/errorMiddleware");
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const enigmaRoutes_1 = __importDefault(require("./routes/enigmaRoutes"));
@@ -49,7 +51,7 @@ const swagger_output_json_1 = __importDefault(require("./swagger_output.json"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
-app.use((0, cors_1.default)({ origin: process.env.CLIENT_URL }));
+app.use((0, cors_1.default)({ origin: config_1.CLIENT_URL }));
 app.use(express_1.default.json());
 app.use(errorMiddleware_1.errorMiddleware);
 app.use(bodyParser.json());
@@ -58,6 +60,32 @@ app.use("/api/users", userRoutes_1.default);
 app.use("/api/enigmas", enigmaRoutes_1.default);
 app.use("/api/auth", authRoutes_1.default);
 app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_output_json_1.default));
+// Cron job to ping the API every 5 minutes
+const sendPing = async () => {
+    try {
+        const response = await fetch(`${config_1.SERVER_URL}/cron`);
+        console.log(`Ping sent: ${response.status} - ${response.statusText}`);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            console.error("Error sending ping:", error.message);
+        }
+    }
+};
+node_cron_1.default.schedule("*/10 * * * * *", async () => {
+    try {
+        console.log("Sending ping...");
+        await sendPing();
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            console.error("Error sending ping:", error.message);
+        }
+    }
+});
+app.get("/cron", (req, res) => {
+    res.status(200).send("Pong");
+});
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
