@@ -6,17 +6,20 @@ import {
   UserCheckIcon,
   UserIcon,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { logoutUser } from "../api/authApi";
 import { useAuthContext } from "../context/AuthContext";
 import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 export default function UserMenu() {
   const { setAuthUser } = useAuthContext();
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = async () => {
     try {
@@ -52,37 +55,24 @@ export default function UserMenu() {
     },
   ];
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-      setIsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   return (
-    <div className="relative lg:block" ref={menuRef}>
-      <Button
-        variant="outline"
-        className="flex items-center justify-between text-left py-5"
-        onClick={() => setIsOpen((prev) => !prev)}
-      >
-        <UserIcon className="size-4" />
-        <span className="hidden sm:flex">MON COMPTE</span>
-        <ChevronDownIcon className="ml-1" />
-      </Button>
-      {isOpen && (
-        <div className="absolute right-4 w-48 z-50 border bg-black border-muted shadow-lg rounded-md">
-          <ul className="">
+    <div className="relative lg:block">
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            className="flex items-center justify-between text-left py-5"
+          >
+            <UserIcon className="size-4" />
+            <span className="hidden sm:flex">MON COMPTE</span>
+            <ChevronDownIcon className="ml-1" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <ul>
             {links.map((link, index) => (
-              <li
+              <DropdownMenuItem
                 key={index}
-                className="hover:bg-muted cursor-pointer py-1"
                 onClick={() => {
                   if (link.onClick) {
                     link.onClick();
@@ -98,11 +88,11 @@ export default function UserMenu() {
                   {link.icon}
                   {link.label}
                 </Button>
-              </li>
+              </DropdownMenuItem>
             ))}
           </ul>
-        </div>
-      )}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }
