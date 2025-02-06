@@ -1,5 +1,5 @@
-import LogoWithName from "./components/LogoWithName";
-import { ThemeProvider } from "./components/providers/themeprovider";
+import LogoWithName from "./components/shared/LogoWithName";
+import { ThemeProvider } from "./context/themeprovider";
 
 type AuthLayoutProps = {
   children: React.ReactNode;
