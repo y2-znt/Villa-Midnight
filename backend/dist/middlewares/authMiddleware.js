@@ -13,7 +13,6 @@ const authMiddleware = async (req, res, next) => {
         return;
     }
     const token = authHeader.split(" ")[1];
-    console.log("Token received:", token);
     try {
         const decoded = jsonwebtoken_1.default.verify(token, config_1.JWT_SECRET);
         const user = await prismaClient_1.default.user.findUnique({

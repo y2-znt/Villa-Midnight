@@ -14,7 +14,6 @@ const handleErrorResponse = (res, error) => {
 const register = async (req, res) => {
     try {
         const { user, token } = await (0, authService_1.registerUser)(req.body);
-        console.log("register token", token);
         res.status(201).json({ message: "User created successfully", user, token });
     }
     catch (error) {
@@ -25,7 +24,6 @@ exports.register = register;
 const login = async (req, res) => {
     try {
         const { user, token } = await (0, authService_1.loginUser)(req.body);
-        console.log("login token", token);
         res.status(200).json({ message: "Login successful", user, token });
     }
     catch (error) {

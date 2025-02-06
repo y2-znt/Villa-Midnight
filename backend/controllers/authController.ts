@@ -15,8 +15,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { user, token } = await registerUser(req.body);
 
-    console.log("register token", token);
-
     res.status(201).json({ message: "User created successfully", user, token });
   } catch (error) {
     handleErrorResponse(res, error);
@@ -26,8 +24,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { user, token } = await loginUser(req.body);
-
-    console.log("login token", token);
 
     res.status(200).json({ message: "Login successful", user, token });
   } catch (error) {
