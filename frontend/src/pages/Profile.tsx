@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { deleteUser, updateUser } from "../api/userApi";
+import DeleteAccount from "../components/shared/DeleteAccount";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import Title from "../components/ui/title";
@@ -58,24 +59,13 @@ export default function Profile() {
       return;
     }
 
-    const confirmDelete = window.confirm(
-      "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
-    );
-
     if (!token) {
       console.error("Token is not available");
       return;
     }
-
-    if (confirmDelete) {
-      try {
-        await deleteUser(userId, token);
-        setAuthUser(null);
-        navigate("/");
-      } catch (error) {
-        console.error("Failed to delete user:", error);
-      }
-    }
+    await deleteUser(userId, token);
+    setAuthUser(null);
+    navigate("/");
   };
 
   return (
@@ -106,9 +96,7 @@ export default function Profile() {
           </>
         )}
       </div>
-      <Button onClick={handleDeleteUser} variant="destructive" className="mt-8">
-        Supprimer mon compte
-      </Button>
+      <DeleteAccount handleDeleteUser={handleDeleteUser} />
     </div>
   );
 }

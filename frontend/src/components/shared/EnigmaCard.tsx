@@ -1,25 +1,24 @@
-import { PencilIcon, TrashIcon } from "lucide-react";
+import { PencilIcon } from "lucide-react";
 import { Link } from "react-router";
 import { useAuthContext } from "../../context/AuthContext";
 import { EnigmaType } from "../../types/types";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import DeleteEnigma from "./DeleteEnigma";
 import DifficultyIndicator from "./DifficultyIndicator";
 import ParticipantsAndTime from "./ParticipantsAndTime";
 
-export default function EnigmaCard({
-  enigma,
-  onDelete,
-}: {
+export interface EnigmaCardProps {
   enigma: EnigmaType;
   onDelete: (id: string, token: string) => void;
-}) {
+}
+
+export default function EnigmaCard({ enigma, onDelete }: EnigmaCardProps) {
   const { authUser, token } = useAuthContext();
 
   const handleDeleteClick = () => {
@@ -27,13 +26,7 @@ export default function EnigmaCard({
       console.error("No token available for deletion");
       return;
     }
-
-    const isConfirmed = window.confirm(
-      "Êtes-vous sûr de vouloir supprimer cette énigme ? Cette action est irréversible"
-    );
-    if (isConfirmed) {
-      onDelete(enigma.id, token);
-    }
+    onDelete(enigma.id, token);
   };
 
   return (
@@ -46,9 +39,7 @@ export default function EnigmaCard({
         />
         <CardHeader>
           <CardTitle>{enigma.title}</CardTitle>
-          <CardDescription>
-            <DifficultyIndicator difficulty={enigma.difficulty} />
-          </CardDescription>
+          <DifficultyIndicator difficulty={enigma.difficulty} />
           <CardContent>
             {enigma.description.length > 130
               ? `${enigma.description.slice(0, 130)}...`
@@ -70,9 +61,7 @@ export default function EnigmaCard({
               <PencilIcon className="size-7 text-white" />
             </button>
           </Link>
-          <button onClick={handleDeleteClick}>
-            <TrashIcon className="size-7 text-primary" />
-          </button>
+          <DeleteEnigma enigmaId={enigma.id} onDelete={handleDeleteClick} />
         </div>
       )}
     </Card>
