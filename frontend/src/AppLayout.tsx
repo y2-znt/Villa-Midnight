@@ -1,6 +1,6 @@
-import { ThemeProvider } from "./components/providers/themeprovider";
+import { ThemeProvider } from "./context/themeprovider";
 import Footer from "./sections/Footer";
-import Header from "./sections/Header";
+import Navbar from "./sections/Header";
 
 type AppLayoutProps = {
   children: React.ReactNode;
@@ -10,7 +10,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="theme">
       <div className="mx-auto max-w-7xl">
-        <Header />
+        <Navbar />
         <div className="mt-10 my-28 md:mt-28">{children}</div>
         <Footer />
       </div>

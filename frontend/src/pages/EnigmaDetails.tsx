@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { fetchEnigmaById } from "../api/enigmaApi";
 import { fetchUserById } from "../api/userApi";
-import DifficultyIndicator from "../components/DifficultyIndicator";
-import ParticipantsAndTime from "../components/ParticipantsAndTime";
+import DifficultyIndicator from "../components/shared/DifficultyIndicator";
+import ParticipantsAndTime from "../components/shared/ParticipantsAndTime";
 import Title from "../components/ui/title";
 import { EnigmaType } from "../types/types";
 

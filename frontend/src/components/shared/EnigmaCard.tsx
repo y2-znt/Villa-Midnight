@@ -1,9 +1,7 @@
 import { PencilIcon, TrashIcon } from "lucide-react";
 import { Link } from "react-router";
-import { useAuthContext } from "../context/AuthContext";
-import { EnigmaType } from "../types/types";
-import DifficultyIndicator from "./DifficultyIndicator";
-import ParticipantsAndTime from "./ParticipantsAndTime";
+import { useAuthContext } from "../../context/AuthContext";
+import { EnigmaType } from "../../types/types";
 import {
   Card,
   CardContent,
@@ -11,7 +9,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "../ui/card";
+import DifficultyIndicator from "./DifficultyIndicator";
+import ParticipantsAndTime from "./ParticipantsAndTime";
 
 export default function EnigmaCard({
   enigma,

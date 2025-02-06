@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { deleteEnigma, fetchAllEnigmas } from "../api/enigmaApi";
-import EnigmaCard from "../components/EnigmaCard";
+import EnigmaCard from "../components/shared/EnigmaCard";
 import Title from "../components/ui/title";
 import { EnigmaType } from "../types/types";
 
