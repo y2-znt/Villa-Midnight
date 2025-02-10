@@ -1,4 +1,5 @@
 import { PencilIcon } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router";
 import { useAuthContext } from "../../context/AuthContext";
 import { EnigmaType } from "../../types/types";
@@ -20,6 +21,7 @@ export interface EnigmaCardProps {
 
 export default function EnigmaCard({ enigma, onDelete }: EnigmaCardProps) {
   const { authUser, token } = useAuthContext();
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const handleDeleteClick = () => {
     if (!token) {
@@ -27,7 +29,10 @@ export default function EnigmaCard({ enigma, onDelete }: EnigmaCardProps) {
       return;
     }
     onDelete(enigma.id, token);
+    setIsDeleted(true);
   };
+
+  if (isDeleted) return null;
 
   return (
     <Card key={enigma.id} className="relative group">
