@@ -1,12 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { z } from "zod";
-import { fetchEnigmaById, updateEnigma } from "../api/enigmaApi"; // Updated import
+import { fetchEnigmaById, updateEnigma } from "../api/enigmaApi";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
 import { Textarea } from "../components/ui/textarea";
 import Title from "../components/ui/title";
 import { useAuthContext } from "../context/AuthContext";
@@ -16,9 +23,11 @@ export default function EditEnigma() {
   const { id } = useParams();
   const { authUser, token } = useAuthContext();
   const navigate = useNavigate();
+  const [difficulty, setDifficulty] = useState<string | undefined>(undefined);
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<z.infer<typeof enigmaSchema>>({
@@ -31,6 +40,7 @@ export default function EditEnigma() {
         try {
           const data = await fetchEnigmaById(id);
           reset(data);
+          setDifficulty(data.difficulty);
         } catch (error) {
           console.error("Erreur lors de la récupération de l'énigme:", error);
         }
@@ -93,11 +103,28 @@ export default function EditEnigma() {
         </div>
         <div>
           <Label htmlFor="difficulty">Difficulté</Label>
-          <Input
-            type="number"
-            {...register("difficulty", { valueAsNumber: true })}
-            placeholder="Difficulté"
-          />
+          <Select
+            onValueChange={(value) => {
+              setValue("difficulty", value as "ONE" | "TWO" | "THREE");
+              setDifficulty(value);
+            }}
+            value={difficulty}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue
+                placeholder={
+                  difficulty
+                    ? `Difficulté: ${difficulty}`
+                    : "Sélectionner une difficulté"
+                }
+              />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ONE">1</SelectItem>
+              <SelectItem value="TWO">2</SelectItem>
+              <SelectItem value="THREE">3</SelectItem>
+            </SelectContent>
+          </Select>
           {errors.difficulty && (
             <p className="text-red-500">{errors.difficulty.message}</p>
           )}

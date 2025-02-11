@@ -6,6 +6,13 @@ import { z } from "zod";
 import { createEnigma } from "../api/enigmaApi";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
 import { Textarea } from "../components/ui/textarea";
 import Title from "../components/ui/title";
 import { useAuthContext } from "../context/AuthContext";
@@ -17,6 +24,7 @@ export default function CreateEnigma() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof enigmaSchema>>({
     resolver: zodResolver(enigmaSchema),
@@ -66,11 +74,20 @@ export default function CreateEnigma() {
         </div>
         <div>
           <Label htmlFor="difficulty">Difficulté</Label>
-          <Input
-            type="number"
-            {...register("difficulty", { valueAsNumber: true })}
-            placeholder="Difficulté"
-          />
+          <Select
+            onValueChange={(value) =>
+              setValue("difficulty", value as "ONE" | "TWO" | "THREE")
+            }
+          >
+            <SelectTrigger className="w-[220px]">
+              <SelectValue placeholder="Sélectionner une difficulté" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ONE">1</SelectItem>
+              <SelectItem value="TWO">2</SelectItem>
+              <SelectItem value="THREE">3</SelectItem>
+            </SelectContent>
+          </Select>
           {errors.difficulty && (
             <p className="text-red-500">{errors.difficulty.message}</p>
           )}
