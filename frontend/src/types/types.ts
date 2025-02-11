@@ -11,6 +11,9 @@ export type EnigmaType = {
   numberOfHours: number;
   createdAt?: string;
   updatedAt?: string;
+  createdBy?: {
+    username: string;
+  };
 };
 
 export type AuthUserType = {
