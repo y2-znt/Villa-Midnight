@@ -5,7 +5,7 @@ export type EnigmaType = {
   title: string;
   description: string;
   image: string;
-  difficulty: number;
+  difficulty: "ONE" | "TWO" | "THREE";
   userId: string;
   numberOfParticipants: number;
   numberOfHours: number;
