@@ -19,17 +19,23 @@ model User {
 }
 
 model Enigma {
-  id                   String   @id @default(cuid())
+  id                   String      @id @default(cuid())
   userId               String
   title                String
   description          String
-  difficulty           Int
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  difficulty           Difficulty
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
   image                String?
-  numberOfHours        Int      @default(1)
-  numberOfParticipants Int      @default(2)
-  user                 User     @relation("UserEnigmas", fields: [userId], references: [id])
+  numberOfHours        Int         @default(1)
+  numberOfParticipants Int         @default(2)
+  user                 User        @relation("UserEnigmas", fields: [userId], references: [id])
+}
+
+enum Difficulty {
+  ONE
+  TWO
+  THREE
 }
 
 enum Role {

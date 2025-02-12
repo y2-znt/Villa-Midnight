@@ -3,7 +3,7 @@ import { z } from "zod";
 export const enigmaSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  difficulty: z.number().min(1, "Difficulty must be at least 1"),
+  difficulty: z.enum(["ONE", "TWO", "THREE"]),
   image: z.string().url("Image must be a valid URL"),
   userId: z.string().min(1, "User ID is required"),
   numberOfParticipants: z

@@ -65,7 +65,9 @@ export default function EnigmaDetails() {
         />
         <div className="flex justify-between">
           <div className="flex flex-col mt-10">
-            <DifficultyIndicator difficulty={displayedEnigma.difficulty} />
+            <DifficultyIndicator
+              difficulty={displayedEnigma.difficulty as "ONE" | "TWO" | "THREE"}
+            />
             <div className="text-base md:text-xl max-w-lg leading-relaxed mt-4">
               {displayedEnigma.description}
             </div>

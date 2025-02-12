@@ -99,7 +99,7 @@ export const fakeAdminEnigmas = [
     description:
       "Une silhouette sombre surgit du brouillard écarlate, laissant derrière elle une énigme non résolue. Un message crypté se cache dans la brume, un secret oublié que seuls les esprits les plus aiguisés sauront percer. Qui est-il ? Pourquoi est-il venu ? Et surtout… que cache-t-il ? ",
     image: "https://podmust.com/wp-content/uploads/podcasts-horreur.jpg",
-    difficulty: 1,
+    difficulty: "ONE",
     numberOfParticipants: 2,
     numberOfHours: 1,
     createdAt: "2024-12-21T08:27:08.044Z",
@@ -116,7 +116,7 @@ export const fakeAdminEnigmas = [
       "Quatre hommes masqués mystérieux sont alignés. Chacun raconte une version différente d'une même histoire, un seul dit la vérité.Un signal d’urgence clignote en morse. Décoder le signal mène à une pièce secrète dans la station.",
     image:
       "https://chaslescorp.com/wp-content/uploads/2023/02/18413-redeyes-hackers-use-new-malware-to-steal-data-from-windows-phones.jpg",
-    difficulty: 2,
+    difficulty: "TWO",
     numberOfParticipants: 2,
     numberOfHours: 1,
     createdAt: "2024-12-21T08:27:08.044Z",
@@ -133,7 +133,7 @@ export const fakeAdminEnigmas = [
       "Le bureau du médecin-chef est fermé. Un journal intime laissé dans la salle d’attente contient des indices pour trouver la clé.Un signal d’urgence clignote en morse. Décoder le signal mène à une pièce secrète dans la station.",
     image:
       "https://i.pinimg.com/736x/a2/32/5b/a2325b2f81e4760b9fabd3312ce1a531.jpg",
-    difficulty: 2,
+    difficulty: "THREE",
     numberOfParticipants: 3,
     numberOfHours: 1,
     createdAt: "2024-12-21T08:56:30.321Z",
