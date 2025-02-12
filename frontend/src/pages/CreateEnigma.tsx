@@ -76,7 +76,7 @@ export default function CreateEnigma() {
           <Label htmlFor="difficulty">Difficulté</Label>
           <Select
             onValueChange={(value) =>
-              setValue("difficulty", value as "ONE" | "TWO" | "THREE")
+              setValue("difficulty", value as EnigmaSchema["difficulty"])
             }
           >
             <SelectTrigger className="w-[220px]">

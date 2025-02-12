@@ -105,7 +105,7 @@ export default function EditEnigma() {
           <Label htmlFor="difficulty">Difficulté</Label>
           <Select
             onValueChange={(value) => {
-              setValue("difficulty", value as "ONE" | "TWO" | "THREE");
+              setValue("difficulty", value as EnigmaSchema["difficulty"]);
               setDifficulty(value);
             }}
             value={difficulty}
