@@ -5,16 +5,9 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { z } from "zod";
 import { fetchEnigmaById, updateEnigma } from "../api/enigmaApi";
-import Logo from "../components/shared/Logo";
+import DifficultySelect from "../components/shared/DifficultySelect";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
 import { Textarea } from "../components/ui/textarea";
 import Title from "../components/ui/title";
 import { useAuthContext } from "../context/AuthContext";
@@ -78,11 +71,6 @@ export default function EditEnigma() {
     }
   };
 
-  const renderLogos = (count: number) =>
-    Array.from({ length: count }).map((_, index) => (
-      <Logo key={index} className="size-8" />
-    ));
-
   return (
     <div>
       <Title text="Modifiez votre" highlight="énigme" />
@@ -110,43 +98,13 @@ export default function EditEnigma() {
         </div>
         <div>
           <Label htmlFor="difficulty">Difficulté</Label>
-          <Select
-            onValueChange={(value) => {
+          <DifficultySelect
+            value={difficulty}
+            onChange={(value) => {
               setValue("difficulty", value as EnigmaSchema["difficulty"]);
               setDifficulty(value);
             }}
-            value={difficulty}
-          >
-            <SelectTrigger className="w-[220px]">
-              <SelectValue
-                placeholder={
-                  difficulty
-                    ? `Difficulté: ${difficulty}`
-                    : "Sélectionner une difficulté"
-                }
-              />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ONE">
-                <div className="flex gap-2 items-center">
-                  {renderLogos(1)}
-                  Facile
-                </div>
-              </SelectItem>
-              <SelectItem value="TWO">
-                <div className="flex gap-2 items-center">
-                  {renderLogos(2)}
-                  Moyen
-                </div>
-              </SelectItem>
-              <SelectItem value="THREE">
-                <div className="flex gap-2 items-center">
-                  {renderLogos(3)}
-                  Difficile
-                </div>
-              </SelectItem>
-            </SelectContent>
-          </Select>
+          />
           {errors.difficulty && (
             <p className="text-red-500">{errors.difficulty.message}</p>
           )}
