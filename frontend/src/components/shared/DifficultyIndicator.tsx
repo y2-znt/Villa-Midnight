@@ -15,7 +15,7 @@ const DifficultyIndicator = ({ difficulty }: DifficultyIndicatorProps) => {
     <div className="flex flex-wrap items-center gap-2">
       <span className="font-bold text-primary italic text-xl md:text-3xl">
         DIFFICULTÉ
-      </span>{" "}
+      </span>
       {[...Array(difficultyLevels)].map((_, index) => (
         <Logo key={index} />
       ))}

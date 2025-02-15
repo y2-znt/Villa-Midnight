@@ -1,18 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
+import { Hourglass, Users } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import { createEnigma } from "../api/enigmaApi";
+import DifficultySelect from "../components/shared/DifficultySelect";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
 import { Textarea } from "../components/ui/textarea";
 import Title from "../components/ui/title";
 import { useAuthContext } from "../context/AuthContext";
@@ -21,6 +16,7 @@ import { EnigmaSchema, enigmaSchema } from "../schemas/enigmaSchema";
 export default function CreateEnigma() {
   const { authUser, token } = useAuthContext();
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -56,7 +52,7 @@ export default function CreateEnigma() {
       <Title text="Créez votre" highlight="énigme" />
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mx-auto space-y-4 w-11/12 md:w-1/3 mt-10"
+        className="mx-auto space-y-4 w-11/12 md:w-1/2 mt-10"
       >
         <div>
           <Label htmlFor="title">Titre</Label>
@@ -74,20 +70,11 @@ export default function CreateEnigma() {
         </div>
         <div>
           <Label htmlFor="difficulty">Difficulté</Label>
-          <Select
-            onValueChange={(value) =>
+          <DifficultySelect
+            onChange={(value) =>
               setValue("difficulty", value as EnigmaSchema["difficulty"])
             }
-          >
-            <SelectTrigger className="w-[220px]">
-              <SelectValue placeholder="Sélectionner une difficulté" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ONE">1</SelectItem>
-              <SelectItem value="TWO">2</SelectItem>
-              <SelectItem value="THREE">3</SelectItem>
-            </SelectContent>
-          </Select>
+          />
           {errors.difficulty && (
             <p className="text-red-500">{errors.difficulty.message}</p>
           )}
@@ -103,29 +90,39 @@ export default function CreateEnigma() {
             <p className="text-red-500">{errors.image.message}</p>
           )}
         </div>
-        <div>
-          <Label htmlFor="numberOfParticipants">Nombre de participants</Label>
-          <Input
-            type="number"
-            {...register("numberOfParticipants", { valueAsNumber: true })}
-            placeholder="Nombre de participants"
-          />
-          {errors.numberOfParticipants && (
-            <p className="text-red-500">
-              {errors.numberOfParticipants.message}
-            </p>
-          )}
-        </div>
-        <div>
-          <Label htmlFor="numberOfHours">Nombre d'heures</Label>
-          <Input
-            type="number"
-            {...register("numberOfHours", { valueAsNumber: true })}
-            placeholder="Nombre d'heures"
-          />
-          {errors.numberOfHours && (
-            <p className="text-red-500">{errors.numberOfHours.message}</p>
-          )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <Label htmlFor="numberOfParticipants">Nombre de participants</Label>
+            <div className="relative">
+              <Users className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                type="number"
+                {...register("numberOfParticipants", { valueAsNumber: true })}
+                placeholder="Nombre de participants"
+                className="pl-10"
+              />
+              {errors.numberOfParticipants && (
+                <p className="text-red-500">
+                  {errors.numberOfParticipants.message}
+                </p>
+              )}
+            </div>
+          </div>
+          <div>
+            <Label htmlFor="numberOfHours">Nombre d'heures</Label>
+            <div className="relative">
+              <Hourglass className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                type="number"
+                {...register("numberOfHours", { valueAsNumber: true })}
+                placeholder="Nombre d'heures"
+                className="pl-10"
+              />
+              {errors.numberOfHours && (
+                <p className="text-red-500">{errors.numberOfHours.message}</p>
+              )}
+            </div>
+          </div>
         </div>
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? "Création..." : "Créer"}
