@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import { createEnigma } from "../api/enigmaApi";
+import Logo from "../components/shared/Logo";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import {
@@ -21,6 +22,7 @@ import { EnigmaSchema, enigmaSchema } from "../schemas/enigmaSchema";
 export default function CreateEnigma() {
   const { authUser, token } = useAuthContext();
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -51,6 +53,11 @@ export default function CreateEnigma() {
     }
   };
 
+  const renderLogos = (count: number) =>
+    Array.from({ length: count }).map((_, index) => (
+      <Logo key={index} className="size-8" />
+    ));
+
   return (
     <div>
       <Title text="Créez votre" highlight="énigme" />
@@ -79,13 +86,28 @@ export default function CreateEnigma() {
               setValue("difficulty", value as EnigmaSchema["difficulty"])
             }
           >
-            <SelectTrigger className="w-[220px]">
+            <SelectTrigger className="w-[250px]">
               <SelectValue placeholder="Sélectionner une difficulté" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="ONE">1</SelectItem>
-              <SelectItem value="TWO">2</SelectItem>
-              <SelectItem value="THREE">3</SelectItem>
+              <SelectItem value="ONE">
+                <div className="flex gap-2 items-center">
+                  {renderLogos(1)}
+                  Facile
+                </div>
+              </SelectItem>
+              <SelectItem value="TWO">
+                <div className="flex gap-2 items-center">
+                  {renderLogos(2)}
+                  Moyen
+                </div>
+              </SelectItem>
+              <SelectItem value="THREE">
+                <div className="flex gap-2 items-center">
+                  {renderLogos(3)}
+                  Difficile
+                </div>
+              </SelectItem>
             </SelectContent>
           </Select>
           {errors.difficulty && (

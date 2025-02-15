@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { z } from "zod";
 import { fetchEnigmaById, updateEnigma } from "../api/enigmaApi";
+import Logo from "../components/shared/Logo";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import {
@@ -24,6 +25,7 @@ export default function EditEnigma() {
   const { authUser, token } = useAuthContext();
   const navigate = useNavigate();
   const [difficulty, setDifficulty] = useState<string | undefined>(undefined);
+
   const {
     register,
     handleSubmit,
@@ -76,6 +78,11 @@ export default function EditEnigma() {
     }
   };
 
+  const renderLogos = (count: number) =>
+    Array.from({ length: count }).map((_, index) => (
+      <Logo key={index} className="size-8" />
+    ));
+
   return (
     <div>
       <Title text="Modifiez votre" highlight="énigme" />
@@ -110,7 +117,7 @@ export default function EditEnigma() {
             }}
             value={difficulty}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[220px]">
               <SelectValue
                 placeholder={
                   difficulty
@@ -120,9 +127,24 @@ export default function EditEnigma() {
               />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="ONE">1</SelectItem>
-              <SelectItem value="TWO">2</SelectItem>
-              <SelectItem value="THREE">3</SelectItem>
+              <SelectItem value="ONE">
+                <div className="flex gap-2 items-center">
+                  {renderLogos(1)}
+                  Facile
+                </div>
+              </SelectItem>
+              <SelectItem value="TWO">
+                <div className="flex gap-2 items-center">
+                  {renderLogos(2)}
+                  Moyen
+                </div>
+              </SelectItem>
+              <SelectItem value="THREE">
+                <div className="flex gap-2 items-center">
+                  {renderLogos(3)}
+                  Difficile
+                </div>
+              </SelectItem>
             </SelectContent>
           </Select>
           {errors.difficulty && (
