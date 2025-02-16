@@ -26,3 +26,4 @@ export default function AllEnigmas() {
     </div>
   );
 }
+// test
