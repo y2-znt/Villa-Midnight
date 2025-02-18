@@ -12,6 +12,7 @@ import {
 } from "../ui/card";
 import DeleteEnigma from "./DeleteEnigma";
 import DifficultyIndicator from "./DifficultyIndicator";
+import EnigmaCardSkeleton from "./EnigmaCardSkeleton";
 import ParticipantsAndTime from "./ParticipantsAndTime";
 
 export interface EnigmaCardProps {
@@ -22,6 +23,7 @@ export interface EnigmaCardProps {
 export default function EnigmaCard({ enigma, onDelete }: EnigmaCardProps) {
   const { authUser, token } = useAuthContext();
   const [isDeleted, setIsDeleted] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleDeleteClick = () => {
     if (!token) {
@@ -35,40 +37,48 @@ export default function EnigmaCard({ enigma, onDelete }: EnigmaCardProps) {
   if (isDeleted) return null;
 
   return (
-    <Card key={enigma.id} className="relative group">
-      <Link to={`/enigma/${enigma.id}`}>
-        <img
-          src={enigma.image}
-          alt={enigma.title}
-          className="w-full h-56 md:h-72 object-cover rounded-t-xl filter brightness-90"
-        />
-        <CardHeader>
-          <CardTitle>{enigma.title}</CardTitle>
-          <DifficultyIndicator difficulty={enigma.difficulty} />
-          <CardContent>
-            {enigma.description.length > 130
-              ? `${enigma.description.slice(0, 130)}...`
-              : enigma.description}
-          </CardContent>
-        </CardHeader>
-        <CardFooter>
-          <ParticipantsAndTime
-            numberOfParticipants={enigma.numberOfParticipants}
-            numberOfHours={enigma.numberOfHours}
-            className="justify-between"
+    <>
+      {!imageLoaded && <EnigmaCardSkeleton />}
+      <Card
+        key={enigma.id}
+        className="relative group"
+        style={{ display: imageLoaded ? "block" : "none" }}
+      >
+        <Link to={`/enigma/${enigma.id}`}>
+          <img
+            src={enigma.image}
+            alt={enigma.title}
+            className="w-full h-56 md:h-72 object-cover rounded-t-xl filter brightness-90"
+            onLoad={() => setImageLoaded(true)}
           />
-        </CardFooter>
-      </Link>
-      {authUser?.user.id === enigma.userId && (
-        <div className="absolute top-2 right-2 opacity-100 transition-opacity md:opacity-0 group-hover:opacity-100">
-          <Link to={`/edit-enigma/${enigma.id}`}>
-            <button className="mr-2">
-              <PencilIcon className="size-7 text-white" />
-            </button>
-          </Link>
-          <DeleteEnigma enigmaId={enigma.id} onDelete={handleDeleteClick} />
-        </div>
-      )}
-    </Card>
+          <CardHeader>
+            <CardTitle>{enigma.title}</CardTitle>
+            <DifficultyIndicator difficulty={enigma.difficulty} />
+            <CardContent>
+              {enigma.description.length > 130
+                ? `${enigma.description.slice(0, 130)}...`
+                : enigma.description}
+            </CardContent>
+          </CardHeader>
+          <CardFooter>
+            <ParticipantsAndTime
+              numberOfParticipants={enigma.numberOfParticipants}
+              numberOfHours={enigma.numberOfHours}
+              className="justify-between"
+            />
+          </CardFooter>
+        </Link>
+        {authUser?.user.id === enigma.userId && (
+          <div className="absolute top-2 right-2 opacity-100 transition-opacity md:opacity-0 group-hover:opacity-100">
+            <Link to={`/edit-enigma/${enigma.id}`}>
+              <button className="mr-2">
+                <PencilIcon className="size-7 text-white" />
+              </button>
+            </Link>
+            <DeleteEnigma enigmaId={enigma.id} onDelete={handleDeleteClick} />
+          </div>
+        )}
+      </Card>
+    </>
   );
 }
