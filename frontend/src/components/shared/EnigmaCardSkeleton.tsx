@@ -4,7 +4,7 @@ import { Skeleton } from "../ui/skeleton";
 export default function EnigmaCardSkeleton() {
   return (
     <Card className="relative">
-      <Skeleton className="w-full h-56 md:h-72 rounded-t-xl" />
+      <Skeleton className="w-full h-56 md:h-96 rounded-t-xl" />
       <CardHeader>
         <Skeleton className="h-8 w-3/4 mb-2" />
         <Skeleton className="h-4 w-24" />
