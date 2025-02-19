@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { fetchEnigmaById } from "../api/enigmaApi";
 import { fetchUserById } from "../api/userApi";
 import DifficultyIndicator from "../components/shared/DifficultyIndicator";
+import EnigmaDetailsSkeleton from "../components/shared/EnigmaDetailsSkeleton";
 import ParticipantsAndTime from "../components/shared/ParticipantsAndTime";
 import Title from "../components/ui/title";
 import { fakeAdminEnigmas } from "../data/data";
@@ -39,11 +40,11 @@ export default function EnigmaDetails() {
     getEnigma();
   }, [id]);
 
-  // If the enigma is not fetched yet, we display a fake one
   const displayedEnigma = enigma ?? fakeAdminEnigmas.find((e) => e.id === id);
 
-  if (loading) return <div>Chargement...</div>;
-  if (!displayedEnigma) return <div>Aucune énigme trouvée.</div>;
+  if (loading) return <EnigmaDetailsSkeleton />;
+  if (!displayedEnigma)
+    return <Title text="Aucune énigme" highlight="trouvée" />;
 
   return (
     <div>
