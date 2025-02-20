@@ -1,23 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logout = exports.getCurrentUser = exports.login = exports.register = void 0;
-const zod_1 = require("zod");
 const authService_1 = require("../services/authService");
-const handleErrorResponse = (res, error) => {
-    if (error instanceof zod_1.z.ZodError) {
-        res.status(400).json({ message: "Validation error", errors: error.errors });
-    }
-    else {
-        res.status(400).json({ message: error.message });
-    }
-};
+const errorHandler_1 = require("../utils/errorHandler");
 const register = async (req, res) => {
     try {
         const { user, token } = await (0, authService_1.registerUser)(req.body);
         res.status(201).json({ message: "User created successfully", user, token });
     }
     catch (error) {
-        handleErrorResponse(res, error);
+        (0, errorHandler_1.handleErrorResponse)(res, error);
     }
 };
 exports.register = register;
@@ -27,22 +19,21 @@ const login = async (req, res) => {
         res.status(200).json({ message: "Login successful", user, token });
     }
     catch (error) {
-        handleErrorResponse(res, error);
+        (0, errorHandler_1.handleErrorResponse)(res, error);
     }
 };
 exports.login = login;
 const getCurrentUser = async (req, res) => {
     try {
         if (!req.user) {
-            res.status(401).json({ message: "Unauthorized: No user found" });
-            return;
+            return (0, errorHandler_1.handleErrorResponse)(res, new Error("Unauthorized: No user found"));
         }
         const user = await (0, authService_1.loggedInUser)(req.user.userId);
         res.status(200).json({ message: "User retrieved successfully", user });
     }
     catch (error) {
         console.error("Error retrieving current user:", error);
-        res.status(500).json({ message: "Internal server error" });
+        (0, errorHandler_1.handleErrorResponse)(res, error);
     }
 };
 exports.getCurrentUser = getCurrentUser;
@@ -51,7 +42,7 @@ const logout = async (req, res) => {
         res.status(200).json({ message: "Logout successful" });
     }
     catch (error) {
-        res.status(500).json({ message: "An error occurred during logout" });
+        (0, errorHandler_1.handleErrorResponse)(res, error);
     }
 };
 exports.logout = logout;

@@ -7,6 +7,7 @@ import {
   modifyUser,
   removeUser,
 } from "../services/userService";
+import { handleErrorResponse } from "../utils/errorHandler";
 
 export const getAllUsers = async (
   req: Request,
@@ -16,7 +17,7 @@ export const getAllUsers = async (
     const users = await fetchAllUsers();
     res.status(200).json(users);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    handleErrorResponse(res, error);
   }
 };
 
@@ -28,7 +29,7 @@ export const getUserById = async (
     const user = await fetchUserById(req.params.id);
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    handleErrorResponse(res, error);
   }
 };
 
@@ -40,7 +41,7 @@ export const getEnigmaByUserId = async (
     const enigmas = await fetchUserEnigmasById(req.params.id);
     res.status(200).json(enigmas);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    handleErrorResponse(res, error);
   }
 };
 
@@ -48,13 +49,11 @@ export const createUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { username, email, password } = req.body;
-
   try {
-    const user = await addUser({ username, email, password });
+    const user = await addUser(req.body);
     res.status(201).json(user);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    handleErrorResponse(res, error);
   }
 };
 
@@ -62,16 +61,11 @@ export const updateUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { username, email } = req.body;
-
   try {
-    const user = await modifyUser(req.params.id, {
-      username,
-      email,
-    });
+    const user = await modifyUser(req.params.id, req.body);
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    handleErrorResponse(res, error);
   }
 };
 
@@ -81,8 +75,8 @@ export const deleteUser = async (
 ): Promise<void> => {
   try {
     await removeUser(req.params.id);
-    res.status(200).json({ message: "User deleted" });
+    res.status(204).json({ message: "User deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    handleErrorResponse(res, error);
   }
 };
