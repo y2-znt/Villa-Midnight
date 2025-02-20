@@ -4,9 +4,9 @@ import {
   fetchAllUsers,
   fetchUserById,
   fetchUserEnigmasById,
-  modifyUser,
   removeUser,
 } from "../services/userService";
+import { handleErrorResponse } from "../utils/errorHandler";
 
 export const getAllUsers = async (
   req: Request,
@@ -16,7 +16,7 @@ export const getAllUsers = async (
     const users = await fetchAllUsers();
     res.status(200).json(users);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    handleErrorResponse(res, error);
   }
 };
 
@@ -26,9 +26,13 @@ export const getUserById = async (
 ): Promise<void> => {
   try {
     const user = await fetchUserById(req.params.id);
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    handleErrorResponse(res, error);
   }
 };
 
@@ -38,9 +42,13 @@ export const getEnigmaByUserId = async (
 ): Promise<void> => {
   try {
     const enigmas = await fetchUserEnigmasById(req.params.id);
+    if (!enigmas) {
+      res.status(404).json({ message: "No enigmas found for this user" });
+      return;
+    }
     res.status(200).json(enigmas);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    handleErrorResponse(res, error);
   }
 };
 
@@ -48,13 +56,11 @@ export const createUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { username, email, password } = req.body;
-
   try {
-    const user = await addUser({ username, email, password });
+    const user = await addUser(req.body);
     res.status(201).json(user);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    handleErrorResponse(res, error);
   }
 };
 
@@ -62,16 +68,14 @@ export const updateUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { username, email } = req.body;
-
   try {
-    const user = await modifyUser(req.params.id, {
-      username,
-      email,
-    });
-    res.status(200).json(user);
+    if (!req.body.username && !req.body.email) {
+      res.status(400).json({ message: "No valid update data provided" });
+      return;
+    }
+    res.status(204).json();
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    handleErrorResponse(res, error);
   }
 };
 
@@ -81,8 +85,8 @@ export const deleteUser = async (
 ): Promise<void> => {
   try {
     await removeUser(req.params.id);
-    res.status(200).json({ message: "User deleted" });
+    res.status(204).json({ message: "User deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    handleErrorResponse(res, error);
   }
 };
