@@ -4,6 +4,7 @@ import {
   fetchAllUsers,
   fetchUserById,
   fetchUserEnigmasById,
+  modifyUser,
   removeUser,
 } from "../services/userService";
 import { handleErrorResponse } from "../utils/errorHandler";
@@ -26,10 +27,6 @@ export const getUserById = async (
 ): Promise<void> => {
   try {
     const user = await fetchUserById(req.params.id);
-    if (!user) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
     res.status(200).json(user);
   } catch (error) {
     handleErrorResponse(res, error);
@@ -42,10 +39,6 @@ export const getEnigmaByUserId = async (
 ): Promise<void> => {
   try {
     const enigmas = await fetchUserEnigmasById(req.params.id);
-    if (!enigmas) {
-      res.status(404).json({ message: "No enigmas found for this user" });
-      return;
-    }
     res.status(200).json(enigmas);
   } catch (error) {
     handleErrorResponse(res, error);
@@ -69,11 +62,8 @@ export const updateUser = async (
   res: Response
 ): Promise<void> => {
   try {
-    if (!req.body.username && !req.body.email) {
-      res.status(400).json({ message: "No valid update data provided" });
-      return;
-    }
-    res.status(204).json();
+    const user = await modifyUser(req.params.id, req.body);
+    res.status(200).json(user);
   } catch (error) {
     handleErrorResponse(res, error);
   }
