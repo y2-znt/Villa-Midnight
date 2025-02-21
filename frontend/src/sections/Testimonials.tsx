@@ -99,7 +99,7 @@ function Review({
   return (
     <div
       className={cn(
-        "animate-fade-in rounded-[2.25rem] border p-8 opacity-0 shadow-xl shadow-slate-900/5",
+        "animate-fade-in rounded-[2.25rem] border p-8 opacity-0 hover:border-primary transition-all duration-300 shadow-xl shadow-slate-900/5",
         className
       )}
       style={{ animationDelay }}
@@ -156,12 +156,12 @@ export default function Testimonials() {
 
   return (
     <div>
+      <Title text="Témoignages des plus" highlight="Courageux" />
       <div
         ref={containerRef}
         className="px-4 opacity-0 transition-opacity duration-700 ease-in-out md:px-6 lg:px-8 xl:px-20 2xl:px-32"
         style={{ opacity: isInView ? 1 : 0 }}
       >
-        <Title text="Témoignages des plus" highlight="Courageux" />
         <ReviewGrid isVisible={isInView} />
       </div>
     </div>
