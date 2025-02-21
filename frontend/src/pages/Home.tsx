@@ -1,4 +1,5 @@
 import Particles from "../components/ui/particles";
+import BestEnigmas from "../sections/BestEnigmas";
 import Hero from "../sections/Hero";
 import Contact from "./Contact";
 import FAQ from "./FAQ";
@@ -25,6 +26,7 @@ export default function Home() {
 
       <Hero />
       <div className="mt-[50vh]"></div>
+      <BestEnigmas />
       <FAQ />
       <div className="my-[30vh]">
         <Contact />
