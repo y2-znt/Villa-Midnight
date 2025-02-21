@@ -54,26 +54,39 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
-        "accordion-down": {
-          from: {
-            height: "0",
+        spotlight: {
+          "0%": {
+            opacity: "0",
+            transform: "translate(-72%, -62%) scale(0.5)",
           },
-          to: {
-            height: "var(--radix-accordion-content-height)",
+          "100%": {
+            opacity: "1",
+            transform: "translate(-50%,-40%) scale(1)",
           },
         },
-        "accordion-up": {
+        "fade-in": {
           from: {
-            height: "var(--radix-accordion-content-height)",
+            opacity: "0",
           },
           to: {
-            height: "0",
+            opacity: "1",
           },
+        },
+        marquee: {
+          "100%": {
+            transform: "translateY(-50%)",
+          },
+        },
+        flashing: {
+          "0%, 100%": { opacity: "0.2" },
+          "20%": { opacity: "1" },
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        spotlight: "spotlight 2s ease .75s 1 forwards",
+        marquee: "marquee var(--marquee-duration) linear infinite",
+        "fade-in": "fade-in 0.5s linear forwards",
+        flashing: "flashing 1.4s infinite linear",
       },
     },
   },

@@ -90,7 +90,6 @@ export const informationsFooter = [
     ariaLabel: "Aller à la page des conditions générales de ventes",
   },
 ];
-
 export const fakeAdminEnigmas = [
   {
     id: "1",
@@ -141,5 +140,53 @@ export const fakeAdminEnigmas = [
     createdBy: {
       username: "𝕏: @y2_dev",
     },
+  },
+];
+
+export const TESTIMONIALS = [
+  {
+    text: "Une expérience aussi intense que captivante ! Chaque énigme était un vrai casse-tête, et j’ai adoré relever le défi.",
+    name: "Marie Dupuis",
+    experienceType: "Les Couloirs du Silence",
+  },
+  {
+    text: "Plongé dans une ambiance mystérieuse dès les premières minutes ! L'intrigue était passionnante et l'immersion totale.",
+    name: "Jean-Pierre Martin",
+    experienceType: "L’Ombre Rouge",
+  },
+  {
+    text: "Un jeu palpitant du début à la fin ! Les énigmes sont bien ficelées et nous poussent à réfléchir en équipe.",
+    name: "Sophie Leclerc",
+    experienceType: "Les Masques de Vérité",
+  },
+  {
+    text: "Chaque indice m’a tenu en haleine ! L’histoire était prenante et m’a fait vivre un vrai film d’enquête.",
+    name: "Lucas Bernard",
+    experienceType: "L’Ombre Rouge",
+  },
+  {
+    text: "Un défi cérébral et immersif ! J’ai adoré chercher, fouiller et connecter les éléments pour avancer.",
+    name: "Clara Dubois",
+    experienceType: "Les Couloirs du Silence",
+  },
+  {
+    text: "Un scénario haletant qui m’a complètement transporté ! On se prend vite au jeu et on oublie tout le reste.",
+    name: "Antoine Lefevre",
+    experienceType: "Les Couloirs du Silence",
+  },
+  {
+    text: "Une mise en scène bluffante et des énigmes parfaitement intégrées dans l’univers ! Une réussite totale.",
+    name: "Émilie Moreau",
+    experienceType: "L’Ombre Rouge",
+  },
+  {
+    text: "Un moment inoubliable entre amis ! Tout était bien pensé pour nous tenir en haleine jusqu’au bout.",
+    name: "Julien Petit",
+    experienceType: "Les Masques de Vérité",
+  },
+  {
+    text: "Une aventure immersive avec des énigmes originales et surprenantes ! J’ai déjà hâte d’en refaire une.",
+    name: "Sophie Martin",
+    experienceType: "Les Couloirs du Silence",
   },
 ];
