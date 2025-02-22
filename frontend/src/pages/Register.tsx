@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
-import { registerUser } from "../api/authApi";
+import { googleAuth, registerUser } from "../api/authApi";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import Title from "../components/ui/title";
@@ -87,13 +87,29 @@ export default function Register() {
         <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting ? "Chargement..." : "S'inscrire"}
         </Button>
-        <p className="text-center">
-          Vous avez déjà un compte ?{" "}
-          <Link to="/login" className="text-primary">
-            Connectez-vous
-          </Link>
-        </p>
       </form>
+
+      <p className="text-center text-sm font-medium py-5 text-muted-foreground">
+        OU CONTINUER AVEC
+      </p>
+
+      <div className="flex justify-center ">
+        <Button
+          onClick={googleAuth}
+          size="lg"
+          variant="outline"
+          className="w-11/12 md:w-1/3 text-center"
+        >
+          <img src="assets/google-icon.png" alt="Google" className="size-5" />
+          Google
+        </Button>
+      </div>
+      <p className="text-center mt-4">
+        Vous avez déjà un compte ?{" "}
+        <Link to="/login" className="text-primary">
+          Connectez-vous
+        </Link>
+      </p>
     </div>
   );
 }
