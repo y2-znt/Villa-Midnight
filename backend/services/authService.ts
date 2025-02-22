@@ -23,6 +23,7 @@ export const registerUser = async (data: z.infer<typeof registerSchema>) => {
       username: true,
       email: true,
       avatarUrl: true,
+      createdAt: true,
       role: true,
     },
   });
@@ -42,6 +43,7 @@ export const loginUser = async (data: z.infer<typeof loginSchema>) => {
       email: true,
       avatarUrl: true,
       password: true,
+      createdAt: true,
       role: true,
     },
   });
@@ -69,6 +71,7 @@ export const loggedInUser = async (userId: string) => {
         username: true,
         email: true,
         avatarUrl: true,
+        createdAt: true,
         role: true,
       },
     });

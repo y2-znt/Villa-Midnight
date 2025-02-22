@@ -1,4 +1,4 @@
-import { CheckIcon, PencilIcon, UserCircle2 } from "lucide-react";
+import { CheckIcon, PencilIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -85,31 +85,35 @@ export default function Profile() {
               className="border-muted-foreground w-32 h-32 rounded-full overflow-hidden border-4 transition-transform duration-300 transform hover:scale-105 hover:border-primary"
             />
           ) : (
-            <UserCircle2 className="size-32 text-muted-foreground" />
+            <div className="flex items-center justify-center w-32 h-32 border-4 border-primary bg-primary/10 rounded-full transition-transform duration-300 transform hover:scale-105 hover:border-primary">
+              <span className="text-4xl font-bold text-primary">
+                {authUser?.user.username.charAt(0).toUpperCase()}
+              </span>
+            </div>
           )}
         </div>
-        {isEditing ? (
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="max-w-md w-full space-y-4"
-          >
-            <div className="space-y-2">
-              <Label className="text-sm text-muted-foreground">
-                Nom d'utilisateur
-              </Label>
-              <Input
-                type="text"
-                className="border border-primary"
-                {...register("username")}
-              />
-            </div>
-            <Button type="submit" variant="outline" className="w-full">
-              <CheckIcon className="h-5 w-5 mr-2" />
-              Sauvegarder
-            </Button>
-          </form>
-        ) : (
-          <div className="space-y-4 w-full max-w-md">
+        <div className="space-y-4 w-full max-w-md">
+          {isEditing ? (
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="max-w-md w-full space-y-4"
+            >
+              <div className="space-y-2">
+                <Label className="text-sm text-muted-foreground">
+                  Nom d'utilisateur
+                </Label>
+                <Input
+                  type="text"
+                  className="border border-primary"
+                  {...register("username")}
+                />
+              </div>
+              <Button type="submit" variant="outline" className="w-full">
+                <CheckIcon className="h-5 w-5 mr-2" />
+                Sauvegarder
+              </Button>
+            </form>
+          ) : (
             <div className="flex justify-between items-center">
               <div className="flex flex-col">
                 <Label className="text-sm text-muted-foreground">
@@ -125,16 +129,26 @@ export default function Profile() {
                 <PencilIcon className="h-5 w-5" />
               </Button>
             </div>
-            <div className="flex justify-between items-center">
-              <div className="flex flex-col">
-                <Label className="text-sm text-muted-foreground">Email</Label>
-                <p className="text-lg font-medium">{authUser?.user.email}</p>
-              </div>
-            </div>
+          )}
+          <div className="flex flex-col gap-2">
+            <Label className="text-sm text-muted-foreground">Email</Label>
+            <p className="text-lg font-medium">{authUser?.user.email}</p>
+
+            <Label className="text-sm text-muted-foreground">
+              Membre depuis le
+            </Label>
+            <p className="text-lg font-medium">
+              {authUser?.user.createdAt &&
+                new Date(authUser.user.createdAt).toLocaleDateString("fr-FR", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+            </p>
           </div>
-        )}
+        </div>
       </div>
-      <div className="mt-8">
+      <div className="mt-8 flex justify-end">
         <DeleteAccount handleDeleteUser={handleDeleteUser} />
       </div>
     </div>
