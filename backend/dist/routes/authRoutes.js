@@ -7,8 +7,10 @@ const express_1 = __importDefault(require("express"));
 const authController_1 = require("../controllers/authController");
 const authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
 const router = express_1.default.Router();
+// Public routes
 router.post("/register", authController_1.register);
 router.post("/login", authController_1.login);
+// Private routes
 router.get("/current-user", authMiddleware_1.default, authController_1.getCurrentUser);
 router.post("/logout", authMiddleware_1.default, authController_1.logout);
 exports.default = router;
