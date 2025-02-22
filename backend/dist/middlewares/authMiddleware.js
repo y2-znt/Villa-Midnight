@@ -17,13 +17,13 @@ const authMiddleware = async (req, res, next) => {
         const decoded = jsonwebtoken_1.default.verify(token, config_1.JWT_SECRET);
         const user = await prismaClient_1.default.user.findUnique({
             where: { id: decoded.userId },
-            select: { id: true, username: true, email: true },
+            select: { id: true, role: true },
         });
         if (!user) {
             res.status(401).json({ message: "Unauthorized: User not found" });
             return;
         }
-        req.user = { userId: user.id };
+        req.user = { userId: user.id, role: user.role };
         next();
     }
     catch (error) {

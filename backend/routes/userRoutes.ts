@@ -3,18 +3,22 @@ import {
   createUser,
   deleteUser,
   getAllUsers,
+  getEnigmaByUserId,
   getUserById,
   updateUser,
-  getEnigmaByUserId,
 } from "../controllers/userController";
+import authMiddleware from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
-router.get("/", getAllUsers);
-router.get("/:id", getUserById);
-router.get("/:id/enigmas", getEnigmaByUserId)
+// Public route
 router.post("/", createUser);
-router.put("/:id", updateUser);
-router.delete("/:id", deleteUser);
+
+// Private routes
+router.get("/", authMiddleware, getAllUsers);
+router.get("/:id", authMiddleware, getUserById);
+router.get("/:id/enigmas", authMiddleware, getEnigmaByUserId);
+router.put("/:id", authMiddleware, updateUser);
+router.delete("/:id", authMiddleware, deleteUser);
 
 export default router;
