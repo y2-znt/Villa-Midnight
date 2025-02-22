@@ -81,6 +81,8 @@ export const modifyUser = async (
 
 export const removeUser = async (id: string) => {
   try {
+    await prisma.enigma.deleteMany({ where: { userId: id } });
+
     await prisma.user.delete({ where: { id } });
   } catch (error) {
     throw new Error(`Failed to delete user: ${(error as Error).message}`);

@@ -13,4 +13,7 @@ router.post("/login", authController_1.login);
 // Private routes
 router.get("/current-user", authMiddleware_1.default, authController_1.getCurrentUser);
 router.post("/logout", authMiddleware_1.default, authController_1.logout);
+// Google OAuth routes
+router.get("/google", authController_1.googleAuth);
+router.get("/google/callback", authController_1.googleAuthCallback);
 exports.default = router;
