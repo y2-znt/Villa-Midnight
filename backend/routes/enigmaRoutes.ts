@@ -10,8 +10,8 @@ import authMiddleware from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
-router.get("/", getAllEnigmas);
-router.get("/:id", getEnigmaById);
+router.get("/", authMiddleware, getAllEnigmas);
+router.get("/:id", authMiddleware, getEnigmaById);
 router.post("/", authMiddleware, createEnigma);
 router.put("/:id", authMiddleware, updateEnigma);
 router.delete("/:id", authMiddleware, deleteEnigma);

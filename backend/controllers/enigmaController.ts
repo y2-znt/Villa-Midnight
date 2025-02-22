@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import {
   addEnigma,
   fetchAllEnigmas,
@@ -10,10 +10,16 @@ import { handleErrorResponse } from "../utils/errorHandler";
 import { AuthenticatedRequest } from "../utils/express";
 
 export const getAllEnigmas = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
   try {
+    if (!req.user || req.user.role !== "ADMIN") {
+      res.status(403).json({
+        message: "Access forbidden: Admin access required",
+      });
+      return;
+    }
     const enigmas = await fetchAllEnigmas();
     res.status(200).json(enigmas);
   } catch (error) {
@@ -22,14 +28,23 @@ export const getAllEnigmas = async (
 };
 
 export const getEnigmaById = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
   try {
-    const enigma = await fetchEnigmaById(req.params.id);
-    if (!enigma) {
-      return handleErrorResponse(res, new Error("Enigma not found"));
+    if (!req.user) {
+      return handleErrorResponse(res, new Error("Unauthorized: No user found"));
     }
+
+    const enigma = await fetchEnigmaById(req.params.id);
+
+    if (req.user.role !== "ADMIN" && enigma.userId !== req.user.userId) {
+      return handleErrorResponse(
+        res,
+        new Error("Unauthorized: You can only access your own enigmas")
+      );
+    }
+
     res.status(200).json(enigma);
   } catch (error) {
     handleErrorResponse(res, error);
@@ -64,14 +79,23 @@ export const updateEnigma = async (
       return handleErrorResponse(res, new Error("Unauthorized: No user found"));
     }
 
+    const existingEnigma = await fetchEnigmaById(req.params.id);
+
+    if (
+      req.user.role !== "ADMIN" &&
+      existingEnigma.userId !== req.user.userId
+    ) {
+      return handleErrorResponse(
+        res,
+        new Error("Unauthorized: You can only update your own enigmas")
+      );
+    }
+
     const enigma = await modifyEnigma(req.params.id, {
       ...req.body,
-      userId: req.user.userId,
+      userId: existingEnigma.userId,
     });
 
-    if (!enigma) {
-      return handleErrorResponse(res, new Error("Enigma not found"));
-    }
     res.status(200).json(enigma);
   } catch (error) {
     handleErrorResponse(res, error);
@@ -86,6 +110,19 @@ export const deleteEnigma = async (
     if (!req.user) {
       return handleErrorResponse(res, new Error("Unauthorized: No user found"));
     }
+
+    const existingEnigma = await fetchEnigmaById(req.params.id);
+
+    if (
+      req.user.role !== "ADMIN" &&
+      existingEnigma.userId !== req.user.userId
+    ) {
+      return handleErrorResponse(
+        res,
+        new Error("Unauthorized: You can only delete your own enigmas")
+      );
+    }
+
     await removeEnigma(req.params.id);
     res.status(204).json({ message: "Enigma deleted successfully" });
   } catch (error) {
