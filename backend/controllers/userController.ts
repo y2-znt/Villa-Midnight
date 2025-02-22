@@ -95,7 +95,6 @@ export const updateUser = async (
       return;
     }
 
-    // Les admins peuvent modifier tous les profils
     if (req.user.role !== "ADMIN" && req.user.userId !== req.params.id) {
       res.status(403).json({
         message: "Access forbidden: You can only modify your own data",

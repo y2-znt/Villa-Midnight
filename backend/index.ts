@@ -3,8 +3,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import cron from "node-cron";
+import passport from "passport";
 import swaggerUi from "swagger-ui-express";
 import { CLIENT_URL, SERVER_URL } from "./config/config";
+import "./config/passport";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
 import authRoutes from "./routes/authRoutes";
 import enigmaRoutes from "./routes/enigmaRoutes";
@@ -18,6 +20,7 @@ const port = process.env.PORT;
 
 app.use(cors({ origin: CLIENT_URL }));
 app.use(express.json());
+app.use(passport.initialize());
 app.use(errorMiddleware);
 app.use(bodyParser.json());
 
