@@ -13,6 +13,7 @@ import FAQ from "./pages/FAQ";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import MyEnigmas from "./pages/MyEnigmas";
+import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 
@@ -69,6 +70,7 @@ export default function App() {
             element={<AuthLayout children={<Register />} />}
           />
           <Route path="/login" element={<AuthLayout children={<Login />} />} />
+          <Route path="*" element={<AuthLayout children={<NotFound />} />} />
         </Routes>
       </AuthContextProvider>
     </BrowserRouter>
