@@ -8,7 +8,7 @@ export default function Contact() {
   const isInView = useInView(ref, { once: true, amount: 0.1 });
 
   return (
-    <div className="relative min-h-[70vh] flex flex-col items-center">
+    <div className="relative flex flex-col items-center">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/30 pointer-events-none" />
 
       <Title text="ENTREZ DANS" highlight="L'AVENTURE" />
