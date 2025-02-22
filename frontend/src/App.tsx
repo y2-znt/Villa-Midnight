@@ -16,6 +16,7 @@ import MyEnigmas from "./pages/MyEnigmas";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
+import AuthCallback from "./pages/AuthCallback";
 
 export default function App() {
   return (
@@ -70,6 +71,7 @@ export default function App() {
             element={<AuthLayout children={<Register />} />}
           />
           <Route path="/login" element={<AuthLayout children={<Login />} />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="*" element={<AuthLayout children={<NotFound />} />} />
         </Routes>
       </AuthContextProvider>
