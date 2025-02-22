@@ -30,8 +30,8 @@ export default function Login() {
 
   const onSubmit = async (data: SigninSchema) => {
     try {
-      const { user } = await loginUser(data.email, data.password);
-      setAuthUser({ ...user });
+      const response = await loginUser(data.email, data.password);
+      setAuthUser({ user: response.user });
       navigate("/");
     } catch (error) {
       console.error(error);

@@ -32,13 +32,13 @@ export default function Register() {
 
   const onSubmit = async (data: SignupSchema) => {
     try {
-      const { user } = await registerUser(
+      const response = await registerUser(
         data.username,
         data.email,
         data.password,
         data.confirmPassword
       );
-      setAuthUser({ ...user });
+      setAuthUser({ user: response.user });
       navigate("/");
       reset();
     } catch (error) {
