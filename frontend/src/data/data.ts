@@ -20,7 +20,7 @@ export const contactList: ContactTypes[] = [
   {
     icon: Mail,
     title: "Email",
-    description: "villamidnight@gmail.com",
+    description: "contact@villamidnight.com",
   },
 ];
 
