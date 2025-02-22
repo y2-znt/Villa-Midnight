@@ -1,9 +1,13 @@
 import { API_BASE_URL } from "../config/apiClient";
 import { EnigmaSchema } from "../schemas/enigmaSchema";
 
-export const fetchAllEnigmas = async () => {
+export const fetchAllEnigmas = async (token: string) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/enigmas`);
+    const response = await fetch(`${API_BASE_URL}/enigmas`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(
@@ -19,9 +23,13 @@ export const fetchAllEnigmas = async () => {
   }
 };
 
-export const fetchEnigmaById = async (id: string) => {
+export const fetchEnigmaById = async (id: string, token: string) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/enigmas/${id}`);
+    const response = await fetch(`${API_BASE_URL}/enigmas/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(
@@ -101,9 +109,13 @@ export const deleteEnigma = async (id: string, token: string) => {
   }
 };
 
-export const fetchEnigmasByUserId = async (userId: string) => {
+export const fetchEnigmasByUserId = async (userId: string, token: string) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/users/${userId}/enigmas`);
+    const response = await fetch(`${API_BASE_URL}/users/${userId}/enigmas`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(

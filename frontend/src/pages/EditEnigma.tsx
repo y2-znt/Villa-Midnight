@@ -32,37 +32,31 @@ export default function EditEnigma() {
 
   useEffect(() => {
     const fetchEnigma = async () => {
-      if (id) {
+      if (id && token) {
         try {
-          const data = await fetchEnigmaById(id);
+          const data = await fetchEnigmaById(id, token);
           reset(data);
           setDifficulty(data.difficulty);
         } catch (error) {
           console.error("Erreur lors de la récupération de l'énigme:", error);
         }
+      } else {
+        console.error("Token is undefined or ID is missing");
       }
     };
 
     fetchEnigma();
-  }, [id, reset]);
+  }, [id, reset, token]);
 
   const onSubmit = async (data: EnigmaSchema) => {
-    if (!authUser || !authUser.user || !authUser.user.id || !token) {
-      console.error("User not authenticated or invalid userId/token");
+    if (!authUser?.user?.id || !token || !id) {
+      console.error(
+        "User not authenticated or invalid userId/token or enigma ID"
+      );
       return;
     }
 
-    if (!id) {
-      console.error("Invalid enigma ID");
-      return;
-    }
-
-    const enigmaData = {
-      ...data,
-      userId: authUser.user.id,
-    };
-
-    console.log("Enigma Data:", enigmaData);
+    const enigmaData = { ...data, userId: authUser.user.id };
 
     try {
       await updateEnigma(id, enigmaData, token);

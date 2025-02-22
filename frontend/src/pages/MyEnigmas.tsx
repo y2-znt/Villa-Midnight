@@ -31,10 +31,10 @@ export default function MyEnigmas() {
 
   useEffect(() => {
     const getEnigmasByUserId = async () => {
-      if (authUser) {
+      if (authUser && token) {
         try {
           setIsLoading(true);
-          const data = await fetchEnigmasByUserId(authUser.user.id);
+          const data = await fetchEnigmasByUserId(authUser.user.id, token);
           setEnigmas(data);
         } catch (error) {
           console.error(
@@ -47,7 +47,7 @@ export default function MyEnigmas() {
       }
     };
     getEnigmasByUserId();
-  }, [authUser]);
+  }, [authUser, token]);
 
   return (
     <div>
