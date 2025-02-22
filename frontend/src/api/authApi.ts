@@ -61,3 +61,7 @@ export const logoutUser = async () => {
     throw new Error(errorData.message || "Erreur lors de la déconnexion");
   }
 };
+
+export const googleAuth = async () => {
+  window.location.href = `${API_BASE_URL}/auth/google`;
+};

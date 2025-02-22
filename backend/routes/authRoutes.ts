@@ -1,6 +1,8 @@
 import express from "express";
 import {
   getCurrentUser,
+  googleAuth,
+  googleAuthCallback,
   login,
   logout,
   register,
@@ -16,5 +18,9 @@ router.post("/login", login);
 // Private routes
 router.get("/current-user", authMiddleware, getCurrentUser);
 router.post("/logout", authMiddleware, logout);
+
+// Google OAuth routes
+router.get("/google", googleAuth);
+router.get("/google/callback", googleAuthCallback);
 
 export default router;

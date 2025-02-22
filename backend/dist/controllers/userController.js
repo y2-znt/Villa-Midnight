@@ -76,7 +76,6 @@ const updateUser = async (req, res) => {
             res.status(401).json({ message: "Unauthorized" });
             return;
         }
-        // Les admins peuvent modifier tous les profils
         if (req.user.role !== "ADMIN" && req.user.userId !== req.params.id) {
             res.status(403).json({
                 message: "Access forbidden: You can only modify your own data",

@@ -1,3 +1,4 @@
+import { Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,7 +20,8 @@ const DeleteAccount = ({ handleDeleteUser }: DeleteAccountProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" className="mt-12">
+        <Button variant="ghost" className="mt-12 text-primary">
+          <Trash2 className="w-4 h-4 mr-2" />
           Supprimer le compte
         </Button>
       </AlertDialogTrigger>

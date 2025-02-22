@@ -1,8 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.getCurrentUser = exports.login = exports.register = void 0;
+exports.googleAuthCallback = exports.googleAuth = exports.logout = exports.getCurrentUser = exports.login = exports.register = void 0;
+const passport_1 = __importDefault(require("passport"));
+const config_1 = require("../config/config");
 const authService_1 = require("../services/authService");
 const errorHandler_1 = require("../utils/errorHandler");
+const generateToken_1 = require("../utils/generateToken");
 const register = async (req, res) => {
     try {
         const { user, token } = await (0, authService_1.registerUser)(req.body);
@@ -46,3 +52,26 @@ const logout = async (req, res) => {
     }
 };
 exports.logout = logout;
+exports.googleAuth = passport_1.default.authenticate("google", {
+    scope: ["profile", "email"],
+});
+const googleAuthCallback = (req, res) => {
+    passport_1.default.authenticate("google", { session: false }, (err, user) => {
+        if (err) {
+            console.error("❌ Google authentication error:", err);
+            return res.redirect(`${config_1.CLIENT_URL}/auth/error?message=${encodeURIComponent(err.message)}`);
+        }
+        if (!user) {
+            return res.redirect(`${config_1.CLIENT_URL}/auth/error?message=${encodeURIComponent("Authentication failed")}`);
+        }
+        try {
+            const token = (0, generateToken_1.generateToken)(user.id);
+            res.redirect(`${config_1.CLIENT_URL}/auth/callback?token=${token}`);
+        }
+        catch (error) {
+            console.error("❌ Token generation error:", error);
+            res.redirect(`${config_1.CLIENT_URL}/auth/error?message=${encodeURIComponent("Failed to generate authentication token")}`);
+        }
+    })(req, res);
+};
+exports.googleAuthCallback = googleAuthCallback;

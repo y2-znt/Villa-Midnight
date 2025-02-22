@@ -78,6 +78,7 @@ const modifyUser = async (id, { username, email }) => {
 exports.modifyUser = modifyUser;
 const removeUser = async (id) => {
     try {
+        await prismaClient_1.default.enigma.deleteMany({ where: { userId: id } });
         await prismaClient_1.default.user.delete({ where: { id } });
     }
     catch (error) {

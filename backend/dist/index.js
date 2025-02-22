@@ -41,8 +41,10 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const node_cron_1 = __importDefault(require("node-cron"));
+const passport_1 = __importDefault(require("passport"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const config_1 = require("./config/config");
+require("./config/passport");
 const errorMiddleware_1 = require("./middlewares/errorMiddleware");
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const enigmaRoutes_1 = __importDefault(require("./routes/enigmaRoutes"));
@@ -53,6 +55,7 @@ const app = (0, express_1.default)();
 const port = process.env.PORT;
 app.use((0, cors_1.default)({ origin: config_1.CLIENT_URL }));
 app.use(express_1.default.json());
+app.use(passport_1.default.initialize());
 app.use(errorMiddleware_1.errorMiddleware);
 app.use(bodyParser.json());
 // Routes

@@ -46,14 +46,25 @@ export const updateUser = async (
 };
 
 export const deleteUser = async (id: string, token: string) => {
-  const response = await fetch(`${API_BASE_URL}/users/${id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Error("Erreur lors de la suppression de l'utilisateur");
+  try {
+    const response = await fetch(`${API_BASE_URL}/users/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la suppression de l'utilisateur");
+    }
+
+    if (response.status === 204) {
+      return;
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erreur lors de la suppression de l'utilisateur:", error);
+    throw error;
   }
-  return response.json();
 };

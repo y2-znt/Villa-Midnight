@@ -19,15 +19,31 @@ const registerUser = async (data) => {
     const hashedPassword = await bcrypt_1.default.hash(password, config_1.SALT_ROUNDS);
     const user = await prismaClient_1.default.user.create({
         data: { username, email, password: hashedPassword },
+        select: {
+            id: true,
+            username: true,
+            email: true,
+            avatarUrl: true,
+            role: true,
+        },
     });
     const token = (0, generateToken_1.generateToken)(user.id);
-    const { password: _, ...userWithoutPassword } = user;
-    return { user: userWithoutPassword, token };
+    return { user, token };
 };
 exports.registerUser = registerUser;
 const loginUser = async (data) => {
     const { email, password } = authSchema_1.loginSchema.parse(data);
-    const user = await prismaClient_1.default.user.findUnique({ where: { email } });
+    const user = await prismaClient_1.default.user.findUnique({
+        where: { email },
+        select: {
+            id: true,
+            username: true,
+            email: true,
+            avatarUrl: true,
+            password: true,
+            role: true,
+        },
+    });
     if (!user)
         throw new Error("User not found");
     const isPasswordValid = await bcrypt_1.default.compare(password, user.password);
@@ -42,7 +58,13 @@ const loggedInUser = async (userId) => {
     try {
         const user = await prismaClient_1.default.user.findUnique({
             where: { id: userId },
-            select: { id: true, username: true, email: true },
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                avatarUrl: true,
+                role: true,
+            },
         });
         if (!user) {
             throw new Error("User not found");

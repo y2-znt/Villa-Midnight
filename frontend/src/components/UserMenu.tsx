@@ -18,7 +18,7 @@ import {
 } from "./ui/dropdown-menu";
 
 export default function UserMenu() {
-  const { setAuthUser } = useAuthContext();
+  const { authUser, setAuthUser } = useAuthContext();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -63,7 +63,15 @@ export default function UserMenu() {
             variant="outline"
             className="flex items-center justify-between text-left py-5"
           >
-            <UserIcon className="size-4" />
+            {authUser?.user.avatarUrl ? (
+              <img
+                src={authUser.user.avatarUrl}
+                alt="Profile"
+                className="size-5 rounded-full"
+              />
+            ) : (
+              <UserIcon className="size-4" />
+            )}
             <span className="hidden sm:flex">MON COMPTE</span>
             <ChevronDownIcon className="ml-1" />
           </Button>

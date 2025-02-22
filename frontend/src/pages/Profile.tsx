@@ -1,4 +1,4 @@
-import { CheckIcon, PencilIcon } from "lucide-react";
+import { CheckIcon, PencilIcon, UserCircle2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -6,6 +6,7 @@ import { deleteUser, updateUser } from "../api/userApi";
 import DeleteAccount from "../components/shared/DeleteAccount";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
 import Title from "../components/ui/title";
 import { useAuthContext } from "../context/AuthContext";
 import { UserUpdateType } from "../types/types";
@@ -20,7 +21,6 @@ export default function Profile() {
   useEffect(() => {
     if (authUser) {
       setValue("username", authUser.user.username);
-      setValue("email", authUser.user.email);
     }
   }, [authUser, setValue]);
 
@@ -37,13 +37,12 @@ export default function Profile() {
 
     try {
       console.log("Saving user data:", data);
-      await updateUser(authUser.user.id, data, token);
+      await updateUser(authUser.user.id, { username: data.username }, token);
       setAuthUser((prev) => ({
         ...prev,
         user: {
-          id: authUser.user.id,
+          ...prev!.user,
           username: data.username || "",
-          email: data.email || "",
         },
       }));
       setIsEditing(false);
@@ -63,40 +62,81 @@ export default function Profile() {
       console.error("Token is not available");
       return;
     }
-    await deleteUser(userId, token);
-    setAuthUser(null);
-    navigate("/");
+
+    try {
+      await deleteUser(userId, token);
+      localStorage.removeItem("token");
+      setAuthUser(null);
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to delete user:", error);
+    }
   };
 
   return (
     <div className="p-4">
       <Title text="MON" highlight="PROFIL" />
-      <div className="mt-16 md:mt-4">
+      <div className="mt-16 md:mt-4 flex flex-col items-center">
+        <div className="mb-8">
+          {authUser?.user.avatarUrl ? (
+            <img
+              src={authUser.user.avatarUrl}
+              alt="Profile"
+              className="border-muted-foreground w-32 h-32 rounded-full overflow-hidden border-4 transition-transform duration-300 transform hover:scale-105 hover:border-primary"
+            />
+          ) : (
+            <UserCircle2 className="size-32 text-muted-foreground" />
+          )}
+        </div>
         {isEditing ? (
-          <form onSubmit={handleSubmit(onSubmit)} className="max-w-md">
-            <Input type="text" {...register("username")} />
-            <Input type="email" {...register("email")} />
-            <Button type="submit" variant="outline" className="mt-2">
-              <CheckIcon className="h-5 w-5" />
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="max-w-md w-full space-y-4"
+          >
+            <div className="space-y-2">
+              <Label className="text-sm text-muted-foreground">
+                Nom d'utilisateur
+              </Label>
+              <Input
+                type="text"
+                className="border border-primary"
+                {...register("username")}
+              />
+            </div>
+            <Button type="submit" variant="outline" className="w-full">
+              <CheckIcon className="h-5 w-5 mr-2" />
+              Sauvegarder
             </Button>
           </form>
         ) : (
-          <>
-            <p className="text-lg font-medium">
-              Nom d'utilisateur: {authUser?.user.username}
+          <div className="space-y-4 w-full max-w-md">
+            <div className="flex justify-between items-center">
+              <div className="flex flex-col">
+                <Label className="text-sm text-muted-foreground">
+                  Nom d'utilisateur
+                </Label>
+                <p className="text-lg font-medium">{authUser?.user.username}</p>
+              </div>
               <Button
                 onClick={() => setIsEditing(true)}
                 variant="outline"
-                className="ml-2"
+                size="icon"
               >
                 <PencilIcon className="h-5 w-5" />
               </Button>
-            </p>
-            <p className="text-lg font-medium">Email: {authUser?.user.email}</p>
-          </>
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="flex flex-col">
+                <Label className="text-sm text-muted-foreground">Email</Label>
+                <p className="text-lg font-medium">{authUser?.user.email}</p>
+              </div>
+            </div>
+          </div>
         )}
       </div>
-      <DeleteAccount handleDeleteUser={handleDeleteUser} />
+      <div className="mt-8">
+        <DeleteAccount handleDeleteUser={handleDeleteUser} />
+      </div>
     </div>
   );
 }

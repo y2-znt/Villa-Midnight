@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
+import passport from "passport";
+import { CLIENT_URL } from "../config/config";
 import { loggedInUser, loginUser, registerUser } from "../services/authService";
 import { handleErrorResponse } from "../utils/errorHandler";
 import { AuthenticatedRequest } from "../utils/express";
+import { generateToken } from "../utils/generateToken";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -47,4 +50,38 @@ export const logout = async (
   } catch (error) {
     handleErrorResponse(res, error);
   }
+};
+
+export const googleAuth = passport.authenticate("google", {
+  scope: ["profile", "email"],
+});
+
+export const googleAuthCallback = (req: Request, res: Response) => {
+  passport.authenticate("google", { session: false }, (err, user) => {
+    if (err) {
+      console.error("❌ Google authentication error:", err);
+      return res.redirect(
+        `${CLIENT_URL}/auth/error?message=${encodeURIComponent(err.message)}`
+      );
+    }
+    if (!user) {
+      return res.redirect(
+        `${CLIENT_URL}/auth/error?message=${encodeURIComponent(
+          "Authentication failed"
+        )}`
+      );
+    }
+
+    try {
+      const token = generateToken(user.id);
+      res.redirect(`${CLIENT_URL}/auth/callback?token=${token}`);
+    } catch (error) {
+      console.error("❌ Token generation error:", error);
+      res.redirect(
+        `${CLIENT_URL}/auth/error?message=${encodeURIComponent(
+          "Failed to generate authentication token"
+        )}`
+      );
+    }
+  })(req, res);
 };
