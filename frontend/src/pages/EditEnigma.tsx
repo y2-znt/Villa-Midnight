@@ -1,10 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
-import { Hourglass, Users } from "lucide-react";
+import { Hourglass, LoaderCircle, Users, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
-import { z } from "zod";
 import { fetchEnigmaById, updateEnigma } from "../api/enigmaApi";
 import DifficultySelect from "../components/shared/DifficultySelect";
 import { Button } from "../components/ui/button";
@@ -18,6 +17,7 @@ export default function EditEnigma() {
   const { id } = useParams();
   const { authUser, token } = useAuthContext();
   const navigate = useNavigate();
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [difficulty, setDifficulty] = useState<string | undefined>(undefined);
 
   const {
@@ -26,7 +26,7 @@ export default function EditEnigma() {
     setValue,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<z.infer<typeof enigmaSchema>>({
+  } = useForm<EnigmaSchema>({
     resolver: zodResolver(enigmaSchema),
   });
 
@@ -37,6 +37,7 @@ export default function EditEnigma() {
           const data = await fetchEnigmaById(id, token);
           reset(data);
           setDifficulty(data.difficulty);
+          setImagePreview(data.image);
         } catch (error) {
           console.error("Erreur lors de la récupération de l'énigme:", error);
         }
@@ -56,15 +57,43 @@ export default function EditEnigma() {
       return;
     }
 
-    const enigmaData = { ...data, userId: authUser.user.id };
-
     try {
+      const enigmaData = { ...data, userId: authUser.user.id };
+
       await updateEnigma(id, enigmaData, token);
       navigate("/my-enigmas");
     } catch (error) {
       console.error("Erreur lors de la mise à jour de l'énigme:", error);
     }
   };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setValue("image", file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    // Reset the file input
+    const fileInput = document.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = "";
+    }
+    setValue("image", null);
+    setImagePreview(null);
+  };
+
+  if (!id || !token) {
+    return <div>Chargement...</div>;
+  }
 
   return (
     <div>
@@ -106,11 +135,31 @@ export default function EditEnigma() {
         </div>
         <div>
           <Label htmlFor="image">Image</Label>
-          <Input
-            type="text"
-            {...register("image")}
-            placeholder="URL de l'image"
-          />
+          <div className="mt-2 flex items-center gap-4">
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+            />
+            {imagePreview && (
+              <div className="relative">
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-52 h-28 object-cover rounded-lg mb-4"
+                />
+                <button
+                  type="button"
+                  onClick={removeImage}
+                  className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 hover:bg-destructive/90"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+          </div>
           {errors.image && (
             <p className="text-red-500">{errors.image.message}</p>
           )}
@@ -150,7 +199,14 @@ export default function EditEnigma() {
           </div>
         </div>
         <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Mise à jour..." : "Mettre à jour"}
+          {isSubmitting ? (
+            <>
+              <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+              Mise à jour...
+            </>
+          ) : (
+            "Mettre à jour"
+          )}
         </Button>
       </form>
     </div>
