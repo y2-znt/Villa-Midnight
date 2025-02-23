@@ -1,8 +1,8 @@
 import { useInView } from "framer-motion";
 import { HTMLAttributes, useEffect, useRef, useState } from "react";
-import Title from "../components/ui/title";
-import { TESTIMONIALS } from "../data/data";
-import { cn } from "../lib/utils";
+import { TESTIMONIALS } from "../../../data/data";
+import Title from "../../ui/title";
+import { cn } from "../../../lib/utils";
 
 function splitArray<T>(array: Array<T>, numParts: number) {
   const result: Array<Array<T>> = [];

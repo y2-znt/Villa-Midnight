@@ -1,8 +1,8 @@
 import { UsersIcon } from "lucide-react";
 import { Link } from "react-router";
-import { Button } from "../components/ui/button";
-import Title from "../components/ui/title";
-import { fakeAdminEnigmas } from "../data/data";
+import { fakeAdminEnigmas } from "../../../data/data";
+import { Button } from "../../ui/button";
+import Title from "../../ui/title";
 
 export default function BestEnigmas() {
   return (

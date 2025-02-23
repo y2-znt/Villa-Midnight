@@ -1,7 +1,7 @@
 import { Link } from "react-router";
-import { Button } from "../components/ui/button";
-import Title from "../components/ui/title";
-import { useAuthContext } from "../context/AuthContext";
+import { useAuthContext } from "../../../context/AuthContext";
+import { Button } from "../../ui/button";
+import Title from "../../ui/title";
 
 const Hero = () => {
   const { authUser } = useAuthContext();

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import LogoWithName from "../components/shared/LogoWithName";
-import { Button } from "../components/ui/button";
-import UserMenu from "../components/UserMenu";
-import { useAuthContext } from "../context/AuthContext";
+import { useAuthContext } from "../../../context/AuthContext";
+import { Button } from "../../ui/button";
+import LogoWithName from "../LogoWithName";
+import UserMenu from "../UserMenu";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

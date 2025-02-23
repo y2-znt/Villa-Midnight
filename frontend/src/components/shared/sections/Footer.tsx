@@ -3,7 +3,7 @@ import {
   contactFooter,
   informationsFooter,
   servicesFooter,
-} from "../data/data";
+} from "../../../data/data";
 
 const Footer = () => {
   return (
