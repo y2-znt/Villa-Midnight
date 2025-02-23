@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <footer className="mx-7">
       <div className="flex flex-col justify-between border-t pt-4 text-xs sm:text-sm md:text-base lg:py-8">
-        <h3 className="my-6 text-3xl sm:text-4xl font-semibold text-foreground leading-tight">
+        <h3 className="my-6 text-3xl sm:text-4xl text-foreground leading-tight">
           LA VILLA <span className="text-primary">MIDNIGHT</span>
         </h3>
 
