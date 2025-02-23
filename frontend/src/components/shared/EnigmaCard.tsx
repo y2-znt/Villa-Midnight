@@ -12,8 +12,8 @@ import {
 } from "../ui/card";
 import DeleteEnigma from "./DeleteEnigma";
 import DifficultyIndicator from "./DifficultyIndicator";
-import EnigmaCardSkeleton from "./EnigmaCardSkeleton";
 import ParticipantsAndTime from "./ParticipantsAndTime";
+import EnigmaCardSkeleton from "./skeletons/EnigmaCardSkeleton";
 
 export interface EnigmaCardProps {
   enigma: EnigmaType;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { deleteEnigma } from "../api/enigmaApi";
 import EnigmaCard from "../components/shared/EnigmaCard";
-import EnigmaCardSkeleton from "../components/shared/EnigmaCardSkeleton";
+import EnigmaCardSkeleton from "../components/shared/skeletons/EnigmaCardSkeleton";
 import Title from "../components/ui/title";
 import { fakeAdminEnigmas } from "../data/data";
 import { EnigmaType } from "../types/types";

@@ -3,17 +3,20 @@ import React, { useRef, useState } from "react";
 import { updateUserAvatar } from "../../api/userApi";
 import { useAuthContext } from "../../context/AuthContext";
 import { Button } from "../ui/button";
+import AvatarSectionSkeleton from "./skeletons/AvatarSectionSkeleton";
 
 interface AvatarSectionProps {
   avatarUrl: string | null;
   username: string;
   onAvatarUpdate: (newAvatarUrl: string) => void;
+  isLoading?: boolean;
 }
 
 export default function AvatarSection({
   avatarUrl,
   username,
   onAvatarUpdate,
+  isLoading = false,
 }: AvatarSectionProps) {
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(avatarUrl);
@@ -67,6 +70,10 @@ export default function AvatarSection({
       fileInputRef.current.value = "";
     }
   };
+
+  if (isLoading) {
+    return <AvatarSectionSkeleton />;
+  }
 
   return (
     <div className="mb-8 relative group">

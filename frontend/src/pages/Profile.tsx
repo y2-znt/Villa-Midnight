@@ -5,6 +5,8 @@ import { useNavigate } from "react-router";
 import { deleteUser, updateUser } from "../api/userApi";
 import AvatarSection from "../components/shared/AvatarSection";
 import DeleteAccount from "../components/shared/DeleteAccount";
+import AvatarSectionSkeleton from "../components/shared/skeletons/AvatarSectionSkeleton";
+import ProfileInfoSkeleton from "../components/shared/skeletons/ProfileInfoSkeleton";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -96,8 +98,12 @@ export default function Profile() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader2 className="animate-spin h-32 w-32 text-primary" />
+      <div className="p-4">
+        <Title text="MON" highlight="PROFIL" />
+        <div className="mt-16 md:mt-4 flex flex-col items-center">
+          <AvatarSectionSkeleton />
+          <ProfileInfoSkeleton />
+        </div>
       </div>
     );
   }
