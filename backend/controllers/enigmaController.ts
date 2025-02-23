@@ -1,4 +1,5 @@
 import { Response } from "express";
+import cloudinary from "../config/cloudinaryConfig";
 import {
   addEnigma,
   fetchAllEnigmas,
@@ -60,12 +61,39 @@ export const createEnigma = async (
       return handleErrorResponse(res, new Error("Unauthorized: No user found"));
     }
 
-    const enigma = await addEnigma({
+    // Convert string values to numbers (for postman)
+    const enigmaData = {
       ...req.body,
+      numberOfParticipants: parseInt(req.body.numberOfParticipants, 10),
+      numberOfHours: parseInt(req.body.numberOfHours, 10),
       userId: req.user.userId,
+    };
+
+    let imageUrl;
+    if (req.file) {
+      try {
+        const result = await cloudinary.uploader.upload(req.file.path);
+        imageUrl = result.secure_url;
+        console.log("Cloudinary upload result:", result);
+      } catch (error: any) {
+        console.error("Cloudinary upload error:", error);
+        return handleErrorResponse(
+          res,
+          new Error(`Failed to upload image: ${error.message}`)
+        );
+      }
+    } else {
+      return handleErrorResponse(res, new Error("No image file provided"));
+    }
+
+    const enigma = await addEnigma({
+      ...enigmaData,
+      image: imageUrl,
     });
+
     res.status(201).json(enigma);
   } catch (error) {
+    console.error("Error creating enigma:", error);
     handleErrorResponse(res, error);
   }
 };
@@ -91,9 +119,32 @@ export const updateEnigma = async (
       );
     }
 
-    const enigma = await modifyEnigma(req.params.id, {
+    // Convert string values to numbers (for postman)
+    const enigmaData = {
       ...req.body,
+      numberOfParticipants: parseInt(req.body.numberOfParticipants, 10),
+      numberOfHours: parseInt(req.body.numberOfHours, 10),
       userId: existingEnigma.userId,
+    };
+
+    let imageUrl = existingEnigma.image;
+    if (req.file) {
+      try {
+        const result = await cloudinary.uploader.upload(req.file.path);
+        imageUrl = result.secure_url;
+        console.log("Cloudinary upload result:", result);
+      } catch (error: any) {
+        console.error("Cloudinary upload error:", error);
+        return handleErrorResponse(
+          res,
+          new Error(`Failed to upload image: ${error.message}`)
+        );
+      }
+    }
+
+    const enigma = await modifyEnigma(req.params.id, {
+      ...enigmaData,
+      image: imageUrl,
     });
 
     res.status(200).json(enigma);
