@@ -122,10 +122,10 @@ export const updateEnigma = async (
     // If a new image is provided
     if (req.file) {
       // Delete the old image if it exists
-      if (existingEnigma.image) {
+      if (imageUrl) {
         try {
           const publicId = `villa-midnight/${
-            existingEnigma.image.split("/").pop()?.split(".")[0]
+            imageUrl.split("/").pop()?.split(".")[0]
           }`;
           await cloudinary.uploader.destroy(publicId);
           console.log(`Old image deleted from Cloudinary: ${publicId}`);
