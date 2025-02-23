@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { deleteEnigma } from "../api/enigmaApi";
-import EnigmaCard from "../components/shared/EnigmaCard";
-import EnigmaCardSkeleton from "../components/shared/skeletons/EnigmaCardSkeleton";
-import Title from "../components/ui/title";
-import { fakeAdminEnigmas } from "../data/data";
-import { EnigmaType } from "../types/types";
+import { deleteEnigma } from "../../api/enigmaApi";
+import EnigmaCard from "../../components/shared/EnigmaCard";
+import EnigmaCardSkeleton from "../../components/shared/skeletons/EnigmaCardSkeleton";
+import Title from "../../components/ui/title";
+import { fakeAdminEnigmas } from "../../data/data";
+import { EnigmaType } from "../../types/types";
 
 export default function AllEnigmas() {
   const [isLoading, setIsLoading] = useState(true);

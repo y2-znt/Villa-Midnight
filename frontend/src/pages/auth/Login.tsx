@@ -1,17 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
-import { googleAuth, registerUser } from "../api/authApi";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import Title from "../components/ui/title";
+import { googleAuth, loginUser } from "../../api/authApi";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import Title from "../../components/ui/title";
+import { useAuthContext } from "../../context/AuthContext";
+import { SigninSchema } from "../../schemas/authSchema";
 
-import { useEffect } from "react";
-import { useAuthContext } from "../context/AuthContext";
-import { SignupSchema } from "../schemas/authSchema";
-
-export default function Register() {
+export default function Login() {
   const { authUser, setAuthUser } = useAuthContext();
   const navigate = useNavigate();
 
@@ -24,41 +23,29 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
-  } = useForm<SignupSchema>({
-    resolver: zodResolver(SignupSchema),
+  } = useForm<SigninSchema>({
+    resolver: zodResolver(SigninSchema),
   });
 
-  const onSubmit = async (data: SignupSchema) => {
+  const onSubmit = async (data: SigninSchema) => {
     try {
-      const response = await registerUser(
-        data.username,
-        data.email,
-        data.password,
-        data.confirmPassword
-      );
+      const response = await loginUser(data.email, data.password);
       setAuthUser({ user: response.user });
       navigate("/");
-      reset();
     } catch (error) {
       console.error(error);
+      alert("Email ou mot de passe incorrect");
     }
   };
+
   return (
     <div>
-      <Title text="Inscrivez" highlight="vous" />
+      <Title text="Connectez" highlight="vous" />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mx-auto space-y-4 w-11/12 md:w-1/3 mt-10"
       >
-        <div>
-          <Label htmlFor="username">Nom d'utilisateur</Label>
-          <Input id="username" {...register("username")} />
-          {errors.username && (
-            <p className="text-red-500">{errors.username.message}</p>
-          )}
-        </div>
         <div>
           <Label htmlFor="email">Email</Label>
           <Input id="email" {...register("email")} />
@@ -73,19 +60,8 @@ export default function Register() {
             <p className="text-red-500">{errors.password.message}</p>
           )}
         </div>
-        <div>
-          <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
-          <Input
-            id="confirmPassword"
-            type="password"
-            {...register("confirmPassword")}
-          />
-          {errors.confirmPassword && (
-            <p className="text-red-500">{errors.confirmPassword.message}</p>
-          )}
-        </div>
         <Button type="submit" disabled={isSubmitting} className="w-full">
-          {isSubmitting ? "Chargement..." : "S'inscrire"}
+          {isSubmitting ? "Chargement..." : "Se connecter"}
         </Button>
       </form>
 
@@ -104,10 +80,11 @@ export default function Register() {
           Google
         </Button>
       </div>
+
       <p className="text-center mt-4">
-        Vous avez déjà un compte ?{" "}
-        <Link to="/login" className="text-primary">
-          Connectez-vous
+        Vous n'avez pas de compte ?{" "}
+        <Link to="/register" className="text-primary">
+          Créez un compte
         </Link>
       </p>
     </div>

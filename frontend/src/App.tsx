@@ -4,19 +4,17 @@ import AuthLayout from "./AuthLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ScrollToTop from "./components/shared/ScrollToTop";
 import { AuthContextProvider } from "./context/AuthContext";
-import AllEnigmas from "./pages/AllEnigmas";
-import Contact from "./pages/Contact";
-import CreateEnigma from "./pages/CreateEnigma";
-import EditEnigma from "./pages/EditEnigma";
-import EnigmaDetails from "./pages/EnigmaDetails";
+import { Home, Contact } from "lucide-react";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import AllEnigmas from "./pages/enigmas/AllEnigmas";
+import CreateEnigma from "./pages/enigmas/CreateEnigma";
+import EditEnigma from "./pages/enigmas/EditEnigma";
+import EnigmaDetails from "./pages/enigmas/EnigmaDetails";
+import MyEnigmas from "./pages/enigmas/MyEnigmas";
 import FAQ from "./pages/FAQ";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import MyEnigmas from "./pages/MyEnigmas";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
-import Register from "./pages/Register";
-import AuthCallback from "./pages/AuthCallback";
 
 export default function App() {
   return (
@@ -71,7 +69,6 @@ export default function App() {
             element={<AuthLayout children={<Register />} />}
           />
           <Route path="/login" element={<AuthLayout children={<Login />} />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="*" element={<AuthLayout children={<NotFound />} />} />
         </Routes>
       </AuthContextProvider>

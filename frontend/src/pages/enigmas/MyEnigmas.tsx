@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { deleteEnigma, fetchEnigmasByUserId } from "../api/enigmaApi";
-import EnigmaCard from "../components/shared/EnigmaCard";
-import EnigmaCardSkeleton from "../components/shared/skeletons/EnigmaCardSkeleton";
-import { Button } from "../components/ui/button";
-import Title from "../components/ui/title";
-import { useAuthContext } from "../context/AuthContext";
-import { EnigmaType } from "../types/types";
+import { deleteEnigma, fetchEnigmasByUserId } from "../../api/enigmaApi";
+import EnigmaCard from "../../components/shared/EnigmaCard";
+import EnigmaCardSkeleton from "../../components/shared/skeletons/EnigmaCardSkeleton";
+import { Button } from "../../components/ui/button";
+import Title from "../../components/ui/title";
+import { useAuthContext } from "../../context/AuthContext";
+import { EnigmaType } from "../../types/types";
 
 export default function MyEnigmas() {
   const { authUser, token } = useAuthContext();

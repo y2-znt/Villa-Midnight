@@ -1,7 +1,8 @@
+import BestEnigmas from "../components/shared/sections/BestEnigmas";
+import Hero from "../components/shared/sections/Hero";
+import Testimonials from "../components/shared/sections/Testimonials";
 import Particles from "../components/ui/particles";
-import BestEnigmas from "../sections/BestEnigmas";
-import Hero from "../sections/Hero";
-import Testimonials from "../sections/Testimonials";
+
 import Contact from "./Contact";
 import FAQ from "./FAQ";
 

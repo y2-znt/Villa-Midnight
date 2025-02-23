@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { fetchEnigmaById } from "../api/enigmaApi";
-import { fetchUserById } from "../api/userApi";
-import DifficultyIndicator from "../components/shared/DifficultyIndicator";
-import ParticipantsAndTime from "../components/shared/ParticipantsAndTime";
-import EnigmaDetailsSkeleton from "../components/shared/skeletons/EnigmaDetailsSkeleton";
-import Title from "../components/ui/title";
-import { useAuthContext } from "../context/AuthContext";
-import { fakeAdminEnigmas } from "../data/data";
-import { EnigmaType } from "../types/types";
+import { fetchEnigmaById } from "../../api/enigmaApi";
+import { fetchUserById } from "../../api/userApi";
+import DifficultyIndicator from "../../components/shared/DifficultyIndicator";
+import ParticipantsAndTime from "../../components/shared/ParticipantsAndTime";
+import EnigmaDetailsSkeleton from "../../components/shared/skeletons/EnigmaDetailsSkeleton";
+import Title from "../../components/ui/title";
+import { useAuthContext } from "../../context/AuthContext";
+import { fakeAdminEnigmas } from "../../data/data";
+import { EnigmaType } from "../../types/types";
 
 export default function EnigmaDetails() {
   const { id } = useParams();

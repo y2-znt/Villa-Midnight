@@ -4,14 +4,14 @@ import { Hourglass, LoaderCircle, Users, X } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { createEnigma } from "../api/enigmaApi";
-import DifficultySelect from "../components/shared/DifficultySelect";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
-import Title from "../components/ui/title";
-import { useAuthContext } from "../context/AuthContext";
-import { EnigmaSchema, enigmaSchema } from "../schemas/enigmaSchema";
+import { createEnigma } from "../../api/enigmaApi";
+import DifficultySelect from "../../components/shared/DifficultySelect";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Textarea } from "../../components/ui/textarea";
+import Title from "../../components/ui/title";
+import { useAuthContext } from "../../context/AuthContext";
+import { EnigmaSchema, enigmaSchema } from "../../schemas/enigmaSchema";
 
 export default function CreateEnigma() {
   const { authUser, token } = useAuthContext();

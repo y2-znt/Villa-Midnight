@@ -1,6 +1,6 @@
+import Footer from "./components/shared/sections/Footer";
+import Navbar from "./components/shared/sections/Header";
 import { ThemeProvider } from "./context/themeprovider";
-import Footer from "./sections/Footer";
-import Navbar from "./sections/Header";
 
 type AppLayoutProps = {
   children: React.ReactNode;

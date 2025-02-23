@@ -7,15 +7,15 @@ import {
   UserIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router";
-import { logoutUser } from "../api/authApi";
-import { useAuthContext } from "../context/AuthContext";
-import { Button } from "./ui/button";
+import { logoutUser } from "../../api/authApi";
+import { useAuthContext } from "../../context/AuthContext";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 
 export default function UserMenu() {
   const { authUser, setAuthUser } = useAuthContext();
