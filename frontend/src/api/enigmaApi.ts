@@ -1,5 +1,6 @@
 import { API_BASE_URL } from "../config/apiClient";
 import { EnigmaSchema } from "../schemas/enigmaSchema";
+import { convertToFormData } from "../types/types";
 
 export const fetchAllEnigmas = async (token: string) => {
   try {
@@ -15,7 +16,6 @@ export const fetchAllEnigmas = async (token: string) => {
       );
     }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Erreur lors de la récupération des énigmes:", error);
@@ -46,13 +46,14 @@ export const fetchEnigmaById = async (id: string, token: string) => {
 
 export const createEnigma = async (enigma: EnigmaSchema, token: string) => {
   try {
+    const formData = convertToFormData(enigma);
+
     const response = await fetch(`${API_BASE_URL}/enigmas`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(enigma),
+      body: formData,
     });
 
     if (response.ok) {
@@ -75,15 +76,29 @@ export const updateEnigma = async (
   enigma: EnigmaSchema,
   token: string
 ) => {
-  const response = await fetch(`${API_BASE_URL}/enigmas/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(enigma),
-  });
-  return response.json();
+  try {
+    const formData = convertToFormData(enigma);
+
+    const response = await fetch(`${API_BASE_URL}/enigmas/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.message || "Erreur lors de la mise à jour de l'énigme"
+      );
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour de l'énigme:", error);
+    throw error;
+  }
 };
 
 export const deleteEnigma = async (id: string, token: string) => {
