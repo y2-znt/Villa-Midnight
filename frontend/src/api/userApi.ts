@@ -68,3 +68,31 @@ export const deleteUser = async (id: string, token: string) => {
     throw error;
   }
 };
+
+export const updateUserAvatar = async (
+  id: string,
+  file: File,
+  token: string
+) => {
+  try {
+    const formData = new FormData();
+    formData.append("avatarUrl", file);
+
+    const response = await fetch(`${API_BASE_URL}/users/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la mise à jour de l'avatar");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour de l'avatar:", error);
+    throw error;
+  }
+};
