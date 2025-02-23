@@ -1,9 +1,12 @@
-import { CheckIcon, PencilIcon } from "lucide-react";
+import { CheckIcon, Loader2, PencilIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { deleteUser, updateUser } from "../api/userApi";
+import AvatarSection from "../components/shared/AvatarSection";
 import DeleteAccount from "../components/shared/DeleteAccount";
+import AvatarSectionSkeleton from "../components/shared/skeletons/AvatarSectionSkeleton";
+import ProfileInfoSkeleton from "../components/shared/skeletons/ProfileInfoSkeleton";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -14,13 +17,17 @@ import { UserUpdateType } from "../types/types";
 export default function Profile() {
   const { authUser, setAuthUser } = useAuthContext();
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
   const { register, handleSubmit, setValue } = useForm<UserUpdateType>();
   const { token } = useAuthContext();
 
   useEffect(() => {
+    setIsLoading(true);
     if (authUser) {
       setValue("username", authUser.user.username);
+      setIsLoading(false);
     }
   }, [authUser, setValue]);
 
@@ -36,6 +43,7 @@ export default function Profile() {
     }
 
     try {
+      setIsSaving(true);
       console.log("Saving user data:", data);
       await updateUser(authUser.user.id, { username: data.username }, token);
       setAuthUser((prev) => ({
@@ -48,6 +56,8 @@ export default function Profile() {
       setIsEditing(false);
     } catch (error) {
       console.error("Failed to update user:", error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -64,34 +74,51 @@ export default function Profile() {
     }
 
     try {
+      setIsLoading(true);
       await deleteUser(userId, token);
       localStorage.removeItem("token");
       setAuthUser(null);
       navigate("/");
     } catch (error) {
       console.error("Failed to delete user:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const handleAvatarUpdate = (newAvatarUrl: string) => {
+    setAuthUser((prev) => ({
+      ...prev!,
+      user: {
+        ...prev!.user,
+        avatarUrl: newAvatarUrl,
+      },
+    }));
+  };
+
+  if (isLoading) {
+    return (
+      <div className="p-4">
+        <Title text="MON" highlight="PROFIL" />
+        <div className="mt-16 md:mt-4 flex flex-col items-center">
+          <AvatarSectionSkeleton />
+          <ProfileInfoSkeleton />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4">
       <Title text="MON" highlight="PROFIL" />
       <div className="mt-16 md:mt-4 flex flex-col items-center">
-        <div className="mb-8">
-          {authUser?.user.avatarUrl ? (
-            <img
-              src={authUser.user.avatarUrl}
-              alt="Profile"
-              className="border-muted-foreground w-32 h-32 rounded-full overflow-hidden border-4 transition-transform duration-300 transform hover:scale-105 hover:border-primary"
-            />
-          ) : (
-            <div className="flex items-center justify-center w-32 h-32 border-4 border-primary bg-primary/10 rounded-full transition-transform duration-300 transform hover:scale-105 hover:border-primary">
-              <span className="text-4xl font-bold text-primary">
-                {authUser?.user.username.charAt(0).toUpperCase()}
-              </span>
-            </div>
-          )}
-        </div>
+        {authUser && (
+          <AvatarSection
+            avatarUrl={authUser.user.avatarUrl || null}
+            username={authUser.user.username}
+            onAvatarUpdate={handleAvatarUpdate}
+          />
+        )}
         <div className="space-y-4 w-full max-w-md">
           {isEditing ? (
             <form
@@ -106,10 +133,20 @@ export default function Profile() {
                   type="text"
                   className="border border-primary"
                   {...register("username")}
+                  disabled={isSaving}
                 />
               </div>
-              <Button type="submit" variant="outline" className="w-full">
-                <CheckIcon className="h-5 w-5 mr-2" />
+              <Button
+                type="submit"
+                variant="outline"
+                className="w-full"
+                disabled={isSaving}
+              >
+                {isSaving ? (
+                  <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                ) : (
+                  <CheckIcon className="h-5 w-5 mr-2" />
+                )}
                 Sauvegarder
               </Button>
             </form>

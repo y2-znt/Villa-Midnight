@@ -24,6 +24,7 @@ const registerUser = async (data) => {
             username: true,
             email: true,
             avatarUrl: true,
+            createdAt: true,
             role: true,
         },
     });
@@ -41,6 +42,7 @@ const loginUser = async (data) => {
             email: true,
             avatarUrl: true,
             password: true,
+            createdAt: true,
             role: true,
         },
     });
@@ -63,6 +65,7 @@ const loggedInUser = async (userId) => {
                 username: true,
                 email: true,
                 avatarUrl: true,
+                createdAt: true,
                 role: true,
             },
         });

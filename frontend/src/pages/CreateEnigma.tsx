@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
-import { Hourglass, Users } from "lucide-react";
+import { Hourglass, LoaderCircle, Users, X } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { z } from "zod";
 import { createEnigma } from "../api/enigmaApi";
 import DifficultySelect from "../components/shared/DifficultySelect";
 import { Button } from "../components/ui/button";
@@ -16,35 +16,54 @@ import { EnigmaSchema, enigmaSchema } from "../schemas/enigmaSchema";
 export default function CreateEnigma() {
   const { authUser, token } = useAuthContext();
   const navigate = useNavigate();
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<z.infer<typeof enigmaSchema>>({
+  } = useForm<EnigmaSchema>({
     resolver: zodResolver(enigmaSchema),
   });
 
   const onSubmit = async (data: EnigmaSchema) => {
     if (!authUser || !authUser.user || !authUser.user.id || !token) {
-      console.error("User not authenticated or invalid userId/token");
+      console.log("Vous devez être connecté pour créer une énigme");
       return;
     }
 
-    const enigmaData = {
-      ...data,
-      userId: authUser.user.id,
-    };
-
-    console.log("Enigma Data:", enigmaData);
-
     try {
-      await createEnigma(enigmaData, token);
+      console.log("Submitting data:", data);
+      await createEnigma(data, token);
       navigate("/my-enigmas");
     } catch (error) {
       console.error("Erreur lors de la création de l'énigme:", error);
     }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setValue("image", file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    // Reset the file input
+    const fileInput = document.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = "";
+    }
+    setValue("image", null);
+    setImagePreview(null);
   };
 
   return (
@@ -81,11 +100,31 @@ export default function CreateEnigma() {
         </div>
         <div>
           <Label htmlFor="image">Image</Label>
-          <Input
-            type="text"
-            {...register("image")}
-            placeholder="URL de l'image"
-          />
+          <div className="mt-2 flex items-center gap-4">
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+            />
+            {imagePreview && (
+              <div className="relative">
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-52 h-28 object-cover rounded-lg mb-4"
+                />
+                <button
+                  type="button"
+                  onClick={removeImage}
+                  className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 hover:bg-destructive/90"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+          </div>
           {errors.image && (
             <p className="text-red-500">{errors.image.message}</p>
           )}
@@ -125,7 +164,14 @@ export default function CreateEnigma() {
           </div>
         </div>
         <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Création..." : "Créer"}
+          {isSubmitting ? (
+            <>
+              <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+              Création...
+            </>
+          ) : (
+            "Créer"
+          )}
         </Button>
       </form>
     </div>

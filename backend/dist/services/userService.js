@@ -59,13 +59,14 @@ const addUser = async ({ username, email, password, }) => {
     }
 };
 exports.addUser = addUser;
-const modifyUser = async (id, { username, email }) => {
+const modifyUser = async (id, { username, email, avatarUrl, }) => {
     try {
         const user = await prismaClient_1.default.user.update({
             where: { id },
             data: {
                 username,
                 email,
+                avatarUrl,
             },
         });
         const { password, ...userWithoutPassword } = user;
