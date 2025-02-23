@@ -106,7 +106,7 @@ export default function CreateEnigma() {
               id="image"
               accept="image/*"
               onChange={handleImageChange}
-              className="file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+              className="file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
             />
             {imagePreview && (
               <div className="relative">

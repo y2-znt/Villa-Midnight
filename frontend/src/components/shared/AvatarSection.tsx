@@ -89,7 +89,7 @@ export default function AvatarSection({
           <img
             src={avatarPreview}
             alt="Profile"
-            className={`w-32 h-32 rounded-full overflow-hidden border-4 border-muted-foreground transition-transform duration-300 transform hover:scale-105 hover:border-primary cursor-pointer ${
+            className={`w-32 h-32 rounded-full overflow-hidden border-4 border-input transition-transform duration-300 transform hover:scale-105 hover:border-primary cursor-pointer ${
               isUpdatingAvatar ? "opacity-50" : ""
             }`}
             onClick={handleAvatarClick}
@@ -98,7 +98,7 @@ export default function AvatarSection({
             <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
               <Button
                 size="icon"
-                variant="secondary"
+                variant="outline"
                 onClick={cancelAvatarUpdate}
                 className="rounded-full"
                 disabled={isUpdatingAvatar}
@@ -107,7 +107,7 @@ export default function AvatarSection({
               </Button>
               <Button
                 size="icon"
-                variant="default"
+                variant="tertiary"
                 onClick={handleAvatarUpdate}
                 className="rounded-full"
                 disabled={isUpdatingAvatar}
@@ -134,6 +134,7 @@ export default function AvatarSection({
       {!isUploadingAvatar && !isUpdatingAvatar && (
         <Button
           size="icon"
+          variant="outline"
           className="absolute -bottom-0 -right-0 rounded-full transition-transform duration-300 transform hover:scale-110 group-hover:scale-110"
           onClick={handleAvatarClick}
         >

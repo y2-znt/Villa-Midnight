@@ -80,7 +80,7 @@ export default function Navbar() {
           <li>
             {!authUser && (
               <Link to="/login">
-                <Button variant="default" size="lg">
+                <Button variant="outline" size="lg">
                   RELEVER LE DÉFI
                 </Button>
               </Link>
@@ -92,7 +92,7 @@ export default function Navbar() {
         <UserMenu />
       ) : (
         <Link to="/login" className="hidden lg:block">
-          <Button variant="default" size="lg">
+          <Button variant="outline" size="lg">
             RELEVER LE DÉFI
           </Button>
         </Link>

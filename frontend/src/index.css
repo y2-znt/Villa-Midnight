@@ -44,6 +44,8 @@
     --primary-foreground: 0 85.7% 97.3%;
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
+    --tertiary: 47.9 95.8% 53.1%;
+    --tertiary-foreground: 26 83.3% 14.1%;
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
     --accent: 0 0% 14.9%;
@@ -78,5 +80,6 @@
     @apply font-bold;
     @apply uppercase;
     font-family: "Anton", sans-serif;
+    @apply tracking-wide;
   }
 }

@@ -12,8 +12,8 @@ export default function Home() {
       <div
         className="absolute inset-0 bg-cover bg-center -z-10"
         style={{
-          backgroundImage: `url('/assets/hero_img.jpg')`,
-          opacity: 0.3,
+          backgroundImage: `url('/assets/hero_img.webp')`,
+          opacity: 0.2,
         }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background -z-10" />
