@@ -1,8 +1,9 @@
 import { useInView } from "framer-motion";
 import { HTMLAttributes, useEffect, useRef, useState } from "react";
 import { TESTIMONIALS } from "../../../data/data";
-import Title from "../../ui/title";
 import { cn } from "../../../lib/utils";
+import Title from "../../ui/title";
+import FadeOnScroll from "../../animations/FadeOnScroll";
 
 function splitArray<T>(array: Array<T>, numParts: number) {
   const result: Array<Array<T>> = [];
@@ -155,15 +156,17 @@ export default function Testimonials() {
   const isInView = useInView(containerRef, { once: true, amount: 0.4 });
 
   return (
-    <div>
-      <Title text="Témoignages des plus" highlight="Courageux" />
-      <div
-        ref={containerRef}
-        className="px-4 opacity-0 transition-opacity duration-700 ease-in-out md:px-6 lg:px-8 xl:px-20 2xl:px-32"
-        style={{ opacity: isInView ? 1 : 0 }}
-      >
-        <ReviewGrid isVisible={isInView} />
+    <FadeOnScroll delay={0}>
+      <div>
+        <Title text="Témoignages des plus" highlight="Courageux" />
+        <div
+          ref={containerRef}
+          className="px-4 opacity-0 transition-opacity duration-700 ease-in-out md:px-6 lg:px-8 xl:px-20 2xl:px-32"
+          style={{ opacity: isInView ? 1 : 0 }}
+        >
+          <ReviewGrid isVisible={isInView} />
+        </div>
       </div>
-    </div>
+    </FadeOnScroll>
   );
 }

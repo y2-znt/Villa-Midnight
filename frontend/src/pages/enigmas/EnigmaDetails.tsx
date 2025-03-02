@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { fetchEnigmaById } from "../../api/enigmaApi";
 import { fetchUserById } from "../../api/userApi";
+import FadeUp from "../../components/animations/FadeUp";
 import DifficultyIndicator from "../../components/shared/DifficultyIndicator";
 import ParticipantsAndTime from "../../components/shared/ParticipantsAndTime";
 import EnigmaDetailsSkeleton from "../../components/shared/skeletons/EnigmaDetailsSkeleton";
@@ -54,38 +55,47 @@ export default function EnigmaDetails() {
   return (
     <div>
       <div
-        className="bg-cover bg-center bg-no-repeat p-5 rounded-lg text-white h-2/3 absolute top-0 left-0 right-0 bottom-0 z-[-1]"
+        className="bg-cover bg-center bg-no-repeat p-5 rounded-lg text-white h-2/3 absolute top-0 left-0 right-0 bottom-0 z-[-1] transition-opacity duration-700 ease-in-out opacity-0 animate-fade-in"
         style={{ backgroundImage: `url(${image})`, opacity: 0.7 }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background -z-10" />
       </div>
 
       <div className="mx-7 mt-14 mb-36 md:mt-28 flex flex-col items-start">
-        <Title
-          text={title.split(" ").slice(0, -1).join(" ")}
-          highlight={title.split(" ").pop() || ""}
-          className="mx-0"
-        />
+        <FadeUp delay={0.2}>
+          <Title
+            text={title.split(" ").slice(0, -1).join(" ")}
+            highlight={title.split(" ").pop() || ""}
+            className="mx-0"
+          />
+        </FadeUp>
         <div className="flex justify-between">
           <div className="flex flex-col mt-10">
-            <DifficultyIndicator
-              difficulty={difficulty as "ONE" | "TWO" | "THREE"}
-            />
-            <div className="text-base md:text-xl max-w-lg leading-relaxed mt-4">
-              {description}
-            </div>
-
-            <ParticipantsAndTime
-              numberOfParticipants={displayedEnigma.numberOfParticipants}
-              numberOfHours={displayedEnigma.numberOfHours}
-            />
-            <p className="mt-6 text-sm md:text-base text-muted-foreground">
-              Mis à jour le :{" "}
-              {updatedAt
-                ? new Date(updatedAt).toLocaleDateString()
-                : "Date inconnue"}{" "}
-              par {user?.username || createdBy?.username}
-            </p>
+            <FadeUp delay={0.4}>
+              <DifficultyIndicator
+                difficulty={difficulty as "ONE" | "TWO" | "THREE"}
+              />
+            </FadeUp>
+            <FadeUp delay={0.6}>
+              <div className="text-base md:text-xl max-w-lg leading-relaxed mt-4">
+                {description}
+              </div>
+            </FadeUp>
+            <FadeUp delay={0.8}>
+              <ParticipantsAndTime
+                numberOfParticipants={displayedEnigma.numberOfParticipants}
+                numberOfHours={displayedEnigma.numberOfHours}
+              />
+            </FadeUp>
+            <FadeUp delay={1.0}>
+              <p className="mt-6 text-sm md:text-base text-muted-foreground">
+                Mis à jour le :{" "}
+                {updatedAt
+                  ? new Date(updatedAt).toLocaleDateString()
+                  : "Date inconnue"}{" "}
+                par {user?.username || createdBy?.username}
+              </p>
+            </FadeUp>
           </div>
         </div>
       </div>
