@@ -26,7 +26,7 @@ export default function App() {
       <AuthContextProvider>
         <Toaster richColors position="bottom-right" />
         <Routes>
-          <Route path="/" element={<AppLayout children={<Home />} />} />
+          <Route path="/" element={<Home />} />
           <Route
             path="/enigmas"
             element={<AppLayout children={<AllEnigmas />} />}
