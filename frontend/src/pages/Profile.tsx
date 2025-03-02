@@ -2,6 +2,7 @@ import { CheckIcon, Loader2, PencilIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import { deleteUser, updateUser } from "../api/userApi";
 import AvatarSection from "../components/shared/AvatarSection";
 import DeleteAccount from "../components/shared/DeleteAccount";
@@ -54,8 +55,10 @@ export default function Profile() {
         },
       }));
       setIsEditing(false);
+      toast.success("Nom d'utilisateur mis à jour avec succès !");
     } catch (error) {
       console.error("Failed to update user:", error);
+      toast.error("Échec de la mise à jour du nom d'utilisateur.");
     } finally {
       setIsSaving(false);
     }
@@ -79,8 +82,10 @@ export default function Profile() {
       localStorage.removeItem("token");
       setAuthUser(null);
       navigate("/");
+      toast.success("Compte supprimé avec succès.");
     } catch (error) {
       console.error("Failed to delete user:", error);
+      toast.error("Échec de la suppression du compte.");
     } finally {
       setIsLoading(false);
     }
@@ -94,6 +99,7 @@ export default function Profile() {
         avatarUrl: newAvatarUrl,
       },
     }));
+    toast.success("Avatar mis à jour avec succès !");
   };
 
   if (isLoading) {

@@ -1,4 +1,5 @@
 import { TrashIcon } from "lucide-react";
+import { toast } from "sonner"; // Importing toast
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,6 +21,11 @@ export default function DeleteEnigma({
   enigmaId,
   onDelete,
 }: DeleteEnigmaProps) {
+  const handleDelete = () => {
+    onDelete(enigmaId);
+    toast.success("Énigme supprimée avec succès !");
+  };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -36,7 +42,7 @@ export default function DeleteEnigma({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Annuler</AlertDialogCancel>
-          <AlertDialogAction onClick={() => onDelete(enigmaId)}>
+          <AlertDialogAction onClick={handleDelete}>
             Supprimer
           </AlertDialogAction>
         </AlertDialogFooter>

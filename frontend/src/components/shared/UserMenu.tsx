@@ -7,6 +7,7 @@ import {
   UserIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import { logoutUser } from "../../api/authApi";
 import { useAuthContext } from "../../context/AuthContext";
 import { Button } from "../ui/button";
@@ -25,9 +26,11 @@ export default function UserMenu() {
     try {
       await logoutUser();
       setAuthUser(null);
+      toast.success("Déconnexion réussie !");
       navigate("/");
     } catch (error) {
       console.error("Logout failed:", error);
+      toast.error("Échec de la déconnexion.");
     }
   };
 

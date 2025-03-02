@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import { API_BASE_URL } from "../config/apiClient";
 import { useAuthContext } from "../context/AuthContext";
 
@@ -23,9 +24,11 @@ const AuthCallback = () => {
 
         const data = await response.json();
         setAuthUser({ user: data.user });
+        toast.success("Connexion réussie ! 🎉", { id: "success-toast" });
         navigate("/");
       } catch (error) {
         console.error("❌ Error fetching user data:", error);
+        toast.error("Erreur lors de la récupération des données utilisateur.");
         navigate("/auth/error");
       }
     };
@@ -37,11 +40,12 @@ const AuthCallback = () => {
       fetchUserData(token);
     } else {
       console.error("❌ Aucun token trouvé");
+      toast.error("Aucun token trouvé.");
       navigate("/auth/error");
     }
   }, [setAuthUser, navigate]);
 
-  return <p>🔄 Connexion en cours...</p>;
+  return <p>Connexion en cours...</p>;
 };
 
 export default AuthCallback;

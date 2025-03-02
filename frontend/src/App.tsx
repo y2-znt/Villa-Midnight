@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router";
+import { Toaster } from "sonner";
 import AppLayout from "./AppLayout";
 import AuthLayout from "./AuthLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ScrollToTop from "./components/shared/ScrollToTop";
-import { AuthContextProvider } from "./context/AuthContext";
-
 import AuthCallback from "./context/AuthCallback";
+import { AuthContextProvider } from "./context/AuthContext";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Contact from "./pages/Contact";
@@ -24,6 +24,7 @@ export default function App() {
     <BrowserRouter>
       <ScrollToTop />
       <AuthContextProvider>
+        <Toaster richColors position="bottom-right" />
         <Routes>
           <Route path="/" element={<AppLayout children={<Home />} />} />
           <Route
