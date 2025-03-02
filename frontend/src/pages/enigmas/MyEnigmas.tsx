@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { deleteEnigma, fetchEnigmasByUserId } from "../../api/enigmaApi";
+import FadeUpOnScroll from "../../components/animations/FadeUpOnScroll"; // Import the animation component
 import EnigmaCard from "../../components/shared/EnigmaCard";
 import EnigmaCardSkeleton from "../../components/shared/skeletons/EnigmaCardSkeleton";
 import { Button } from "../../components/ui/button";
@@ -70,12 +71,13 @@ export default function MyEnigmas() {
               <EnigmaCardSkeleton />
             </>
           ) : (
-            enigmas.map((enigma: EnigmaType) => (
-              <EnigmaCard
-                key={enigma.id}
-                enigma={enigma}
-                onDelete={() => handleDelete(enigma.id)}
-              />
+            enigmas.map((enigma: EnigmaType, index: number) => (
+              <FadeUpOnScroll key={enigma.id} delay={index * 0.2}>
+                <EnigmaCard
+                  enigma={enigma}
+                  onDelete={() => handleDelete(enigma.id)}
+                />
+              </FadeUpOnScroll>
             ))
           )}
         </div>
