@@ -1,5 +1,6 @@
 import { Camera, CheckIcon, Loader2, X } from "lucide-react";
 import React, { useRef, useState } from "react";
+import { toast } from "sonner";
 import { updateUserAvatar } from "../../api/userApi";
 import { useAuthContext } from "../../context/AuthContext";
 import { Button } from "../ui/button";
@@ -56,8 +57,10 @@ export default function AvatarSection({
       onAvatarUpdate(response.avatarUrl);
       setIsUploadingAvatar(false);
       setAvatarPreview(response.avatarUrl);
+      toast.success("Avatar mis à jour avec succès !");
     } catch (error) {
       console.error("Failed to update avatar:", error);
+      toast.error("Erreur lors de la mise à jour de l'avatar.");
     } finally {
       setIsUpdatingAvatar(false);
     }

@@ -12,6 +12,7 @@ import { Textarea } from "../../components/ui/textarea";
 import Title from "../../components/ui/title";
 import { useAuthContext } from "../../context/AuthContext";
 import { EnigmaSchema, enigmaSchema } from "../../schemas/enigmaSchema";
+import { toast } from "sonner";
 
 export default function EditEnigma() {
   const { id } = useParams();
@@ -59,11 +60,12 @@ export default function EditEnigma() {
 
     try {
       const enigmaData = { ...data, userId: authUser.user.id };
-
       await updateEnigma(id, enigmaData, token);
+      toast.success("Énigme mise à jour avec succès !");
       navigate("/my-enigmas");
     } catch (error) {
       console.error("Erreur lors de la mise à jour de l'énigme:", error);
+      toast.error("Erreur lors de la mise à jour de l'énigme.");
     }
   };
 
@@ -89,6 +91,7 @@ export default function EditEnigma() {
     }
     setValue("image", null);
     setImagePreview(null);
+    toast.info("Image supprimée.");
   };
 
   if (!id || !token) {

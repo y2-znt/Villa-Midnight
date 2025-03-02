@@ -3,6 +3,7 @@ import { Label } from "@radix-ui/react-label";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
 import { googleAuth, loginUser } from "../../api/authApi";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
@@ -32,10 +33,13 @@ export default function Login() {
     try {
       const response = await loginUser(data.email, data.password);
       setAuthUser({ user: response.user });
+      toast.success("Connexion réussie ! 🎉");
       navigate("/");
     } catch (error) {
       console.error(error);
-      alert("Email ou mot de passe incorrect");
+      toast.error("Email ou mot de passe incorrect");
+    } finally {
+      toast.dismiss();
     }
   };
 

@@ -4,6 +4,7 @@ import { Hourglass, LoaderCircle, Users, X } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import { createEnigma } from "../../api/enigmaApi";
 import DifficultySelect from "../../components/shared/DifficultySelect";
 import { Button } from "../../components/ui/button";
@@ -29,16 +30,18 @@ export default function CreateEnigma() {
 
   const onSubmit = async (data: EnigmaSchema) => {
     if (!authUser || !authUser.user || !authUser.user.id || !token) {
-      console.log("Vous devez être connecté pour créer une énigme");
+      toast.error("Vous devez être connecté pour créer une énigme");
       return;
     }
 
     try {
       console.log("Submitting data:", data);
       await createEnigma(data, token);
+      toast.success("Énigme créée avec succès ! 🎉");
       navigate("/my-enigmas");
     } catch (error) {
       console.error("Erreur lors de la création de l'énigme:", error);
+      toast.error("Erreur lors de la création de l'énigme.");
     }
   };
 
@@ -55,7 +58,6 @@ export default function CreateEnigma() {
   };
 
   const removeImage = () => {
-    // Reset the file input
     const fileInput = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
@@ -64,6 +66,7 @@ export default function CreateEnigma() {
     }
     setValue("image", null);
     setImagePreview(null);
+    toast.info("Image supprimée.");
   };
 
   return (
