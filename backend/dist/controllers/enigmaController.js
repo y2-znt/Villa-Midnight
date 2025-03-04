@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteEnigma = exports.updateEnigma = exports.createEnigma = exports.getEnigmaById = exports.getAllEnigmas = void 0;
 const cloudinaryConfig_1 = __importDefault(require("../config/cloudinaryConfig"));
 const enigmaService_1 = require("../services/enigmaService");
+const userService_1 = require("../services/userService");
 const errorHandler_1 = require("../utils/errorHandler");
 const getAllEnigmas = async (req, res) => {
     try {
@@ -25,14 +26,18 @@ const getAllEnigmas = async (req, res) => {
 exports.getAllEnigmas = getAllEnigmas;
 const getEnigmaById = async (req, res) => {
     try {
-        if (!req.user) {
-            return (0, errorHandler_1.handleErrorResponse)(res, new Error("Unauthorized: No user found"));
-        }
         const enigma = await (0, enigmaService_1.fetchEnigmaById)(req.params.id);
-        if (req.user.role !== "ADMIN" && enigma.userId !== req.user.userId) {
-            return (0, errorHandler_1.handleErrorResponse)(res, new Error("Unauthorized: You can only access your own enigmas"));
+        if (!enigma) {
+            return (0, errorHandler_1.handleErrorResponse)(res, new Error("Enigme non trouvée"));
         }
-        res.status(200).json(enigma);
+        const user = await (0, userService_1.fetchUserById)(enigma.userId);
+        const response = {
+            ...enigma,
+            createdBy: user
+                ? { username: user.username }
+                : { username: "Utilisateur inconnu" },
+        };
+        res.status(200).json(response);
     }
     catch (error) {
         (0, errorHandler_1.handleErrorResponse)(res, error);

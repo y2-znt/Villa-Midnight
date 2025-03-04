@@ -23,13 +23,9 @@ export const fetchAllEnigmas = async (token: string) => {
   }
 };
 
-export const fetchEnigmaById = async (id: string, token: string) => {
+export const fetchEnigmaById = async (id: string) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/enigmas/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(`${API_BASE_URL}/enigmas/${id}`);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(

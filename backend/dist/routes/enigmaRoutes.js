@@ -9,7 +9,7 @@ const authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"
 const upload_1 = __importDefault(require("../middlewares/upload"));
 const router = express_1.default.Router();
 router.get("/", authMiddleware_1.default, enigmaController_1.getAllEnigmas);
-router.get("/:id", authMiddleware_1.default, enigmaController_1.getEnigmaById);
+router.get("/:id", enigmaController_1.getEnigmaById);
 router.post("/", authMiddleware_1.default, upload_1.default.single("image"), enigmaController_1.createEnigma);
 router.put("/:id", authMiddleware_1.default, upload_1.default.single("image"), enigmaController_1.updateEnigma);
 router.delete("/:id", authMiddleware_1.default, enigmaController_1.deleteEnigma);

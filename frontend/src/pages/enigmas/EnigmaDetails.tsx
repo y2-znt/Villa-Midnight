@@ -1,37 +1,34 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { fetchEnigmaById } from "../../api/enigmaApi";
-import { fetchUserById } from "../../api/userApi";
 import FadeUp from "../../components/animations/FadeUp";
 import DifficultyIndicator from "../../components/shared/DifficultyIndicator";
 import ParticipantsAndTime from "../../components/shared/ParticipantsAndTime";
 import EnigmaDetailsSkeleton from "../../components/shared/skeletons/EnigmaDetailsSkeleton";
+import { Button } from "../../components/ui/button";
 import Title from "../../components/ui/title";
-import { useAuthContext } from "../../context/AuthContext";
 import { fakeAdminEnigmas } from "../../data/data";
 import { EnigmaType } from "../../types/types";
 
 export default function EnigmaDetails() {
   const { id } = useParams();
-  const { token } = useAuthContext();
   const [enigma, setEnigma] = useState<EnigmaType | null>(null);
-  const [user, setUser] = useState<{ username: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [buttonText, setButtonText] = useState("Copier le lien");
+  const [iconVisible, setIconVisible] = useState(true);
 
   useEffect(() => {
     const getEnigma = async () => {
-      if (!id || !token) {
-        console.error("Enigma ID or Token is undefined");
+      if (!id) {
+        console.error("Enigma ID is undefined");
         setLoading(false);
         return;
       }
 
       try {
-        const data = await fetchEnigmaById(id, token);
+        const data = await fetchEnigmaById(id);
         if (data) {
           setEnigma(data);
-          const userData = await fetchUserById(data.userId, token);
-          setUser(userData);
         }
       } catch (error) {
         console.error("Erreur lors de la récupération de l'énigme:", error);
@@ -41,7 +38,7 @@ export default function EnigmaDetails() {
     };
 
     getEnigma();
-  }, [id, token]);
+  }, [id]);
 
   const displayedEnigma = enigma ?? fakeAdminEnigmas.find((e) => e.id === id);
 
@@ -51,6 +48,19 @@ export default function EnigmaDetails() {
 
   const { title, description, difficulty, image, updatedAt, createdBy } =
     displayedEnigma;
+
+  const shareLink = `${window.location.origin}/enigma/${id}`;
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(shareLink).then(() => {
+      setButtonText("Lien copié ! ✓");
+      setIconVisible(false);
+      setTimeout(() => {
+        setButtonText("Copier le lien");
+        setIconVisible(true);
+      }, 3000);
+    });
+  };
 
   return (
     <div>
@@ -93,8 +103,24 @@ export default function EnigmaDetails() {
                 {updatedAt
                   ? new Date(updatedAt).toLocaleDateString()
                   : "Date inconnue"}{" "}
-                par {user?.username || createdBy?.username}
+                par {createdBy?.username || "Utilisateur inconnu"}
               </p>
+            </FadeUp>
+            <FadeUp delay={1.2}>
+              <Button
+                variant="outline"
+                onClick={copyToClipboard}
+                className="mt-10 flex items-center justify-center"
+              >
+                {buttonText}
+                {iconVisible && (
+                  <img
+                    src="../../public/assets/clipboard.svg"
+                    alt="Clipboard Icon"
+                    className="ml-2"
+                  />
+                )}
+              </Button>
             </FadeUp>
           </div>
         </div>

@@ -7,6 +7,7 @@ import {
   modifyEnigma,
   removeEnigma,
 } from "../services/enigmaService";
+import { fetchUserById } from "../services/userService";
 import { handleErrorResponse } from "../utils/errorHandler";
 import { AuthenticatedRequest } from "../utils/express";
 
@@ -33,20 +34,22 @@ export const getEnigmaById = async (
   res: Response
 ): Promise<void> => {
   try {
-    if (!req.user) {
-      return handleErrorResponse(res, new Error("Unauthorized: No user found"));
-    }
-
     const enigma = await fetchEnigmaById(req.params.id);
 
-    if (req.user.role !== "ADMIN" && enigma.userId !== req.user.userId) {
-      return handleErrorResponse(
-        res,
-        new Error("Unauthorized: You can only access your own enigmas")
-      );
+    if (!enigma) {
+      return handleErrorResponse(res, new Error("Enigme non trouvée"));
     }
 
-    res.status(200).json(enigma);
+    const user = await fetchUserById(enigma.userId);
+
+    const response = {
+      ...enigma,
+      createdBy: user
+        ? { username: user.username }
+        : { username: "Utilisateur inconnu" },
+    };
+
+    res.status(200).json(response);
   } catch (error) {
     handleErrorResponse(res, error);
   }
