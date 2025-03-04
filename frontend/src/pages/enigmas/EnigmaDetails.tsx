@@ -1,3 +1,4 @@
+import { LucideCopy } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { fetchEnigmaById } from "../../api/enigmaApi";
@@ -113,13 +114,7 @@ export default function EnigmaDetails() {
                 className="mt-10 flex items-center justify-center"
               >
                 {buttonText}
-                {iconVisible && (
-                  <img
-                    src="../../public/assets/clipboard.svg"
-                    alt="Clipboard Icon"
-                    className="ml-2"
-                  />
-                )}
+                {iconVisible && <LucideCopy />}
               </Button>
             </FadeUp>
           </div>
