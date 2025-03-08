@@ -1,6 +1,7 @@
+import Navbar from "@/components/shared/sections/Navbar";
 import type { Metadata } from "next";
-import "./globals.css";
-import { Providers } from "./providers";
+import "../globals.css";
+import Footer from "@/components/shared/sections/Footer";
 
 export const metadata: Metadata = {
   title: "La Villa Midnight",
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default function AppLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className="mx-auto max-w-7xl font-sans">
-        <Providers>{children}</Providers>
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

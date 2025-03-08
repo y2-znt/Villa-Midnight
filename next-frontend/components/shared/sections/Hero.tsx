@@ -1,11 +1,12 @@
-import Link from "next/link";
-// import { useAuthContext } from "@/context/AuthContext";
+"use client";
 import FadeIn from "@/components/animations/FadeIn";
 import { Button } from "@/components/ui/button";
 import Title from "@/components/ui/title";
+import { useAuthContext } from "@/context/authContext";
+import Link from "next/link";
 
 const Hero = () => {
-  //   const { authUser } = useAuthContext();
+  const { authUser } = useAuthContext();
 
   return (
     <FadeIn delay={0.2}>
@@ -22,19 +23,19 @@ const Hero = () => {
           Une villa pleine de mystères vous attend. Serez-vous prêts à relever
           ses énigmes ?
         </p>
-        {/* {authUser ? (
+        {authUser ? (
           <Link href="/create-enigma">
             <Button variant="default" size="lg" className="mt-4">
               CRÉER UNE ÉNIGME
             </Button>
           </Link>
-        ) : ( */}
-        <Link href="/login">
-          <Button variant="default" size="lg" className="mt-4">
-            RELEVER LE DÉFI
-          </Button>
-        </Link>
-        {/* )} */}
+        ) : (
+          <Link href="/login">
+            <Button variant="default" size="lg" className="mt-4">
+              RELEVER LE DÉFI
+            </Button>
+          </Link>
+        )}
       </section>
     </FadeIn>
   );

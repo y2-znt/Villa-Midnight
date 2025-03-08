@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="mx-auto flex flex-col items-center justify-center py-10 text-center md:w-1/3">
+    <div className="mx-auto flex h-[80vh] flex-col items-center justify-center text-center md:w-1/3">
       <span className="mt-6 text-4xl font-extrabold">
         Oups ! Page introuvable
       </span>

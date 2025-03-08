@@ -5,17 +5,20 @@ import Footer from "@/components/shared/sections/Footer";
 import Hero from "@/components/shared/sections/Hero";
 import Testimonials from "@/components/shared/sections/Testimonials";
 import Particles from "@/components/ui/particles";
+import Image from "next/image"; // Importing Image from next
 
 export default function Home() {
   return (
     <div className="mx-auto max-w-7xl">
-      <div
-        className="absolute inset-0 -z-10 bg-cover bg-center"
-        style={{
-          backgroundImage: `url('/assets/hero_img.webp')`,
-          opacity: 0.2,
-        }}
-      />
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="/assets/hero_img.webp"
+          alt="Hero Background"
+          layout="fill"
+          objectFit="cover"
+          style={{ opacity: 0.2 }}
+        />
+      </div>
       <div className="to-background absolute inset-0 -z-10 bg-gradient-to-b from-transparent" />
       <Particles
         className="absolute inset-0 -z-10 hidden xl:flex"
