@@ -17,8 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className="font-sans mx-auto max-w-7xl">
-        <div className="mt-10 my-28 md:mt-28">{children}</div>
+      <body className="mx-auto max-w-7xl font-sans">
+        <div className="my-28 mt-10 md:mt-28">{children}</div>
       </body>
     </html>
   );

@@ -7,7 +7,7 @@ type TitleType = {
 export default function Title({ text, highlight, className }: TitleType) {
   return (
     <h1
-      className={`flex mx-7 lg:mx-0 text-4xl md:text-6xl/snug flex-col text-center ${className}`}
+      className={`mx-7 flex flex-col text-center text-4xl md:text-6xl/snug lg:mx-0 ${className}`}
     >
       <span>
         {text} <span className="text-primary">{highlight}</span>
