@@ -1,5 +1,10 @@
+import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import MyEnigmas from "./MyEnigmas";
 
 export default function page() {
-  return <MyEnigmas />;
+  return (
+    <ProtectedRoute>
+      <MyEnigmas />
+    </ProtectedRoute>
+  );
 }
