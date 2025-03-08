@@ -1,6 +1,6 @@
-# La Villa Midnight 👻
+# Villa Midnight 👻
 
-![Villa Midnight](https://github.com/y2-znt/Villa-Midnight/blob/main/frontend/public/assets/villa-midnight.png?raw=true)
+![Villa Midnight](https://github.com/y2-znt/Villa-Midnight/blob/main/frontend/public/assets/metadata.png?raw=true)
 
 ## Présentation du Projet
 
@@ -8,61 +8,61 @@ Villa Midnight est une application web innovante permettant aux utilisateurs de 
 
 ## Fonctionnalités Principales
 
-- **Création d'énigmes personnalisées** : Interface intuitive pour concevoir des énigmes avec différents niveaux de difficulté
-- **Système d'authentification sécurisé** : Connexion via email/mot de passe ou Google OAuth
+- **Création et gestion d'énigmes personnalisées** : Interface intuitive pour concevoir des énigmes avec différents niveaux de difficulté, nombre de participants et durée estimée
+- **Système d'authentification multi-méthodes** : Connexion via email/mot de passe ou Google OAuth
 - **Gestion de profil utilisateur** : Personnalisation du profil avec avatar et suivi des énigmes créées
-- **Expérience responsive** : Interface adaptée à tous les appareils (desktop, tablette, mobile)
+- **Interface responsive et moderne** : Design élégant adapté à tous les appareils (desktop, tablette, mobile)
+- **Expérience utilisateur optimisée** : Animations fluides et notifications contextuelles
 
 ## Stack Technique
 
 ### Frontend
 
-- **React 18** avec **TypeScript** pour un développement robuste et typé
-- **Vite** comme outil de build ultra-rapide
-- **TailwindCSS** pour un design moderne et responsive
+- **Next.js 15** avec **React 19** et **TypeScript** pour un développement robuste et performant
+- **TailwindCSS 4** pour un design moderne et responsive
+- **TanStack Query** pour la gestion efficace des requêtes API et du cache
 - **React Hook Form** couplé à **Zod** pour la validation des formulaires
 - **Shadcn UI** pour des composants accessibles et personnalisables
+- **Motion** pour des animations fluides et élégantes
+- **Sonner** pour des notifications toast élégantes
 
 ### Backend
 
 - **Node.js** avec **Express** pour une API RESTful performante
-- **TypeScript** pour la sécurité du typage
-- **Prisma** comme ORM pour interagir avec la base de données
-- **PostgreSQL** pour le stockage des données
-- **JWT** pour l'authentification sécurisée
-- **Passport.js** pour l'intégration OAuth
-- **Cloudinary** pour la gestion des médias
-- **Swagger** pour la documentation de l'API
+- **TypeScript** pour la sécurité du typage et la maintenabilité du code
+- **Prisma** comme ORM pour interagir avec la base de données PostgreSQL
+- **JWT** et **Passport.js** pour l'authentification sécurisée et l'intégration OAuth
+- **Cloudinary** pour la gestion des médias (images des énigmes et avatars)
+- **Swagger** pour la documentation automatisée de l'API
 
 ### DevOps & Déploiement
 
-- **Docker** pour la base de données
-- **Vercel** pour le déploiement du frontend
+- **Docker** pour la conteneurisation de la base de données
+- **PostgreSQL** pour le stockage relationnel des données
 - **Git** pour le versioning du code
 
 ## Architecture du Projet
 
-Le projet suit une architecture moderne et modulaire :
-
 ```
 Villa-Midnight/
-├── frontend/           # Application React (SPA)
-│   ├── src/
-│   │   ├── components/ # Composants réutilisables
-│   │   ├── pages/      # Pages de l'application
-│   │   ├── context/    # Contextes React pour la gestion d'état
-│   │   ├── hooks/      # Hooks personnalisés
-│   │   ├── api/        # Services d'API
-│   │   └── ...
+├── frontend/                # Application Next.js
+│   ├── app/                 # Pages et routes de l'application
+│   │   ├── (app)/           # Routes de l'application
+│   │   └── (auth)/          # Routes d'authentification
+│   ├── components/          # Composants réutilisables
+│   ├── hooks/               # Hooks personnalisés
+│   ├── context/             # Contextes React pour la gestion d'état
+│   ├── lib/                 # Utilitaires et fonctions partagées
 │   └── ...
-├── backend/            # API Node.js/Express
-│   ├── controllers/    # Contrôleurs de l'API
-│   ├── routes/         # Routes de l'API
-│   ├── middlewares/    # Middlewares personnalisés
-│   ├── services/       # Services métier
-│   ├── prisma/         # Modèles et migrations Prisma
+│
+├── backend/                 # API Node.js/Express
+│   ├── controllers/         # Contrôleurs de l'API
+│   ├── routes/              # Routes de l'API
+│   ├── middlewares/         # Middlewares personnalisés
+│   ├── services/            # Services métier
+│   ├── prisma/              # Modèles et migrations Prisma
+│   └── utils/               # Utilitaires partagés
 │   └── ...
-└── ...
 ```
 
 ## Installation et Démarrage
@@ -112,13 +112,35 @@ npm install
 npm run dev
 ```
 
-## 🌟 Démonstration des Compétences
+## Fonctionnalités Détaillées
 
-Ce projet démontre plusieurs compétences techniques avancées :
+### Gestion des Énigmes
 
+- **Création d'énigmes** : Interface intuitive pour créer des énigmes avec titre, description, image, difficulté, nombre de participants et durée estimée
+- **Modification et suppression** : Gestion complète du cycle de vie des énigmes créées
+- **Visualisation détaillée** : Affichage immersif des énigmes avec toutes les informations pertinentes
+
+### Gestion du Profil Utilisateur
+
+- **Personnalisation** : Modification du nom d'utilisateur et de l'avatar
+- **Suppression de compte** : Option de suppression de compte avec confirmation
+
+### Système d'Authentification
+
+- **Inscription** : Création de compte avec email et mot de passe
+- **Connexion** : Authentification sécurisée
+- **OAuth** : Connexion via Google
+- **Protection des routes** : Accès restreint aux fonctionnalités nécessitant une authentification
+
+## Optimisations Techniques
+
+- **Mise en cache** : Stratégie de mise en cache optimisée avec TanStack Query
+- **Architecture modulaire** : Organisation des composants par fonction pour une meilleure maintenabilité
 - **Architecture Full Stack** : Conception et implémentation d'une application complète (frontend, backend, base de données)
-- **Développement Frontend Moderne** : Utilisation des dernières fonctionnalités de React avec une approche composant-driven
+- **Développement Frontend Moderne** : Utilisation des dernières fonctionnalités de React et Next.js
+- **TypeScript** : Typage strict et interfaces bien définies pour un code robuste et maintenable
 - **API RESTful** : Conception d'une API robuste avec documentation Swagger
-- **Sécurité** : Implémentation de mécanismes d'authentification et d'autorisation
-- **Base de Données** : Modélisation et gestion efficace avec Prisma et PostgreSQL
-- **UI/UX** : Création d'interfaces utilisateur modernes et accessibles
+- **Base de Données Relationnelle** : Modélisation efficace avec Prisma et PostgreSQL
+
+- **UI/UX Design** : Création d'interfaces utilisateur modernes, accessibles et performantes
+- **DevOps** : Configuration de l'environnement de développement avec Docker
