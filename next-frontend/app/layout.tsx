@@ -1,4 +1,5 @@
 import { Providers } from "@/app/providers";
+import ScrollToTop from "@/components/shared/ScrollToTop";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="fr">
       <body className="font-sans">
         <Providers>
+          <ScrollToTop />
           <div className="mx-auto max-w-7xl">{children}</div>
         </Providers>
       </body>
