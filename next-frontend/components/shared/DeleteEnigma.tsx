@@ -35,9 +35,12 @@ export default function DeleteEnigma({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+          <AlertDialogTitle>
+            Êtes-vous sûr de vouloir supprimer cette énigme ?
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            Cette action est irréversible. Êtes-vous sûr ?
+            Cette action est irréversible. L&apos;énigme sera définitivement
+            supprimée.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

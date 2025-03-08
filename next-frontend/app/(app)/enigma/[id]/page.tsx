@@ -7,47 +7,22 @@ import EnigmaDetailsSkeleton from "@/components/shared/skeletons/EnigmaDetailsSk
 import { Button } from "@/components/ui/button";
 import Title from "@/components/ui/title";
 import { fakeAdminEnigmas } from "@/data/data";
-import { fetchEnigmaById } from "@/lib/api/enigmaApi";
-import { EnigmaType } from "@/types/types";
+import { useEnigma } from "@/hooks/useEnigma";
 import { LucideCopy } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 export default function EnigmaDetails() {
   const params = useParams();
   const id = params.id as string;
-  const [enigma, setEnigma] = useState<EnigmaType | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data: enigma, isLoading } = useEnigma(id);
   const [buttonText, setButtonText] = useState("Copier le lien");
   const [iconVisible, setIconVisible] = useState(true);
 
-  useEffect(() => {
-    const getEnigma = async () => {
-      if (!id) {
-        console.error("Enigma ID is undefined");
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const data = await fetchEnigmaById(id);
-        if (data) {
-          setEnigma(data);
-        }
-      } catch (error) {
-        console.error("Erreur lors de la récupération de l'énigme:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getEnigma();
-  }, [id]);
-
   const displayedEnigma = enigma ?? fakeAdminEnigmas.find((e) => e.id === id);
 
-  if (loading) return <EnigmaDetailsSkeleton />;
+  if (isLoading) return <EnigmaDetailsSkeleton />;
   if (!displayedEnigma)
     return <Title text="Aucune énigme" highlight="trouvée" />;
 

@@ -1,4 +1,5 @@
 "use client";
+import { getToken } from "@/config/config";
 import { useAuthContext } from "@/context/authContext";
 import { EnigmaType } from "@/types/types";
 import { PencilIcon } from "lucide-react";
@@ -28,9 +29,9 @@ export default function EnigmaCard({ enigma, onDelete }: EnigmaCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleDeleteClick = async () => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
     if (!token) return;
-    await onDelete(enigma.id, token);
+    onDelete(enigma.id, token);
     setIsDeleted(true);
   };
 
@@ -76,7 +77,7 @@ export default function EnigmaCard({ enigma, onDelete }: EnigmaCardProps) {
         {authUser?.user?.id === enigma.userId && (
           <div className="absolute top-2 right-2 opacity-100 transition-opacity group-hover:opacity-100 md:opacity-0">
             <Link href={`/edit-enigma/${enigma.id}`}>
-              <button className="mr-2">
+              <button className="mr-2 cursor-pointer">
                 <PencilIcon className="size-7 text-white" />
               </button>
             </Link>

@@ -112,8 +112,6 @@ export const deleteEnigma = async (id: string, token: string) => {
         errorData.message || "Erreur lors de la suppression de l'énigme",
       );
     }
-
-    return response.json();
   } catch (error) {
     console.error("Erreur lors de la suppression de l'énigme:", error);
     throw error;
