@@ -1,5 +1,6 @@
+"use client";
 import { TrashIcon } from "lucide-react";
-import { toast } from "sonner"; // Importing toast
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
