@@ -8,3 +8,10 @@ export default function page() {
     </ProtectedRoute>
   );
 }
+
+export async function generateMetadata() {
+  return {
+    title: "Profil - La Villa Midnight",
+    description: "Gérez votre profil sur La Villa Midnight",
+  };
+}

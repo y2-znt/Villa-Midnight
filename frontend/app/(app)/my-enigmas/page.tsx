@@ -8,3 +8,10 @@ export default function page() {
     </ProtectedRoute>
   );
 }
+
+export async function generateMetadata() {
+  return {
+    title: "Mes énigmes - La Villa Midnight",
+    description: "Gérez vos énigmes sur La Villa Midnight",
+  };
+}
