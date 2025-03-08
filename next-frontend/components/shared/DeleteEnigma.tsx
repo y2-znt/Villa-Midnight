@@ -1,4 +1,3 @@
-"use client";
 import { TrashIcon } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -31,7 +30,7 @@ export default function DeleteEnigma({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <button>
-          <TrashIcon className="size-7 text-primary cursor-pointer" />
+          <TrashIcon className="text-primary size-7 cursor-pointer" />
         </button>
       </AlertDialogTrigger>
       <AlertDialogContent>

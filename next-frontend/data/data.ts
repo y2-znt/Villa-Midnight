@@ -97,7 +97,7 @@ export const fakeAdminEnigmas = [
     title: "L’Ombre Rouge",
     description:
       "Une silhouette sombre surgit du brouillard écarlate, laissant derrière elle une énigme non résolue. Un message crypté se cache dans la brume, un secret oublié que seuls les esprits les plus aiguisés sauront percer. Qui est-il ? Pourquoi est-il venu ? Et surtout… que cache-t-il ? ",
-    image: "https://podmust.com/wp-content/uploads/podcasts-horreur.jpg",
+    image: "/assets/fake_enigma_1.jpg",
     difficulty: "ONE",
     numberOfParticipants: 2,
     numberOfHours: 1,
@@ -113,8 +113,7 @@ export const fakeAdminEnigmas = [
     title: "Les Masques de Vérité",
     description:
       "Quatre hommes masqués mystérieux sont alignés. Chacun raconte une version différente d'une même histoire, un seul dit la vérité.Un signal d’urgence clignote en morse. Décoder le signal mène à une pièce secrète dans la station.",
-    image:
-      "https://chaslescorp.com/wp-content/uploads/2023/02/18413-redeyes-hackers-use-new-malware-to-steal-data-from-windows-phones.jpg",
+    image: "/assets/fake_enigma_2.jpg",
     difficulty: "TWO",
     numberOfParticipants: 2,
     numberOfHours: 1,
@@ -130,8 +129,7 @@ export const fakeAdminEnigmas = [
     title: "Les Couloirs du Silence",
     description:
       "Le bureau du médecin-chef est fermé. Un journal intime laissé dans la salle d’attente contient des indices pour trouver la clé.Un signal d’urgence clignote en morse. Décoder le signal mène à une pièce secrète dans la station.",
-    image:
-      "https://i.pinimg.com/736x/a2/32/5b/a2325b2f81e4760b9fabd3312ce1a531.jpg",
+    image: "/assets/fake_enigma_3.jpg",
     difficulty: "THREE",
     numberOfParticipants: 3,
     numberOfHours: 1,

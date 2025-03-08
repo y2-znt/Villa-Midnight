@@ -5,7 +5,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <Navbar />
-      <main>{children}</main>
+      <main className="my-16 md:my-24">{children}</main>
       <Footer />
     </div>
   );
