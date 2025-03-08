@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Title from "@/components/ui/title";
 import { useAuthContext } from "@/context/authContext";
-import { googleAuth, loginUser } from "@/lib/api/authApi";
+import { useLogin } from "@/hooks/useAuth";
+import { googleAuth } from "@/lib/api/authApi";
 import { SigninSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
@@ -13,10 +14,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 export default function Login() {
-  const { authUser, setAuthUser } = useAuthContext();
+  const { authUser } = useAuthContext();
+  const { login, isLoading } = useLogin();
   const router = useRouter();
 
   useEffect(() => {
@@ -28,23 +29,13 @@ export default function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SigninSchema>({
     resolver: zodResolver(SigninSchema),
   });
 
-  const onSubmit = async (data: SigninSchema) => {
-    try {
-      const response = await loginUser(data.email, data.password);
-      setAuthUser({ user: response.user });
-      toast.success("Connexion réussie ! 🎉");
-      router.push("/");
-    } catch (error) {
-      console.error(error);
-      toast.error("Email ou mot de passe incorrect");
-    } finally {
-      toast.dismiss();
-    }
+  const onSubmit = (data: SigninSchema) => {
+    login(data);
   };
 
   return (
@@ -56,20 +47,25 @@ export default function Login() {
       >
         <div>
           <Label htmlFor="email">Email</Label>
-          <Input id="email" {...register("email")} />
+          <Input id="email" {...register("email")} disabled={isLoading} />
           {errors.email && (
             <p className="text-red-500">{errors.email.message}</p>
           )}
         </div>
         <div>
           <Label htmlFor="password">Mot de passe</Label>
-          <Input id="password" type="password" {...register("password")} />
+          <Input
+            id="password"
+            type="password"
+            {...register("password")}
+            disabled={isLoading}
+          />
           {errors.password && (
             <p className="text-red-500">{errors.password.message}</p>
           )}
         </div>
-        <Button type="submit" disabled={isSubmitting} className="w-full">
-          {isSubmitting ? "Chargement..." : "Se connecter"}
+        <Button type="submit" disabled={isLoading} className="w-full">
+          {isLoading ? "Connexion en cours..." : "Se connecter"}
         </Button>
       </form>
 
@@ -83,6 +79,7 @@ export default function Login() {
           size="lg"
           variant="outline"
           className="w-11/12 text-center md:w-1/3"
+          disabled={isLoading}
         >
           <Image
             src="/assets/google-icon.png"

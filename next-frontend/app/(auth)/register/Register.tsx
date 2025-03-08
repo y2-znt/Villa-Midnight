@@ -3,20 +3,21 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Title from "@/components/ui/title";
-import { googleAuth, registerUser } from "@/lib/api/authApi";
+import { useAuthContext } from "@/context/authContext";
+import { useRegister } from "@/hooks/useAuth";
+import { googleAuth } from "@/lib/api/authApi";
+import { SignupSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useAuthContext } from "@/context/authContext";
-import { SignupSchema } from "@/schemas/authSchema";
-import Image from "next/image";
-import { useEffect } from "react";
-
 export default function Register() {
-  const { authUser, setAuthUser } = useAuthContext();
+  const { authUser } = useAuthContext();
+  const { signUp, isLoading } = useRegister();
   const router = useRouter();
 
   useEffect(() => {
@@ -28,27 +29,15 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignupSchema>({
     resolver: zodResolver(SignupSchema),
   });
 
-  const onSubmit = async (data: SignupSchema) => {
-    try {
-      const response = await registerUser(
-        data.username,
-        data.email,
-        data.password,
-        data.confirmPassword,
-      );
-      setAuthUser({ user: response.user });
-      router.push("/");
-      reset();
-    } catch (error) {
-      console.error(error);
-    }
+  const onSubmit = (data: SignupSchema) => {
+    signUp(data);
   };
+
   return (
     <div>
       <Title text="Inscrivez" highlight="vous" />
@@ -58,21 +47,26 @@ export default function Register() {
       >
         <div>
           <Label htmlFor="username">Nom d&apos;utilisateur</Label>
-          <Input id="username" {...register("username")} />
+          <Input id="username" {...register("username")} disabled={isLoading} />
           {errors.username && (
             <p className="text-red-500">{errors.username.message}</p>
           )}
         </div>
         <div>
           <Label htmlFor="email">Email</Label>
-          <Input id="email" {...register("email")} />
+          <Input id="email" {...register("email")} disabled={isLoading} />
           {errors.email && (
             <p className="text-red-500">{errors.email.message}</p>
           )}
         </div>
         <div>
           <Label htmlFor="password">Mot de passe</Label>
-          <Input id="password" type="password" {...register("password")} />
+          <Input
+            id="password"
+            type="password"
+            {...register("password")}
+            disabled={isLoading}
+          />
           {errors.password && (
             <p className="text-red-500">{errors.password.message}</p>
           )}
@@ -83,13 +77,14 @@ export default function Register() {
             id="confirmPassword"
             type="password"
             {...register("confirmPassword")}
+            disabled={isLoading}
           />
           {errors.confirmPassword && (
             <p className="text-red-500">{errors.confirmPassword.message}</p>
           )}
         </div>
-        <Button type="submit" disabled={isSubmitting} className="w-full">
-          {isSubmitting ? "Chargement..." : "S'inscrire"}
+        <Button type="submit" disabled={isLoading} className="w-full">
+          {isLoading ? "Inscription en cours..." : "S'inscrire"}
         </Button>
       </form>
 
@@ -103,6 +98,7 @@ export default function Register() {
           size="lg"
           variant="outline"
           className="w-11/12 text-center md:w-1/3"
+          disabled={isLoading}
         >
           <Image
             src="/assets/google-icon.png"

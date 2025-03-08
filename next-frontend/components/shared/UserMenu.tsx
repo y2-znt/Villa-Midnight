@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthContext } from "@/context/authContext";
-import { logoutUser } from "@/lib/api/authApi";
+import { useLogout } from "@/hooks/useAuth";
 import {
   BookOpenIcon,
   ChevronDownIcon,
@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -22,20 +21,9 @@ import {
 } from "../ui/dropdown-menu";
 
 export default function UserMenu() {
-  const { authUser, setAuthUser } = useAuthContext();
+  const { authUser } = useAuthContext();
+  const { logout, isLoading } = useLogout();
   const router = useRouter();
-
-  const handleLogout = async () => {
-    try {
-      await logoutUser();
-      setAuthUser(null);
-      toast.success("Déconnexion réussie !");
-      router.push("/");
-    } catch (error) {
-      console.error("Logout failed:", error);
-      toast.error("Échec de la déconnexion.");
-    }
-  };
 
   const links = [
     {
@@ -56,8 +44,9 @@ export default function UserMenu() {
     {
       href: "",
       label: "Déconnexion",
-      onClick: handleLogout,
+      onClick: () => logout(),
       icon: <LogOutIcon />,
+      disabled: isLoading,
     },
   ];
 
@@ -68,12 +57,15 @@ export default function UserMenu() {
           <Button
             variant="outline"
             className="flex items-center justify-between py-5 text-left"
+            disabled={isLoading}
           >
-            {authUser?.user.avatarUrl ? (
+            {authUser?.user?.avatarUrl ? (
               <Image
                 src={authUser.user.avatarUrl}
                 alt="Profile"
                 className="size-5 rounded-full"
+                width={20}
+                height={20}
               />
             ) : (
               <UserIcon className="size-4" />
@@ -87,6 +79,7 @@ export default function UserMenu() {
             {links.map((link, index) => (
               <DropdownMenuItem
                 key={index}
+                disabled={link.disabled}
                 onClick={() => {
                   if (link.onClick) {
                     link.onClick();
@@ -98,6 +91,7 @@ export default function UserMenu() {
                 <Button
                   variant="link"
                   className="rounded-none text-white uppercase"
+                  disabled={link.disabled}
                 >
                   {link.icon}
                   {link.label}

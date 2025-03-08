@@ -1,7 +1,6 @@
 import BestEnigmas from "@/components/shared/sections/BestEnigmas";
 import Contact from "@/components/shared/sections/Contact";
 import FAQ from "@/components/shared/sections/FAQ";
-import Footer from "@/components/shared/sections/Footer";
 import Hero from "@/components/shared/sections/Hero";
 import Testimonials from "@/components/shared/sections/Testimonials";
 import Particles from "@/components/ui/particles";
@@ -36,7 +35,6 @@ export default function Home() {
         <FAQ />
         <Contact />
       </div>
-      <Footer />
     </div>
   );
 }

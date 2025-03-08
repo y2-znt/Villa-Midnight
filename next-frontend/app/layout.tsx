@@ -1,6 +1,6 @@
+import { Providers } from "@/app/providers";
 import type { Metadata } from "next";
 import "./globals.css";
-import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "La Villa Midnight",
@@ -18,8 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className="mx-auto max-w-7xl font-sans">
-        <Providers>{children}</Providers>
+      <body className="font-sans">
+        <Providers>
+          <div className="mx-auto max-w-7xl">{children}</div>
+        </Providers>
       </body>
     </html>
   );
