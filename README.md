@@ -37,7 +37,7 @@ Villa Midnight est une application web innovante permettant aux utilisateurs de 
 
 ### DevOps & Déploiement
 
-- **Docker** pour la conteneurisation de la base de données
+- **Docker** pour la conteneurisation de l'application complète
 - **PostgreSQL** pour le stockage relationnel des données
 - **Git** pour le versioning du code
 
@@ -53,6 +53,8 @@ Villa-Midnight/
 │   ├── hooks/               # Hooks personnalisés
 │   ├── context/             # Contextes React pour la gestion d'état
 │   ├── lib/                 # Utilitaires et fonctions partagées
+│   ├── schemas/             # Schémas de validation Zod
+│   ├── types/               # Types TypeScript
 │   └── ...
 │
 ├── backend/                 # API Node.js/Express
@@ -61,7 +63,7 @@ Villa-Midnight/
 │   ├── middlewares/         # Middlewares personnalisés
 │   ├── services/            # Services métier
 │   ├── prisma/              # Modèles et migrations Prisma
-│   └── utils/               # Utilitaires partagés
+│   ├── utils/               # Utilitaires partagés
 │   └── ...
 ```
 
@@ -69,7 +71,7 @@ Villa-Midnight/
 
 ### Prérequis
 
-- Node.js (v18+)
+- Node.js (v20+)
 - Docker et Docker Compose
 - PostgreSQL
 
@@ -89,13 +91,13 @@ cp .env.example .env
 # Modifier les variables dans le fichier .env selon votre environnement
 ```
 
-3. Lancer la base de données avec Docker
+3. Lancer l'application avec Docker Compose
 
 ```bash
 docker-compose up -d
 ```
 
-4. Installer et démarrer le backend
+4. Ou installer et démarrer le backend manuellement
 
 ```bash
 cd backend
@@ -104,7 +106,7 @@ npx prisma migrate dev
 npm run dev
 ```
 
-5. Installer et démarrer le frontend
+5. Installer et démarrer le frontend manuellement
 
 ```bash
 cd frontend
@@ -134,13 +136,13 @@ npm run dev
 
 ## Optimisations Techniques
 
-- **Mise en cache** : Stratégie de mise en cache optimisée avec TanStack Query
+- **Mise en cache** : Stratégie de mise en cache optimisée avec TanStack Query v5
 - **Architecture modulaire** : Organisation des composants par fonction pour une meilleure maintenabilité
 - **Architecture Full Stack** : Conception et implémentation d'une application complète (frontend, backend, base de données)
-- **Développement Frontend Moderne** : Utilisation des dernières fonctionnalités de React et Next.js
+- **Développement Frontend Moderne** : Utilisation des dernières fonctionnalités de React 19 et Next.js 15
 - **TypeScript** : Typage strict et interfaces bien définies pour un code robuste et maintenable
 - **API RESTful** : Conception d'une API robuste avec documentation Swagger
 - **Base de Données Relationnelle** : Modélisation efficace avec Prisma et PostgreSQL
 
 - **UI/UX Design** : Création d'interfaces utilisateur modernes, accessibles et performantes
-- **DevOps** : Configuration de l'environnement de développement avec Docker
+- **DevOps** : Configuration de l'environnement de développement et de déploiement avec Docker
