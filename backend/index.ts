@@ -16,7 +16,7 @@ import swaggerOutput from "./swagger_output.json";
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.BACKEND_PORT;
 
 app.use(cors({ origin: CLIENT_URL }));
 app.use(express.json());
