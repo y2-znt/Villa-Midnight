@@ -19,7 +19,10 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
       if (!authUser) {
         toast.warning("Vous devez être connecté pour accéder à cette page");
         router.push("/");
-      } else if (authUser.user.role !== "ADMIN") {
+        return;
+      }
+
+      if (pathname.startsWith("/admin") && authUser.user.role !== "ADMIN") {
         toast.error(
           "Vous n'avez pas les autorisations nécessaires pour accéder à cette page",
         );
@@ -28,11 +31,11 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     }
   }, [authUser, isLoading, router, pathname]);
 
-  if (authUser && authUser.user.role === "ADMIN") {
-    return <>{children}</>;
+  if (isLoading) {
+    return null;
   }
 
-  return null;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
