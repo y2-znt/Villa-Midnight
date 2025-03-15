@@ -28,7 +28,7 @@ export default function UserMenu() {
 
   const links = [
     {
-      href: "/dashboard",
+      href: "/admin",
       label: "Admin",
       icon: <ChartArea />,
       visible: authUser?.user?.role === "ADMIN",
