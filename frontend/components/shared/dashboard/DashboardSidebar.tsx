@@ -69,7 +69,12 @@ export function DashboardSidebar({
 
 function SidebarContent() {
   const { authUser } = useAuthContext();
-  const [activeLink, setActiveLink] = useState<string | null>("/admin");
+  const pathname = usePathname();
+  const [activeLink, setActiveLink] = useState<string | null>(pathname);
+
+  useEffect(() => {
+    setActiveLink(pathname);
+  }, [pathname]);
 
   const mainNavItems = [
     { href: "/admin", icon: Home, label: "Vue d'ensemble" },
