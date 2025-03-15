@@ -15,17 +15,27 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!isLoading && !authUser) {
-      toast.warning("Vous devez être connecté pour accéder à cette page");
-      router.push("/");
+    if (!isLoading) {
+      if (!authUser) {
+        toast.warning("Vous devez être connecté pour accéder à cette page");
+        router.push("/");
+        return;
+      }
+
+      if (pathname.startsWith("/admin") && authUser.user.role !== "ADMIN") {
+        toast.error(
+          "Vous n'avez pas les autorisations nécessaires pour accéder à cette page",
+        );
+        router.push("/");
+      }
     }
   }, [authUser, isLoading, router, pathname]);
 
-  if (authUser) {
-    return <>{children}</>;
+  if (isLoading) {
+    return null;
   }
 
-  return null;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

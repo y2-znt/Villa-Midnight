@@ -4,6 +4,7 @@ import { useAuthContext } from "@/context/authContext";
 import { useLogout } from "@/hooks/useAuth";
 import {
   BookOpenIcon,
+  ChartArea,
   ChevronDownIcon,
   LogOutIcon,
   PuzzleIcon,
@@ -27,6 +28,12 @@ export default function UserMenu() {
 
   const links = [
     {
+      href: "/admin",
+      label: "Admin",
+      icon: <ChartArea />,
+      visible: authUser?.user?.role === "ADMIN",
+    },
+    {
       href: "/profile",
       label: "Profil",
       icon: <UserCheckIcon />,
@@ -42,9 +49,8 @@ export default function UserMenu() {
       icon: <PuzzleIcon />,
     },
     {
-      href: "",
       label: "Déconnexion",
-      onClick: () => logout(),
+      onClick: logout,
       icon: <LogOutIcon />,
       disabled: isLoading,
     },
@@ -76,28 +82,27 @@ export default function UserMenu() {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <ul>
-            {links.map((link, index) => (
-              <DropdownMenuItem
-                key={index}
-                disabled={link.disabled}
-                onClick={() => {
-                  if (link.onClick) {
-                    link.onClick();
-                  } else {
-                    router.push(link.href);
-                  }
-                }}
-              >
-                <Button
-                  variant="link"
-                  className="rounded-none text-white uppercase"
-                  disabled={link.disabled}
-                >
-                  {link.icon}
-                  {link.label}
-                </Button>
-              </DropdownMenuItem>
-            ))}
+            {links.map(
+              (link, index) =>
+                link.visible !== false && (
+                  <DropdownMenuItem
+                    key={index}
+                    disabled={link.disabled}
+                    onClick={() =>
+                      link.onClick ? link.onClick() : router.push(link.href)
+                    }
+                  >
+                    <Button
+                      variant="link"
+                      className="rounded-none text-white uppercase"
+                      disabled={link.disabled}
+                    >
+                      {link.icon}
+                      {link.label}
+                    </Button>
+                  </DropdownMenuItem>
+                ),
+            )}
           </ul>
         </DropdownMenuContent>
       </DropdownMenu>

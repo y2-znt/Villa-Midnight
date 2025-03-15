@@ -6,7 +6,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="mx-auto max-w-7xl">
       <div className="p-4">
         <LogoWithName />
       </div>

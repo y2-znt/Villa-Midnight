@@ -57,7 +57,7 @@ export default function RootLayout({
       <body className="font-sans">
         <Providers>
           <ScrollToTop />
-          <div className="mx-auto max-w-7xl">{children}</div>
+          <div>{children}</div>
         </Providers>
       </body>
     </html>

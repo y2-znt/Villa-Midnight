@@ -23,6 +23,7 @@ export type AuthUserType = {
     email: string;
     avatarUrl?: string | null;
     createdAt?: string;
+    role: "ADMIN" | "USER";
   };
 };
 
