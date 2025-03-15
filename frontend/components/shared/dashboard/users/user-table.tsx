@@ -18,11 +18,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useUsers } from "@/hooks/useUser";
-import { Filter, MoreHorizontal, PlusCircleIcon, Search } from "lucide-react";
+import { MoreHorizontal, PlusCircleIcon, Search } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { Input } from "../../../ui/input";
 import LoadingIndicator from "../../LoadingIndicator";
+import SelectRole from "./SelectRole";
 
 type UserApiResponse = {
   id: string;
@@ -36,19 +37,23 @@ type UserApiResponse = {
 };
 
 export function UserTable() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedRole, setSelectedRole] = useState<string>("Tous");
 
   const { data: usersData, isLoading, isError, error } = useUsers();
 
-  const users: UserApiResponse[] = Array.isArray(usersData)
-    ? usersData
-    : usersData?.users || [];
+  const users: UserApiResponse[] = usersData || [];
 
-  const filteredUsers = users.filter(
-    (user) =>
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch =
       user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+      user.email.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesRole =
+      selectedRole === "Tous" ||
+      user.role === (selectedRole === "Administrateur" ? "ADMIN" : "USER");
+    return matchesSearch && matchesRole;
+  });
 
   return (
     <div className="space-y-4">
@@ -73,10 +78,7 @@ export function UserTable() {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <Button variant="outline">
-          <Filter className="h-4 w-4" />
-          Rôle
-        </Button>
+        <SelectRole onSelectRole={setSelectedRole} />
       </div>
 
       <div className="rounded-xl border">
@@ -99,6 +101,7 @@ export function UserTable() {
                 <TableHead>Nom</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Rôle</TableHead>
+                <TableHead>Date de création</TableHead>
                 <TableHead className="w-12"></TableHead>
               </TableRow>
             </TableHeader>
@@ -143,11 +146,14 @@ export function UserTable() {
                       </Badge>
                     </TableCell>
                     <TableCell>
+                      {user.createdAt &&
+                        new Date(user.createdAt).toLocaleDateString("fr-FR")}
+                    </TableCell>
+                    <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon">
                             <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Ouvrir le menu</span>
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
