@@ -1,3 +1,5 @@
+import bcrypt from "bcrypt";
+import { SALT_ROUNDS } from "../config/config";
 import prisma from "../src/prisma/prismaClient";
 
 export const fetchAllUsers = async () => {
@@ -57,11 +59,13 @@ export const addUser = async ({
   role: "USER" | "ADMIN";
 }) => {
   try {
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+
     const user = await prisma.user.create({
       data: {
         username,
         email,
-        password,
+        password: hashedPassword,
         role,
       },
     });

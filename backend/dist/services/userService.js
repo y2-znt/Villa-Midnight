@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.removeUser = exports.modifyUser = exports.addUser = exports.fetchUserEnigmasById = exports.fetchUserById = exports.fetchAllUsers = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const config_1 = require("../config/config");
 const prismaClient_1 = __importDefault(require("../src/prisma/prismaClient"));
 const fetchAllUsers = async () => {
     try {
@@ -55,11 +57,12 @@ const fetchUserEnigmasById = async (userId) => {
 exports.fetchUserEnigmasById = fetchUserEnigmasById;
 const addUser = async ({ username, email, password, role, }) => {
     try {
+        const hashedPassword = await bcrypt_1.default.hash(password, config_1.SALT_ROUNDS);
         const user = await prismaClient_1.default.user.create({
             data: {
                 username,
                 email,
-                password,
+                password: hashedPassword,
                 role,
             },
         });
