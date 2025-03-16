@@ -47,14 +47,17 @@ export function UserTable() {
   });
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-end md:justify-between">
-        <h1 className="title hidden text-2xl font-bold md:block">
-          Liste des utilisateurs
-        </h1>
+    <div className="space-y-4 lg:max-w-[calc(100vw-18rem)]">
+      <div className="flex flex-col items-start md:flex-row md:items-center md:justify-between">
+        <div className="mb-4 flex flex-col md:mb-0">
+          <h1 className="title text-2xl font-bold">Liste des utilisateurs</h1>
+          <p className="text-muted-foreground">
+            Gérez les utilisateurs et leurs rôles
+          </p>
+        </div>
         <Button className="flex items-center gap-2">
           <PlusCircleIcon className="h-4 w-4" />
-          Nouvel utilisateur
+          Ajouter un utilisateur
         </Button>
       </div>
 
@@ -63,7 +66,7 @@ export function UserTable() {
           <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
           <Input
             type="text"
-            placeholder="Rechercher un utilisateur..."
+            placeholder="Rechercher..."
             className="mt-0 pl-9"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -91,7 +94,7 @@ export function UserTable() {
                 <TableHead className="w-12">ID</TableHead>
                 <TableHead>Nom</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Nombre d&apos;énigmes</TableHead>
+                <TableHead>Énigmes</TableHead>
                 <TableHead>Rôle</TableHead>
                 <TableHead>Date de création</TableHead>
                 <TableHead className="w-12"></TableHead>
@@ -100,7 +103,7 @@ export function UserTable() {
             <TableBody>
               {filteredUsers.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="py-8 text-center">
+                  <TableCell colSpan={7} className="py-8 text-center">
                     {isLoading ? "Chargement..." : "Aucun utilisateur trouvé"}
                   </TableCell>
                 </TableRow>
@@ -108,7 +111,9 @@ export function UserTable() {
                 filteredUsers.map((user: UserApiResponse, index: number) => {
                   return (
                     <TableRow key={user.id || index}>
-                      <TableCell>{user.id}</TableCell>
+                      <TableCell className="w-12 truncate">
+                        {user.id.slice(0, 12)}...
+                      </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <Avatar>
