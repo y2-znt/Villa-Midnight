@@ -19,11 +19,12 @@ import {
 } from "@/components/ui/table";
 import { useDeleteUser, useUsers } from "@/hooks/useUser";
 import { UserApiResponse } from "@/types/types";
-import { MoreHorizontal, PlusCircleIcon, Search } from "lucide-react";
+import { MoreHorizontal, Search } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { Input } from "../../../ui/input";
 import LoadingIndicator from "../../LoadingIndicator";
+import AddUserDialog from "./AddUserDialog";
 import DeleteUserButton from "./DeleteUser";
 import SelectRole from "./SelectRole";
 
@@ -55,10 +56,7 @@ export function UserTable() {
             Gérez les utilisateurs et leurs rôles
           </p>
         </div>
-        <Button className="flex items-center gap-2">
-          <PlusCircleIcon className="h-4 w-4" />
-          Ajouter un utilisateur
-        </Button>
+        <AddUserDialog />
       </div>
 
       <div className="flex items-center gap-2">
@@ -96,7 +94,7 @@ export function UserTable() {
                 <TableHead>Email</TableHead>
                 <TableHead>Énigmes</TableHead>
                 <TableHead>Rôle</TableHead>
-                <TableHead>Date de création</TableHead>
+                <TableHead>Créé le</TableHead>
                 <TableHead className="w-12"></TableHead>
               </TableRow>
             </TableHeader>
@@ -161,9 +159,6 @@ export function UserTable() {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
-                              Voir les détails
-                            </DropdownMenuItem>
                             <DropdownMenuItem>
                               Modifier l&apos;utilisateur
                             </DropdownMenuItem>
