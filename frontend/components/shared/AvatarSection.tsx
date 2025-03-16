@@ -136,7 +136,10 @@ export default function AvatarSection({
           onClick={handleAvatarClick}
         >
           <span className="text-primary text-4xl font-bold">
-            {username.charAt(0).toUpperCase()}
+            {username
+              .split(" ")
+              .map((name) => name.charAt(0).toUpperCase())
+              .slice(0, 2)}
           </span>
         </div>
       )}

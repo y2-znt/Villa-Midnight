@@ -12,10 +12,13 @@ import { toast } from "sonner";
 
 export const useUserProfile = (id?: string) => {
   const token = getToken();
+  if (!id || !token) {
+    throw new Error("ID et token sont requis");
+  }
 
   return useQuery({
     queryKey: ["userProfile"],
-    queryFn: () => (id && token ? fetchUserById(id, token) : null),
+    queryFn: () => fetchUserById(id, token),
     enabled: !!id && !!token,
   });
 };

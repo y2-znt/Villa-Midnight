@@ -27,6 +27,17 @@ export type AuthUserType = {
   };
 };
 
+export type UserApiResponse = {
+  id: string;
+  username: string;
+  email: string;
+  avatarUrl?: string;
+  googleId?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  role: "ADMIN" | "USER";
+  enigmas: EnigmaType[];
+};
 export type ContactTypes = {
   icon: LucideIcon;
   title: string;
