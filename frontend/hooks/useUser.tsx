@@ -1,7 +1,7 @@
 import { getToken } from "@/config/config";
 import { fetchEnigmasByUserId } from "@/lib/api/enigmaApi";
-import { deleteUser, fetchAllUsers } from "@/lib/api/userApi";
-import { UserApiResponse } from "@/types/types";
+import { createUser, deleteUser, fetchAllUsers } from "@/lib/api/userApi";
+import { CreateUserType, UserApiResponse } from "@/types/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -21,6 +21,44 @@ export const useUsers = () => {
     },
     enabled: !!token,
   });
+};
+
+export const useCreateUser = () => {
+  const queryClient = useQueryClient();
+  const token = getToken();
+
+  const createUserMutation = useMutation({
+    mutationFn: async (data: CreateUserType) => {
+      if (!token) {
+        throw new Error("No token found");
+      }
+      const response = await createUser(data, token);
+      return response;
+    },
+    onMutate: () => {
+      const toastId = toast.loading("Création de l'utilisateur en cours...");
+      return { toastId };
+    },
+    onSuccess: (response, __, context) => {
+      if (context?.toastId) {
+        toast.dismiss(context.toastId);
+      }
+      toast.success("Utilisateur créé avec succès ! 🎉");
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+    onError: (error: Error, _, context) => {
+      if (context?.toastId) {
+        toast.dismiss(context.toastId);
+      }
+      toast.error("Erreur lors de la création de l'utilisateur");
+      console.error("Erreur lors de la création de l'utilisateur:", error);
+    },
+  });
+
+  return {
+    createUser: createUserMutation.mutate,
+    isCreating: createUserMutation.isPending,
+  };
 };
 
 export const useDeleteUser = (

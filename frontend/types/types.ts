@@ -49,6 +49,13 @@ export type UserUpdateType = {
   email?: string;
 };
 
+export type CreateUserType = {
+  username: string;
+  email: string;
+  password: string;
+  role: "ADMIN" | "USER";
+};
+
 type FormDataValue = string | number | File | boolean | null | undefined;
 
 export const convertToFormData = <T extends Record<string, FormDataValue>>(
