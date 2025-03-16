@@ -53,13 +53,14 @@ const fetchUserEnigmasById = async (userId) => {
     }
 };
 exports.fetchUserEnigmasById = fetchUserEnigmasById;
-const addUser = async ({ username, email, password, }) => {
+const addUser = async ({ username, email, password, role, }) => {
     try {
         const user = await prismaClient_1.default.user.create({
             data: {
                 username,
                 email,
                 password,
+                role,
             },
         });
         const { password: _, ...userWithoutPassword } = user;
@@ -70,7 +71,7 @@ const addUser = async ({ username, email, password, }) => {
     }
 };
 exports.addUser = addUser;
-const modifyUser = async (id, { username, email, avatarUrl, }) => {
+const modifyUser = async (id, { username, email, avatarUrl, role, }) => {
     try {
         const user = await prismaClient_1.default.user.update({
             where: { id },
@@ -78,6 +79,7 @@ const modifyUser = async (id, { username, email, avatarUrl, }) => {
                 username,
                 email,
                 avatarUrl,
+                role,
             },
         });
         const { password, ...userWithoutPassword } = user;

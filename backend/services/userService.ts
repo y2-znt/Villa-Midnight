@@ -49,10 +49,12 @@ export const addUser = async ({
   username,
   email,
   password,
+  role,
 }: {
   username: string;
   email: string;
   password: string;
+  role: "USER" | "ADMIN";
 }) => {
   try {
     const user = await prisma.user.create({
@@ -60,6 +62,7 @@ export const addUser = async ({
         username,
         email,
         password,
+        role,
       },
     });
     const { password: _, ...userWithoutPassword } = user;
@@ -75,7 +78,13 @@ export const modifyUser = async (
     username,
     email,
     avatarUrl,
-  }: { username?: string; email?: string; avatarUrl?: string }
+    role,
+  }: {
+    username?: string;
+    email?: string;
+    avatarUrl?: string;
+    role?: "USER" | "ADMIN";
+  }
 ) => {
   try {
     const user = await prisma.user.update({
@@ -84,6 +93,7 @@ export const modifyUser = async (
         username,
         email,
         avatarUrl,
+        role,
       },
     });
     const { password, ...userWithoutPassword } = user;

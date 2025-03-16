@@ -78,8 +78,8 @@ export const createUser = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { username, email, password } = req.body;
-    const user = await addUser({ username, email, password });
+    const { username, email, password, role } = req.body;
+    const user = await addUser({ username, email, password, role });
     res.status(201).json(user);
   } catch (error) {
     handleErrorResponse(res, error);
