@@ -66,3 +66,9 @@ export const convertToFormData = <T extends Record<string, FormDataValue>>(
 
   return formData;
 };
+
+export type NavItemType = {
+  href: string;
+  icon: LucideIcon;
+  label: string;
+};

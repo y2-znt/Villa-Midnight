@@ -1,5 +1,18 @@
-import { Calendar, Mail, MapPin, Phone } from "lucide-react";
-import { ContactTypes } from "../types/types";
+import {
+  BarChart3,
+  BookOpen,
+  Calendar,
+  CreditCard,
+  HelpCircle,
+  Home,
+  Mail,
+  MapPin,
+  MessageSquare,
+  Phone,
+  Settings,
+  Users,
+} from "lucide-react";
+import { ContactTypes, NavItemType } from "../types/types";
 
 export const contactList: ContactTypes[] = [
   {
@@ -187,4 +200,19 @@ export const TESTIMONIALS = [
     name: "Sophie Martin",
     experienceType: "Les Couloirs du Silence",
   },
+];
+
+export const mainNavItems: NavItemType[] = [
+  { href: "/admin", icon: Home, label: "Vue d'ensemble" },
+  { href: "/admin/users", icon: Users, label: "Utilisateurs" },
+  { href: "/admin/bookings", icon: Calendar, label: "Réservations" },
+  { href: "/admin/payments", icon: CreditCard, label: "Paiements" },
+  { href: "/admin/analytics", icon: BarChart3, label: "Analytiques" },
+  { href: "/admin/messages", icon: MessageSquare, label: "Messages" },
+];
+
+export const supportNavItems: NavItemType[] = [
+  { href: "/admin/settings", icon: Settings, label: "Paramètres" },
+  { href: "/admin/help", icon: HelpCircle, label: "Aide" },
+  { href: "/admin/documentation", icon: BookOpen, label: "Documentation" },
 ];

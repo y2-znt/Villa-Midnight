@@ -2,22 +2,12 @@
 
 import { useAuthContext } from "@/context/authContext";
 import { motion } from "framer-motion";
-import {
-  BarChart3,
-  BookOpen,
-  Calendar,
-  CreditCard,
-  HelpCircle,
-  Home,
-  MessageSquare,
-  Settings,
-  Users,
-} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Logo from "../Logo";
+import { mainNavItems, supportNavItems } from "@/data/data";
 
 interface SidebarProps {
   className?: string;
@@ -75,25 +65,6 @@ function SidebarContent() {
   useEffect(() => {
     setActiveLink(pathname);
   }, [pathname]);
-
-  const mainNavItems = [
-    { href: "/admin", icon: Home, label: "Vue d'ensemble" },
-    { href: "/admin/utilisateurs", icon: Users, label: "Utilisateurs" },
-    { href: "/admin/bookings", icon: Calendar, label: "Réservations" },
-    { href: "/admin/payments", icon: CreditCard, label: "Paiements" },
-    { href: "/admin/analytics", icon: BarChart3, label: "Analytiques" },
-    { href: "/admin/messages", icon: MessageSquare, label: "Messages" },
-  ];
-
-  const secondaryNavItems = [
-    { href: "/admin/settings", icon: Settings, label: "Paramètres" },
-    { href: "/admin/help", icon: HelpCircle, label: "Aide" },
-    {
-      href: "/admin/documentation",
-      icon: BookOpen,
-      label: "Documentation",
-    },
-  ];
 
   // Animation variants
   const containerVariants = {
@@ -172,7 +143,7 @@ function SidebarContent() {
               SUPPORT
             </h2>
             <motion.div className="grid gap-1" variants={containerVariants}>
-              {secondaryNavItems.map((item) => (
+              {supportNavItems.map((item) => (
                 <motion.div key={item.href} variants={itemVariants}>
                   <Link
                     href={item.href}
