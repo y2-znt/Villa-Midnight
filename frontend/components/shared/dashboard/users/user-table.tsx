@@ -17,31 +17,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useUsers } from "@/hooks/useUser";
+import { useDeleteUser, useUsers } from "@/hooks/useUser";
+import { UserApiResponse } from "@/types/types";
 import { MoreHorizontal, PlusCircleIcon, Search } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { Input } from "../../../ui/input";
 import LoadingIndicator from "../../LoadingIndicator";
+import DeleteUserButton from "./DeleteUser";
 import SelectRole from "./SelectRole";
-
-type UserApiResponse = {
-  id: string;
-  username: string;
-  email: string;
-  avatarUrl?: string;
-  googleId?: string | null;
-  createdAt: string;
-  updatedAt: string;
-  role: "ADMIN" | "USER";
-};
 
 export function UserTable() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedRole, setSelectedRole] = useState<string>("Tous");
 
   const { data: usersData, isLoading, isError, error } = useUsers();
-
+  const { deleteUser, isDeleting } = useDeleteUser();
   const users: UserApiResponse[] = usersData || [];
 
   const filteredUsers = users.filter((user) => {
@@ -100,6 +91,7 @@ export function UserTable() {
                 <TableHead className="w-12">ID</TableHead>
                 <TableHead>Nom</TableHead>
                 <TableHead>Email</TableHead>
+                <TableHead>Nombre d&apos;énigmes</TableHead>
                 <TableHead>Rôle</TableHead>
                 <TableHead>Date de création</TableHead>
                 <TableHead className="w-12"></TableHead>
@@ -113,62 +105,78 @@ export function UserTable() {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredUsers.map((user: UserApiResponse, index: number) => (
-                  <TableRow key={user.id || index}>
-                    <TableCell>{user.id}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar>
-                          {user.avatarUrl ? (
-                            <Image
-                              src={user.avatarUrl}
-                              alt={user.username}
-                              width={32}
-                              height={32}
-                            />
-                          ) : (
-                            <AvatarFallback className="bg-gray-100 text-gray-600">
-                              {user.username.charAt(0).toUpperCase()}
-                            </AvatarFallback>
-                          )}
-                        </Avatar>
-                        <span>{user.username}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={user.role === "ADMIN" ? "primary" : "outline"}
-                      >
-                        {user.role === "ADMIN"
-                          ? "Administrateur"
-                          : "Utilisateur"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      {user.createdAt &&
-                        new Date(user.createdAt).toLocaleDateString("fr-FR")}
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>Voir les détails</DropdownMenuItem>
-                          <DropdownMenuItem>
-                            Modifier l&apos;utilisateur
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">
-                            Supprimer l&apos;utilisateur
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))
+                filteredUsers.map((user: UserApiResponse, index: number) => {
+                  return (
+                    <TableRow key={user.id || index}>
+                      <TableCell>{user.id}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <Avatar>
+                            {user.avatarUrl ? (
+                              <Image
+                                src={user.avatarUrl}
+                                alt={user.username}
+                                width={32}
+                                height={32}
+                              />
+                            ) : (
+                              <AvatarFallback className="bg-gray-100 text-gray-600">
+                                {user.username
+                                  .split(" ")
+                                  .map((name) => name.charAt(0).toUpperCase())
+                                  .slice(0, 2)}
+                              </AvatarFallback>
+                            )}
+                          </Avatar>
+                          <span>{user.username}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>{user.enigmas.length || 0}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={
+                            user.role === "ADMIN" ? "primary" : "outline"
+                          }
+                        >
+                          {user.role === "ADMIN"
+                            ? "Administrateur"
+                            : "Utilisateur"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        {user.createdAt &&
+                          new Date(user.createdAt).toLocaleDateString("fr-FR")}
+                      </TableCell>
+                      <TableCell>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem>
+                              Voir les détails
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              Modifier l&apos;utilisateur
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="p-0"
+                              onSelect={(e) => e.preventDefault()}
+                            >
+                              <DeleteUserButton
+                                handleDeleteUser={() => deleteUser(user.id)}
+                                isDeleting={isDeleting}
+                              />
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
               )}
             </TableBody>
           </Table>
