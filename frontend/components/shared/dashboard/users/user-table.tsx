@@ -29,6 +29,7 @@ import DeleteUserButton from "./DeleteUser";
 import EditUserDialog from "./EditUserDialog";
 import SelectRole from "./SelectRole";
 
+// TODO : fix edit & delete dialogs
 export function UserTable() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedRole, setSelectedRole] = useState<string>("Tous");
@@ -159,7 +160,10 @@ export function UserTable() {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem className="p-0">
+                            <DropdownMenuItem
+                              className="p-0"
+                              onSelect={(e) => e.stopPropagation()}
+                            >
                               <EditUserDialog user={user} />
                             </DropdownMenuItem>
                             <DropdownMenuItem
