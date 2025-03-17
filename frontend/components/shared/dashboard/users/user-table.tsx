@@ -162,7 +162,7 @@ export function UserTable() {
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem
                               className="p-0"
-                              onSelect={(e) => e.stopPropagation()}
+                              onSelect={(e) => e.preventDefault()}
                             >
                               <EditUserDialog user={user} />
                             </DropdownMenuItem>
