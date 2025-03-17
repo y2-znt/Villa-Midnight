@@ -66,12 +66,19 @@ export const useCreateUser = () => {
   };
 };
 
-export const useUpdateUser = (id: string) => {
+export const useUpdateUser = () => {
   const queryClient = useQueryClient();
-  const token = getToken();
 
   const updateUserMutation = useMutation({
-    mutationFn: async (data: UserUpdateType) => {
+    mutationFn: async ({
+      id,
+      data,
+      token,
+    }: {
+      id: string;
+      data: UserUpdateType;
+      token: string;
+    }) => {
       if (!token) {
         throw new Error("No token found");
       }

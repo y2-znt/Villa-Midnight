@@ -17,12 +17,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getToken } from "@/config/config";
 import { useUpdateUser } from "@/hooks/useUser";
 import { EditUserSchema, editUserSchema } from "@/schemas/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface EditUserDialogProps {
   user: {
@@ -35,7 +37,7 @@ interface EditUserDialogProps {
 
 export default function EditUserDialog({ user }: EditUserDialogProps) {
   const [open, setOpen] = useState(false);
-  const { updateUser, isUpdating } = useUpdateUser(user.id);
+  const { updateUser, isUpdating } = useUpdateUser();
   const {
     register,
     handleSubmit,
@@ -45,24 +47,25 @@ export default function EditUserDialog({ user }: EditUserDialogProps) {
   } = useForm<EditUserSchema>({
     resolver: zodResolver(editUserSchema),
     defaultValues: {
-      username: user.username,
-      email: user.email,
-      role: user.role,
+      username: user.username || "",
+      email: user.email || "",
+      role: user.role || "USER",
     },
   });
 
   const onSubmit = async (data: EditUserSchema) => {
-    try {
-      updateUser({
-        username: data.username,
-        email: data.email,
-        role: data.role,
-      });
-      setOpen(false);
-      reset();
-    } catch (error) {
-      console.error("Error updating user:", error);
+    const token = getToken();
+    if (!token) {
+      toast.error("Vous devez être connecté pour modifier un utilisateur");
+      return;
     }
+    const userData = {
+      ...data,
+      id: user.id,
+    };
+    updateUser({ id: user.id, data: userData, token });
+    setOpen(false);
+    reset();
   };
 
   const handleOpenChange = (newOpen: boolean) => {
