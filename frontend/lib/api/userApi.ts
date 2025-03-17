@@ -1,7 +1,7 @@
-import { API_BASE_URL } from "@/config/config";
-import { UserUpdateType } from "@/types/types";
+import { API_BASE_URL, getToken } from "@/config/config";
+import { CreateUserType, UserUpdateType } from "@/types/types";
 
-export const fetchUserById = async (id: string, token?: string) => {
+export const fetchUserById = async (id: string, token: string) => {
   try {
     const response = await fetch(`${API_BASE_URL}/users/${id}`, {
       headers: {
@@ -17,6 +17,29 @@ export const fetchUserById = async (id: string, token?: string) => {
     return data;
   } catch (error) {
     console.error("Erreur lors de la récupération de l'utilisateur:", error);
+    throw error;
+  }
+};
+
+export const createUser = async (user: CreateUserType, token: string) => {
+  try {
+    console.log("Sending user data to server:", user);
+    const response = await fetch(`${API_BASE_URL}/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(user),
+    });
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error("Server error response:", errorData);
+      throw new Error("Erreur lors de la création de l'utilisateur");
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Erreur lors de la création de l'utilisateur:", error);
     throw error;
   }
 };
@@ -93,6 +116,32 @@ export const updateUserAvatar = async (
     return response.json();
   } catch (error) {
     console.error("Erreur lors de la mise à jour de l'avatar:", error);
+    throw error;
+  }
+};
+
+export const fetchAllUsers = async () => {
+  try {
+    const token = getToken();
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    const response = await fetch(`${API_BASE_URL}/users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch users: ${response.status}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching all users:", error);
     throw error;
   }
 };

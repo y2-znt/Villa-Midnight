@@ -1,11 +1,16 @@
+import bcrypt from "bcrypt";
+import { SALT_ROUNDS } from "../config/config";
 import prisma from "../src/prisma/prismaClient";
 
 export const fetchAllUsers = async () => {
   try {
-    const users = await prisma.user.findMany();
-    return users.map(
-      ({ password, ...userWithoutPassword }) => userWithoutPassword
-    );
+    const users = await prisma.user.findMany({
+      include: { enigmas: true },
+    });
+    return users.map(({ password, enigmas, ...userWithoutPassword }) => ({
+      ...userWithoutPassword,
+      enigmas,
+    }));
   } catch (error) {
     throw new Error(`Failed to fetch users: ${(error as Error).message}`);
   }
@@ -13,12 +18,18 @@ export const fetchAllUsers = async () => {
 
 export const fetchUserById = async (id: string) => {
   try {
-    const user = await prisma.user.findUnique({ where: { id } });
+    const user = await prisma.user.findUnique({
+      where: { id },
+      include: { enigmas: true },
+    });
     if (!user) {
       throw new Error("User not found");
     }
     const { password, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+    return {
+      ...userWithoutPassword,
+      enigmas: user.enigmas,
+    };
   } catch (error) {
     throw new Error(`Failed to fetch user: ${(error as Error).message}`);
   }
@@ -40,17 +51,22 @@ export const addUser = async ({
   username,
   email,
   password,
+  role,
 }: {
   username: string;
   email: string;
   password: string;
+  role: "USER" | "ADMIN";
 }) => {
   try {
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+
     const user = await prisma.user.create({
       data: {
         username,
         email,
-        password,
+        password: hashedPassword,
+        role,
       },
     });
     const { password: _, ...userWithoutPassword } = user;
@@ -66,7 +82,13 @@ export const modifyUser = async (
     username,
     email,
     avatarUrl,
-  }: { username?: string; email?: string; avatarUrl?: string }
+    role,
+  }: {
+    username?: string;
+    email?: string;
+    avatarUrl?: string;
+    role?: "USER" | "ADMIN";
+  }
 ) => {
   try {
     const user = await prisma.user.update({
@@ -75,6 +97,7 @@ export const modifyUser = async (
         username,
         email,
         avatarUrl,
+        role,
       },
     });
     const { password, ...userWithoutPassword } = user;

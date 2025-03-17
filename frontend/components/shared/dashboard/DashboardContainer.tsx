@@ -19,11 +19,9 @@ export default function DashboardContainer({
       <div className="flex w-full flex-col">
         <DashboardHeader isOpen={isOpen} setIsOpen={setIsOpen} />
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
-          <div className="mx-auto max-w-7xl">
-            <div className="p-4 md:p-6">{children}</div>
-          </div>
+          <div className="mx-auto">{children}</div>
         </main>
-        <footer className="text-muted-foreground border-t p-8 text-sm">
+        <footer className="text-muted-foreground p-8 text-sm">
           {new Date().getFullYear()} © Villa Midnight - Tous droits réservés
         </footer>
       </div>

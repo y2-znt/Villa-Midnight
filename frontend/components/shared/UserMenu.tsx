@@ -30,28 +30,28 @@ export default function UserMenu() {
     {
       href: "/admin",
       label: "Admin",
-      icon: <ChartArea />,
+      icon: <ChartArea className="size-4" />,
       visible: authUser?.user?.role === "ADMIN",
     },
     {
       href: "/profile",
       label: "Profil",
-      icon: <UserCheckIcon />,
+      icon: <UserCheckIcon className="size-4" />,
     },
     {
       href: "/create-enigma",
       label: "Créer une énigme",
-      icon: <BookOpenIcon />,
+      icon: <BookOpenIcon className="size-4" />,
     },
     {
       href: "/my-enigmas",
       label: "Mes Énigmes",
-      icon: <PuzzleIcon />,
+      icon: <PuzzleIcon className="size-4" />,
     },
     {
       label: "Déconnexion",
       onClick: logout,
-      icon: <LogOutIcon />,
+      icon: <LogOutIcon className="size-4" />,
       disabled: isLoading,
     },
   ];
@@ -62,7 +62,7 @@ export default function UserMenu() {
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
-            className="flex items-center justify-between py-5 text-left"
+            className="flex items-center justify-between text-left"
             disabled={isLoading}
           >
             {authUser?.user?.avatarUrl ? (
@@ -74,36 +74,33 @@ export default function UserMenu() {
                 height={20}
               />
             ) : (
-              <UserIcon className="size-4" />
+              <UserIcon className="size-5" />
             )}
             <span className="hidden sm:flex">MON COMPTE</span>
             <ChevronDownIcon className="ml-1" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <ul>
-            {links.map(
-              (link, index) =>
-                link.visible !== false && (
-                  <DropdownMenuItem
-                    key={index}
-                    disabled={link.disabled}
-                    onClick={() =>
-                      link.onClick ? link.onClick() : router.push(link.href)
-                    }
-                  >
-                    <Button
-                      variant="link"
-                      className="rounded-none text-white uppercase"
-                      disabled={link.disabled}
-                    >
-                      {link.icon}
+          {links.map(
+            (link, index) =>
+              link.visible !== false && (
+                <DropdownMenuItem
+                  key={index}
+                  disabled={link.disabled}
+                  onClick={() =>
+                    link.onClick ? link.onClick() : router.push(link.href)
+                  }
+                  className="cursor-pointer p-2.5"
+                >
+                  <div className="flex items-center">
+                    {link.icon}
+                    <span className="ml-2 font-medium uppercase">
                       {link.label}
-                    </Button>
-                  </DropdownMenuItem>
-                ),
-            )}
-          </ul>
+                    </span>
+                  </div>
+                </DropdownMenuItem>
+              ),
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

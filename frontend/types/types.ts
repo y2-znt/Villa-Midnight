@@ -27,6 +27,17 @@ export type AuthUserType = {
   };
 };
 
+export type UserApiResponse = {
+  id: string;
+  username: string;
+  email: string;
+  avatarUrl?: string;
+  googleId?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  role: "ADMIN" | "USER";
+  enigmas: EnigmaType[];
+};
 export type ContactTypes = {
   icon: LucideIcon;
   title: string;
@@ -36,6 +47,14 @@ export type ContactTypes = {
 export type UserUpdateType = {
   username?: string;
   email?: string;
+  role?: "ADMIN" | "USER";
+};
+
+export type CreateUserType = {
+  username: string;
+  email: string;
+  password: string;
+  role: "ADMIN" | "USER";
 };
 
 type FormDataValue = string | number | File | boolean | null | undefined;
@@ -54,4 +73,10 @@ export const convertToFormData = <T extends Record<string, FormDataValue>>(
   });
 
   return formData;
+};
+
+export type NavItemType = {
+  href: string;
+  icon: LucideIcon;
+  label: string;
 };

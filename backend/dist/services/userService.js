@@ -4,11 +4,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.removeUser = exports.modifyUser = exports.addUser = exports.fetchUserEnigmasById = exports.fetchUserById = exports.fetchAllUsers = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const config_1 = require("../config/config");
 const prismaClient_1 = __importDefault(require("../src/prisma/prismaClient"));
 const fetchAllUsers = async () => {
     try {
-        const users = await prismaClient_1.default.user.findMany();
-        return users.map(({ password, ...userWithoutPassword }) => userWithoutPassword);
+        const users = await prismaClient_1.default.user.findMany({
+            include: { enigmas: true },
+        });
+        return users.map(({ password, enigmas, ...userWithoutPassword }) => ({
+            ...userWithoutPassword,
+            enigmas,
+        }));
     }
     catch (error) {
         throw new Error(`Failed to fetch users: ${error.message}`);
@@ -17,12 +24,18 @@ const fetchAllUsers = async () => {
 exports.fetchAllUsers = fetchAllUsers;
 const fetchUserById = async (id) => {
     try {
-        const user = await prismaClient_1.default.user.findUnique({ where: { id } });
+        const user = await prismaClient_1.default.user.findUnique({
+            where: { id },
+            include: { enigmas: true },
+        });
         if (!user) {
             throw new Error("User not found");
         }
         const { password, ...userWithoutPassword } = user;
-        return userWithoutPassword;
+        return {
+            ...userWithoutPassword,
+            enigmas: user.enigmas,
+        };
     }
     catch (error) {
         throw new Error(`Failed to fetch user: ${error.message}`);
@@ -42,13 +55,15 @@ const fetchUserEnigmasById = async (userId) => {
     }
 };
 exports.fetchUserEnigmasById = fetchUserEnigmasById;
-const addUser = async ({ username, email, password, }) => {
+const addUser = async ({ username, email, password, role, }) => {
     try {
+        const hashedPassword = await bcrypt_1.default.hash(password, config_1.SALT_ROUNDS);
         const user = await prismaClient_1.default.user.create({
             data: {
                 username,
                 email,
-                password,
+                password: hashedPassword,
+                role,
             },
         });
         const { password: _, ...userWithoutPassword } = user;
@@ -59,7 +74,7 @@ const addUser = async ({ username, email, password, }) => {
     }
 };
 exports.addUser = addUser;
-const modifyUser = async (id, { username, email, avatarUrl, }) => {
+const modifyUser = async (id, { username, email, avatarUrl, role, }) => {
     try {
         const user = await prismaClient_1.default.user.update({
             where: { id },
@@ -67,6 +82,7 @@ const modifyUser = async (id, { username, email, avatarUrl, }) => {
                 username,
                 email,
                 avatarUrl,
+                role,
             },
         });
         const { password, ...userWithoutPassword } = user;

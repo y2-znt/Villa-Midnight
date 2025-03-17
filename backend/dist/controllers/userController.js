@@ -65,8 +65,8 @@ const getEnigmaByUserId = async (req, res) => {
 exports.getEnigmaByUserId = getEnigmaByUserId;
 const createUser = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
-        const user = await (0, userService_1.addUser)({ username, email, password });
+        const { username, email, password, role } = req.body;
+        const user = await (0, userService_1.addUser)({ username, email, password, role });
         res.status(201).json(user);
     }
     catch (error) {

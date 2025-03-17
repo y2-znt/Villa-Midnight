@@ -12,10 +12,13 @@ import { toast } from "sonner";
 
 export const useUserProfile = (id?: string) => {
   const token = getToken();
+  if (!id || !token) {
+    throw new Error("ID et token sont requis");
+  }
 
   return useQuery({
     queryKey: ["userProfile"],
-    queryFn: () => (id && token ? fetchUserById(id, token) : null),
+    queryFn: () => fetchUserById(id, token),
     enabled: !!id && !!token,
   });
 };
@@ -46,9 +49,7 @@ export const useUpdateUserProfile = (
         toast.dismiss(context.toastId);
       }
 
-      // Update auth context if setAuthUser is provided
       if (setAuthUser) {
-        // Get current user data
         const currentUser = queryClient.getQueryData<AuthUserType>([
           "authUser",
         ]);
@@ -70,7 +71,7 @@ export const useUpdateUserProfile = (
       }
 
       toast.success("Profil mis à jour avec succès !");
-      queryClient.invalidateQueries({ queryKey: ["userProfile"] }); // Updated query key
+      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
     },
     onError: (error: Error, _, context) => {
       if (context?.toastId) {
@@ -134,7 +135,7 @@ export const useUpdateUserAvatar = (
       }
 
       toast.success("Avatar mis à jour avec succès !");
-      queryClient.invalidateQueries({ queryKey: ["userProfile"] }); // Updated query key
+      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
     },
     onError: (error: Error, _, context) => {
       if (context?.toastId) {
@@ -170,13 +171,17 @@ export const useDeleteUserProfile = (
         toast.dismiss(context.toastId);
       }
 
+      localStorage.removeItem("token");
+
       if (setAuthUser) {
         setAuthUser(null);
       }
 
-      toast.success("Compte supprimé avec succès");
-      localStorage.removeItem("token");
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      queryClient.setQueryData(["authUser"], null);
       queryClient.clear();
+
+      toast.success("Compte supprimé avec succès");
       router.push("/");
     },
     onError: (error: Error, _, context) => {
