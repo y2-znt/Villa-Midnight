@@ -1,7 +1,12 @@
 import { getToken } from "@/config/config";
 import { fetchEnigmasByUserId } from "@/lib/api/enigmaApi";
-import { createUser, deleteUser, fetchAllUsers } from "@/lib/api/userApi";
-import { CreateUserType, UserApiResponse } from "@/types/types";
+import {
+  createUser,
+  deleteUser,
+  fetchAllUsers,
+  updateUser,
+} from "@/lib/api/userApi";
+import { CreateUserType, UserApiResponse, UserUpdateType } from "@/types/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -58,6 +63,44 @@ export const useCreateUser = () => {
   return {
     createUser: createUserMutation.mutate,
     isCreating: createUserMutation.isPending,
+  };
+};
+
+export const useUpdateUser = (id: string) => {
+  const queryClient = useQueryClient();
+  const token = getToken();
+
+  const updateUserMutation = useMutation({
+    mutationFn: async (data: UserUpdateType) => {
+      if (!token) {
+        throw new Error("No token found");
+      }
+      return await updateUser(id, data, token);
+    },
+    onMutate: () => {
+      const toastId = toast.loading(
+        "Modification de l'utilisateur en cours...",
+      );
+      return { toastId };
+    },
+    onSuccess: (_, __, context) => {
+      if (context?.toastId) {
+        toast.dismiss(context.toastId);
+      }
+      toast.success("Utilisateur modifié avec succès");
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+    onError: (error: Error, _, context) => {
+      if (context?.toastId) {
+        toast.dismiss(context.toastId);
+      }
+      toast.error("Erreur lors de la modification de l'utilisateur");
+      console.error("Erreur lors de la modification de l'utilisateur:", error);
+    },
+  });
+  return {
+    updateUser: updateUserMutation.mutate,
+    isUpdating: updateUserMutation.isPending,
   };
 };
 
