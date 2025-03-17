@@ -26,12 +26,12 @@ import { Input } from "../../../ui/input";
 import LoadingIndicator from "../../LoadingIndicator";
 import AddUserDialog from "./AddUserDialog";
 import DeleteUserButton from "./DeleteUser";
+import EditUserDialog from "./EditUserDialog";
 import SelectRole from "./SelectRole";
 
 export function UserTable() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedRole, setSelectedRole] = useState<string>("Tous");
-
   const { data: usersData, isLoading, isError, error } = useUsers();
   const { deleteUser, isDeleting } = useDeleteUser();
   const users: UserApiResponse[] = usersData || [];
@@ -159,8 +159,8 @@ export function UserTable() {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
-                              Modifier l&apos;utilisateur
+                            <DropdownMenuItem className="p-0">
+                              <EditUserDialog user={user} />
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               className="p-0"

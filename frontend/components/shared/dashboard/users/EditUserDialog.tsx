@@ -17,45 +17,57 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCreateUser } from "@/hooks/useUser";
-import { createUserSchema, CreateUserSchema } from "@/schemas/userSchema";
+import { useUpdateUser } from "@/hooks/useUser";
+import { EditUserSchema, editUserSchema } from "@/schemas/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusCircleIcon } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-export default function AddUserDialog() {
+interface EditUserDialogProps {
+  user: {
+    id: string;
+    username: string;
+    email: string;
+    role: "USER" | "ADMIN";
+  };
+}
+
+export default function EditUserDialog({ user }: EditUserDialogProps) {
   const [open, setOpen] = useState(false);
-  const { createUser, isCreating } = useCreateUser();
+  const { updateUser, isUpdating } = useUpdateUser(user.id);
   const {
     register,
     handleSubmit,
     control,
     reset,
     formState: { errors },
-  } = useForm<CreateUserSchema>({
-    resolver: zodResolver(createUserSchema),
+  } = useForm<EditUserSchema>({
+    resolver: zodResolver(editUserSchema),
+    defaultValues: {
+      username: user.username,
+      email: user.email,
+      role: user.role,
+    },
   });
 
-  const onSubmit = async (data: CreateUserSchema) => {
+  const onSubmit = async (data: EditUserSchema) => {
     try {
-      createUser({
+      updateUser({
         username: data.username,
         email: data.email,
-        password: data.password,
         role: data.role,
       });
-      console.log("User created", data);
       setOpen(false);
       reset();
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.error("Error updating user:", error);
     }
   };
 
-  const handleOpenChange = (open: boolean) => {
-    setOpen(open);
-    if (!open) {
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (!newOpen) {
       reset();
     }
   };
@@ -63,16 +75,25 @@ export default function AddUserDialog() {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-2">
-          <PlusCircleIcon className="h-4 w-4" />
-          Ajouter un utilisateur
+        <Button
+          size="sm"
+          variant="ghost"
+          className="rounded-sm"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <Pencil className="size-2" />
+          Modifier l&apos;utilisateur
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
-          <DialogTitle className="title">Ajouter un utilisateur</DialogTitle>
+          <DialogTitle className="title">
+            Modifier l&apos;utilisateur
+          </DialogTitle>
           <DialogDescription>
-            Ajoutez un nouvel utilisateur et gérez ses rôles.
+            Modifiez les informations de l&apos;utilisateur.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
@@ -124,37 +145,9 @@ export default function AddUserDialog() {
               )}
             </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="password">Mot de passe</Label>
-            <div className="col-span-3">
-              <Input
-                id="password"
-                type="password"
-                placeholder="Mot de passe"
-                {...register("password")}
-              />
-              {errors.password && (
-                <p className="text-red-500">{errors.password.message}</p>
-              )}
-            </div>
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
-            <div className="col-span-3">
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="Confirmer le mot de passe"
-                {...register("confirmPassword")}
-              />
-              {errors.confirmPassword && (
-                <p className="text-red-500">{errors.confirmPassword.message}</p>
-              )}
-            </div>
-          </div>
           <DialogFooter>
-            <Button type="submit" disabled={isCreating}>
-              {isCreating ? "Création en cours..." : "Enregistrer"}
+            <Button type="submit" disabled={isUpdating}>
+              {isUpdating ? "Modification en cours..." : "Enregistrer"}
             </Button>
           </DialogFooter>
         </form>
