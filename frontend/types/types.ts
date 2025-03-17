@@ -47,6 +47,7 @@ export type ContactTypes = {
 export type UserUpdateType = {
   username?: string;
   email?: string;
+  role?: "ADMIN" | "USER";
 };
 
 export type CreateUserType = {

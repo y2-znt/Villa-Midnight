@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const userSchema = z
+export const createUserSchema = z
   .object({
     username: z.string().min(3, {
       message: "Le nom d'utilisateur doit comporter au moins 3 caractères",
@@ -36,4 +36,16 @@ export const userSchema = z
     path: ["confirmPassword"],
   });
 
-export type UserSchema = z.infer<typeof userSchema>;
+export const editUserSchema = z.object({
+  username: z.string().min(3, {
+    message: "Le nom d'utilisateur doit comporter au moins 3 caractères",
+  }),
+  email: z
+    .string()
+    .min(1, { message: "L'email est requis" })
+    .email({ message: "Adresse email invalide" }),
+  role: z.enum(["USER", "ADMIN"]),
+});
+
+export type CreateUserSchema = z.infer<typeof createUserSchema>;
+export type EditUserSchema = z.infer<typeof editUserSchema>;
