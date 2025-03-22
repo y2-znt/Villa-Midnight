@@ -37,16 +37,23 @@ export function UserTable() {
   const { deleteUser, isDeleting } = useDeleteUser();
   const users: UserApiResponse[] = usersData || [];
 
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch =
-      user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredUsers = users
+    .filter((user) => {
+      const matchesSearch =
+        user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesRole =
-      selectedRole === "Tous" ||
-      user.role === (selectedRole === "Administrateur" ? "ADMIN" : "USER");
-    return matchesSearch && matchesRole;
-  });
+      const matchesRole =
+        selectedRole === "Tous" ||
+        user.role === (selectedRole === "Administrateur" ? "ADMIN" : "USER");
+      return matchesSearch && matchesRole;
+    })
+    .sort((a, b) => {
+      if (a.role === "ADMIN" && b.role !== "ADMIN") return -1;
+      if (a.role !== "ADMIN" && b.role === "ADMIN") return 1;
+
+      return a.username.localeCompare(b.username);
+    });
 
   return (
     <div className="space-y-4 lg:max-w-[calc(100vw-18rem)]">
