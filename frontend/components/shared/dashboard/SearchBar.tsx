@@ -41,7 +41,7 @@ export function SearchBar() {
     <>
       <Button
         variant="outline"
-        className="justify-between sm:w-[300px]"
+        className="w-[60%] justify-between max-sm:h-12 sm:w-[300px]"
         onClick={() => setOpen(true)}
       >
         <div className="flex w-full items-center justify-between gap-2">

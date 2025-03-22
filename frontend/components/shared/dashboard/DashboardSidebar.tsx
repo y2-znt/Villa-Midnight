@@ -1,13 +1,13 @@
 "use client";
 
 import { useAuthContext } from "@/context/authContext";
+import { mainNavItems, supportNavItems } from "@/data/data";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Logo from "../Logo";
-import { mainNavItems, supportNavItems } from "@/data/data";
 
 interface SidebarProps {
   className?: string;
@@ -32,7 +32,7 @@ export function DashboardSidebar({
     <>
       {/* Mobile Sidebar */}
       <div
-        className={`bg-background fixed inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out lg:hidden ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 transform bg-neutral-900 transition-transform duration-300 ease-in-out lg:hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

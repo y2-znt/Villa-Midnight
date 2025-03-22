@@ -23,7 +23,7 @@ export function DashboardHeader({
 
   return (
     <header
-      className={`sticky top-0 z-30 mx-2 flex items-center gap-4 px-4 py-3 backdrop-blur-sm ${className || ""}`}
+      className={`sticky top-2 z-30 mx-2 flex items-center gap-4 px-4 py-3 backdrop-blur-sm sm:top-0 ${className || ""}`}
     >
       {children}
 
@@ -34,7 +34,7 @@ export function DashboardHeader({
             <Button
               variant="outline"
               size="icon"
-              className="rounded-full hover:text-white lg:hidden"
+              className="size-12 rounded-full hover:text-white md:size-10 lg:hidden"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? (
@@ -48,7 +48,7 @@ export function DashboardHeader({
             onClick={() => logout()}
             variant="outline"
             size="icon"
-            className="rounded-full hover:text-white"
+            className="size-12 rounded-full hover:text-white md:size-10"
           >
             <LogOut className="size-10" />
           </Button>
